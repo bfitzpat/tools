@@ -80,9 +80,6 @@ public class SCADiagramAddServiceFeature extends AbstractAddShapeFeature {
 			p = gaService.createPolygon(invisibleRectangle, StyleUtil.LARGE_RIGHT_ARROW);
             p.setStyle(StyleUtil
                     .getStyleForService(getDiagram()));
-//			p.setForeground(manageColor(StyleUtil.BRIGHT_ORANGE));
-//			p.setBackground(manageColor(StyleUtil.GREEN));
-//			p.setLineWidth(2);
 	        p.setParentGraphicsAlgorithm(invisibleRectangle);
 
 			gaService.setLocationAndSize(p,
@@ -106,9 +103,8 @@ public class SCADiagramAddServiceFeature extends AbstractAddShapeFeature {
 			text.setForeground(manageColor(StyleUtil.BLACK));
 			text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
 			text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
-			Font font = text.getFont();
-			font = gaService.manageFont(getDiagram(), font.getName(), font.getSize(), false, true);
-//			text.getFont().setBold(true);
+			Font font = gaService.manageFont(getDiagram(), text.getFont().getName(), text.getFont().getSize(), false, true);
+			text.setFont(font);
 			gaService.setLocationAndSize(text, 5, 0, width - 15, height);
 
 		}

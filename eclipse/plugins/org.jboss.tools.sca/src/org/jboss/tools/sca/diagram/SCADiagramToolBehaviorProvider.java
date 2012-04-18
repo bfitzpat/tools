@@ -128,31 +128,52 @@ public class SCADiagramToolBehaviorProvider extends DefaultToolBehaviorProvider 
         // add compartments from super class
         IPaletteCompartmentEntry[] superCompartments =
             super.getPalette();
+//
+//        for (int i = 0; i < superCompartments.length; i++)
+//            ret.add(superCompartments[i]);
 
-        for (int i = 0; i < superCompartments.length; i++)
-            ret.add(superCompartments[i]);
+        // add connections
+        ret.add(superCompartments[0]);
+        
+        // add new compartment for composites
+        PaletteCompartmentEntry compositeEntry =
+            new PaletteCompartmentEntry("Composites", ImageProvider.IMG_16_COMPOSITE);
+        ret.add(compositeEntry);
 
-//        // add new compartment at the end of the existing compartments
-//        PaletteCompartmentEntry compartmentEntry =
-//            new PaletteCompartmentEntry("Stacked", null);
-//        ret.add(compartmentEntry);
-//
-//        // add new stack entry to new compartment
-//        StackEntry stackEntry = new StackEntry("EObject", "EObject", null);
-//        compartmentEntry.addToolEntry(stackEntry);
-//
-//        // add all create-features to the new stack-entry
-//        IFeatureProvider featureProvider = getFeatureProvider();
-//
-//        ICreateFeature[] createFeatures = featureProvider.getCreateFeatures();
-//        for (ICreateFeature cf : createFeatures) {
-//            ObjectCreationToolEntry objectCreationToolEntry = 
-//                   new ObjectCreationToolEntry(cf.getCreateName(),
-//                     cf.getCreateDescription(), cf.getCreateImageId(),
-//                        cf.getCreateLargeImageId(), cf);
-//            stackEntry.addCreationToolEntry(objectCreationToolEntry);
-//        }
-//      
+        // add new compartment for components
+        PaletteCompartmentEntry componentEntry =
+            new PaletteCompartmentEntry("Components", ImageProvider.IMG_16_COMPONENT);
+        ret.add(componentEntry);
+
+        // add new compartment for services
+        PaletteCompartmentEntry servicesEntry =
+            new PaletteCompartmentEntry("Services", ImageProvider.IMG_16_SERVICE);
+        ret.add(servicesEntry);
+
+        // add new compartment for anything else
+        PaletteCompartmentEntry miscEntry =
+            new PaletteCompartmentEntry("Other", null);
+        ret.add(miscEntry);
+
+        // add all create-features to the new stack-entry
+        IFeatureProvider featureProvider = getFeatureProvider();
+
+        ICreateFeature[] createFeatures = featureProvider.getCreateFeatures();
+        for (ICreateFeature cf : createFeatures) {
+            ObjectCreationToolEntry objectCreationToolEntry = 
+                   new ObjectCreationToolEntry(cf.getCreateName(),
+                     cf.getCreateDescription(), cf.getCreateImageId(),
+                        cf.getCreateLargeImageId(), cf);
+            if (cf.getCreateName().contains("Composite"))
+            	compositeEntry.addToolEntry(objectCreationToolEntry);
+            else if (cf.getCreateName().contains("Component"))
+            	componentEntry.addToolEntry(objectCreationToolEntry);
+            else if (cf.getCreateName().contains("Service"))
+            	servicesEntry.addToolEntry(objectCreationToolEntry);
+            else
+            	miscEntry.addToolEntry(objectCreationToolEntry);
+        }
+      
 //        // add all create-connection-features to the new stack-entry
 //        ICreateConnectionFeature[] createConnectionFeatures =
 //             featureProvider.getCreateConnectionFeatures();

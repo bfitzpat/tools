@@ -14,7 +14,7 @@ package org.jboss.tools.sca.diagram.compositereference;
 
 import java.io.IOException;
 
-import org.eclipse.graphiti.examples.common.ExampleUtil;
+import org.jboss.tools.sca.util.ExampleUtil;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateFeature;

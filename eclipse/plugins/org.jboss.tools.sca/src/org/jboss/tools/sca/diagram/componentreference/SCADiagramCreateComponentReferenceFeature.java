@@ -14,7 +14,6 @@ package org.jboss.tools.sca.diagram.componentreference;
 
 import java.io.IOException;
 
-import org.eclipse.graphiti.examples.common.ExampleUtil;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
@@ -25,6 +24,7 @@ import org.jboss.tools.sca.Activator;
 import org.jboss.tools.sca.ImageProvider;
 import org.jboss.tools.sca.core.ModelHandler;
 import org.jboss.tools.sca.core.ModelHandlerLocator;
+import org.jboss.tools.sca.util.ExampleUtil;
 
 public class SCADiagramCreateComponentReferenceFeature extends AbstractCreateFeature {
 

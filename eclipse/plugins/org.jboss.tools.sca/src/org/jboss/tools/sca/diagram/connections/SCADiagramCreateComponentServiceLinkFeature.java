@@ -28,7 +28,7 @@ public class SCADiagramCreateComponentServiceLinkFeature extends
 AbstractCreateConnectionFeature {
 
 	public SCADiagramCreateComponentServiceLinkFeature(IFeatureProvider fp) {
-		super(fp, "Component Service reference", "Create Component Service reference");
+		super(fp, "Component Service reference (dotted)", "Create Component Service reference");
 	}
 
 	@Override

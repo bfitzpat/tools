@@ -114,9 +114,8 @@ public class SCADiagramAddCompositeFeature extends AbstractAddShapeFeature {
 			text.setForeground(manageColor(StyleUtil.BLACK));
 			text.setHorizontalAlignment(Orientation.ALIGNMENT_LEFT);
 			text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
-			Font font = text.getFont();
-			font = gaService.manageFont(getDiagram(), font.getName(), font.getSize(), false, true);
-//			text.getFont().setBold(true);
+			Font font = gaService.manageFont(getDiagram(), text.getFont().getName(), text.getFont().getSize(), false, true);
+			text.setFont(font);
 			gaService.setLocationAndSize(text, edge + 2, edge + 2, width, font.getSize() * 2);
 
 		}
@@ -152,6 +151,14 @@ public class SCADiagramAddCompositeFeature extends AbstractAddShapeFeature {
 			}
 		}
 
+//        Image compositeImage = gaService.createImage(invisibleRectangle, ImageProvider.IMG_16_CHAIN);
+//        compositeImage.setWidth(64);
+//        compositeImage.setStretchH(true);
+//		gaService.setLocationAndSize(compositeImage,
+//				0, 
+//				0, 
+//				64,64);
+        
 		// call the layout feature
 		layoutPictogramElement(containerShape);
 
