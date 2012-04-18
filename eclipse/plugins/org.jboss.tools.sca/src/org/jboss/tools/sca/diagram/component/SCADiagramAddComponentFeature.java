@@ -117,7 +117,9 @@ public class SCADiagramAddComponentFeature extends AbstractAddShapeFeature {
 			font = gaService.manageFont(getDiagram(), font.getName(), font.getSize(), false, true);
 			text.setFont(font);
 //			text.getFont().setBold(true);
-			gaService.setLocationAndSize(text, 5, 5, width, 20);
+			gaService.setLocationAndSize(text, StyleUtil.COMPONENT_EDGE + 10, 0, 
+					width - (StyleUtil.COMPONENT_EDGE * 3) - (StyleUtil.COMPONENT_INVISIBLE_RECT_RIGHT * 2), height );
+//			gaService.setLocationAndSize(text, 5, 5, width, 20);
 		}
 
 		if (addedComponent.getService().size() > 0) {

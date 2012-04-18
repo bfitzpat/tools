@@ -100,12 +100,15 @@ public class SCADiagramAddServiceFeature extends AbstractAddShapeFeature {
 			// create and set text graphics algorithm
 			Text text = gaService.createDefaultText(getDiagram(), p,
 					addedService.getName());
-			text.setForeground(manageColor(StyleUtil.BLACK));
-			text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
-			text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
 			Font font = gaService.manageFont(getDiagram(), text.getFont().getName(), text.getFont().getSize(), false, true);
 			text.setFont(font);
-			gaService.setLocationAndSize(text, 5, 0, width - 15, height);
+
+			text.setForeground(manageColor(StyleUtil.BLACK));
+			int left = p.getPoints().get(5).getX();
+			int right = p.getPoints().get(1).getX();
+			text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+			text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
+			gaService.setLocationAndSize(text, left + 10, 0, right - left - 10, height );
 
 		}
 

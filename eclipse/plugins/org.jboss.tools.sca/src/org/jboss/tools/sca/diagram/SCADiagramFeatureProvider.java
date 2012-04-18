@@ -20,12 +20,14 @@ import org.eclipse.graphiti.features.IDirectEditingFeature;
 import org.eclipse.graphiti.features.IFeature;
 import org.eclipse.graphiti.features.ILayoutFeature;
 import org.eclipse.graphiti.features.IMoveShapeFeature;
+import org.eclipse.graphiti.features.IResizeShapeFeature;
 import org.eclipse.graphiti.features.IUpdateFeature;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.features.context.IDirectEditingContext;
 import org.eclipse.graphiti.features.context.ILayoutContext;
 import org.eclipse.graphiti.features.context.IMoveShapeContext;
 import org.eclipse.graphiti.features.context.IPictogramElementContext;
+import org.eclipse.graphiti.features.context.IResizeShapeContext;
 import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
@@ -41,6 +43,7 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.jboss.tools.sca.diagram.component.SCADiagramAddComponentFeature;
 import org.jboss.tools.sca.diagram.component.SCADiagramCreateComponentFeature;
 import org.jboss.tools.sca.diagram.component.SCADiagramDirectEditComponentFeature;
+import org.jboss.tools.sca.diagram.component.SCADiagramResizeComponentFeature;
 import org.jboss.tools.sca.diagram.componentreference.SCADiagramAddComponentReferenceFeature;
 import org.jboss.tools.sca.diagram.componentreference.SCADiagramCreateComponentReferenceFeature;
 import org.jboss.tools.sca.diagram.componentservice.SCADiagramAddComponentServiceFeature;
@@ -60,7 +63,9 @@ import org.jboss.tools.sca.diagram.connections.SCADiagramCreateReferenceLinkFeat
 import org.jboss.tools.sca.diagram.service.SCADiagramAddServiceFeature;
 import org.jboss.tools.sca.diagram.service.SCADiagramCreateServiceFeature;
 import org.jboss.tools.sca.diagram.service.SCADiagramDirectEditServiceFeature;
+import org.jboss.tools.sca.diagram.service.SCADiagramLayoutServiceFeature;
 import org.jboss.tools.sca.diagram.service.SCADiagramMoveServiceFeature;
+import org.jboss.tools.sca.diagram.service.SCADiagramResizeServiceFeature;
 
 public class SCADiagramFeatureProvider extends DefaultFeatureProvider {
 
@@ -176,7 +181,23 @@ public class SCADiagramFeatureProvider extends DefaultFeatureProvider {
 		if (bo instanceof Composite) {
 			return new SCADiagramLayoutCompositeFeature(this);
 		}
+		if (bo instanceof Service) {
+			return new SCADiagramLayoutServiceFeature(this);
+		}
 		return super.getLayoutFeature(context);
+	}
+
+	@Override
+	public IResizeShapeFeature getResizeShapeFeature(IResizeShapeContext context) {
+		PictogramElement pe = context.getPictogramElement();
+		Object bo = getBusinessObjectForPictogramElement(pe);
+		if (bo instanceof Service) {
+			return new SCADiagramResizeServiceFeature(this);
+		}
+		if (bo instanceof Component) {
+			return new SCADiagramResizeComponentFeature(this);
+		}
+		return super.getResizeShapeFeature(context);
 	}
 
 }

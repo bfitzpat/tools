@@ -26,8 +26,6 @@ import org.eclipse.graphiti.palette.IPaletteCompartmentEntry;
 import org.eclipse.graphiti.palette.impl.ConnectionCreationToolEntry;
 import org.eclipse.graphiti.palette.impl.ObjectCreationToolEntry;
 import org.eclipse.graphiti.palette.impl.PaletteCompartmentEntry;
-import org.eclipse.graphiti.palette.impl.StackEntry;
-import org.eclipse.graphiti.platform.IPlatformImageConstants;
 import org.eclipse.graphiti.tb.DefaultToolBehaviorProvider;
 import org.eclipse.graphiti.tb.IDecorator;
 import org.eclipse.graphiti.tb.ImageDecorator;
@@ -65,7 +63,6 @@ public class SCADiagramToolBehaviorProvider extends DefaultToolBehaviorProvider 
 					if (binding instanceof SOAPBindingType) {
 						SOAPBindingType soapBinding = (SOAPBindingType) binding;
 						text = "SOAP Binding:\n";
-						text = text + soapBinding.getUri() + "\n";
 						text = text + soapBinding.getWsdl();
 					} else if (binding instanceof BindingType) {
 						BindingType hornetQBinding = (BindingType) binding;
@@ -125,35 +122,36 @@ public class SCADiagramToolBehaviorProvider extends DefaultToolBehaviorProvider 
         List<IPaletteCompartmentEntry> ret =
             new ArrayList<IPaletteCompartmentEntry>();
 
-        // add compartments from super class
-        IPaletteCompartmentEntry[] superCompartments =
-            super.getPalette();
-//
-//        for (int i = 0; i < superCompartments.length; i++)
-//            ret.add(superCompartments[i]);
-
         // add connections
-        ret.add(superCompartments[0]);
+        PaletteCompartmentEntry connectionsEntry =
+        		new PaletteCompartmentEntry("Connections", null);
+        ret.add(connectionsEntry);
+
+        // add all create-connection-features to the new stack-entry
+        ICreateConnectionFeature[] createConnectionFeatures =
+        		getFeatureProvider().getCreateConnectionFeatures();
+        for (ICreateConnectionFeature cf : createConnectionFeatures) {
+        	ConnectionCreationToolEntry connectionCreationToolEntry = 
+        			new ConnectionCreationToolEntry(cf.getCreateName(), cf
+        					.getCreateDescription(), cf.getCreateImageId(),
+        					cf.getCreateLargeImageId());
+        	connectionCreationToolEntry.addCreateConnectionFeature(cf);
+        	connectionsEntry.addToolEntry(connectionCreationToolEntry);
+        }
         
         // add new compartment for composites
         PaletteCompartmentEntry compositeEntry =
-            new PaletteCompartmentEntry("Composites", ImageProvider.IMG_16_COMPOSITE);
+            new PaletteCompartmentEntry("Composites", null);
         ret.add(compositeEntry);
 
         // add new compartment for components
         PaletteCompartmentEntry componentEntry =
-            new PaletteCompartmentEntry("Components", ImageProvider.IMG_16_COMPONENT);
+            new PaletteCompartmentEntry("Components", null);
         ret.add(componentEntry);
-
-        // add new compartment for services
-        PaletteCompartmentEntry servicesEntry =
-            new PaletteCompartmentEntry("Services", ImageProvider.IMG_16_SERVICE);
-        ret.add(servicesEntry);
 
         // add new compartment for anything else
         PaletteCompartmentEntry miscEntry =
             new PaletteCompartmentEntry("Other", null);
-        ret.add(miscEntry);
 
         // add all create-features to the new stack-entry
         IFeatureProvider featureProvider = getFeatureProvider();
@@ -169,23 +167,14 @@ public class SCADiagramToolBehaviorProvider extends DefaultToolBehaviorProvider 
             else if (cf.getCreateName().contains("Component"))
             	componentEntry.addToolEntry(objectCreationToolEntry);
             else if (cf.getCreateName().contains("Service"))
-            	servicesEntry.addToolEntry(objectCreationToolEntry);
+            	compositeEntry.addToolEntry(objectCreationToolEntry);
             else
             	miscEntry.addToolEntry(objectCreationToolEntry);
         }
-      
-//        // add all create-connection-features to the new stack-entry
-//        ICreateConnectionFeature[] createConnectionFeatures =
-//             featureProvider.getCreateConnectionFeatures();
-//        for (ICreateConnectionFeature cf : createConnectionFeatures) {
-//            ConnectionCreationToolEntry connectionCreationToolEntry = 
-//                new ConnectionCreationToolEntry(cf.getCreateName(), cf
-//                  .getCreateDescription(), cf.getCreateImageId(),
-//                    cf.getCreateLargeImageId());
-//                        connectionCreationToolEntry.addCreateConnectionFeature(cf);
-//            stackEntry.addCreationToolEntry(connectionCreationToolEntry);
-//        }
 
+        if (!miscEntry.getToolEntries().isEmpty())
+        	ret.add(miscEntry);
+        
         return ret.toArray(new IPaletteCompartmentEntry[ret.size()]);
     }
 

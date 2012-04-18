@@ -20,6 +20,7 @@ import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.graphiti.datatypes.IDimension;
 import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.ILayoutFeature;
@@ -27,6 +28,11 @@ import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
 import org.eclipse.graphiti.features.context.impl.AddContext;
 import org.eclipse.graphiti.features.context.impl.LayoutContext;
 import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
+import org.eclipse.graphiti.mm.algorithms.Polygon;
+import org.eclipse.graphiti.mm.algorithms.RoundedRectangle;
+import org.eclipse.graphiti.mm.algorithms.Text;
+import org.eclipse.graphiti.mm.algorithms.styles.Orientation;
+import org.eclipse.graphiti.mm.algorithms.styles.Point;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
@@ -41,6 +47,7 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.jboss.tools.sca.core.ModelHandler;
 import org.jboss.tools.sca.diagram.StyleUtil;
+import org.jboss.tools.sca.util.CalculateUtil;
 import org.jboss.tools.switchyard.model.switchyard.DocumentRoot;
 import org.jboss.tools.switchyard.model.switchyard.SwitchYardType;
 
@@ -174,6 +181,21 @@ public class DIImport {
 		layoutAll();
 	}
 	
+	private GraphicsAlgorithm findChildGA ( GraphicsAlgorithm parent, Class<?> gaSearchType ) {
+		EList<GraphicsAlgorithm> childGAs = parent.getGraphicsAlgorithmChildren();
+		for (GraphicsAlgorithm graphicsAlgorithm : childGAs) {
+			if (graphicsAlgorithm.getClass().getCanonicalName().contentEquals(gaSearchType.getCanonicalName())) {
+				return graphicsAlgorithm;
+			} else if (graphicsAlgorithm.getClass() != gaSearchType && gaSearchType.isAssignableFrom(graphicsAlgorithm.getClass())) {
+				return graphicsAlgorithm;
+			}
+			if (graphicsAlgorithm.getGraphicsAlgorithmChildren().size() > 0) {
+				return findChildGA(graphicsAlgorithm, gaSearchType);
+			}
+		}
+		return null;
+	}
+
 	private void addComponents(Composite composite, ContainerShape compositeContainerShape, IFeatureProvider featureProvider, Diagram diagram, int x, int y) {
 		int innerx = compositeContainerShape.getGraphicsAlgorithm().getX() + 20;
 		int innery = compositeContainerShape.getGraphicsAlgorithm().getY() + 20;
@@ -211,6 +233,21 @@ public class DIImport {
 			}
 			
 			ContainerShape componentContainerShape = (ContainerShape)featureProvider.getPictogramElementForBusinessObject(component).getGraphicsAlgorithm().eContainer();
+			
+			GraphicsAlgorithm componentGa = findChildGA(componentContainerShape.getGraphicsAlgorithm(), Text.class);
+			if (componentGa != null && componentGa instanceof Text) {
+				Text text = (Text) componentGa;
+				IDimension dims = CalculateUtil.calculateTextSize(component.getName(), text.getFont());
+				if (componentGa.getWidth() < dims.getWidth()) {
+					int diff = dims.getWidth() - componentGa.getWidth();
+					componentGa.setWidth(dims.getWidth());
+					componentContainerShape.getGraphicsAlgorithm().setWidth(diff + componentContainerShape.getGraphicsAlgorithm().getWidth());
+					GraphicsAlgorithm rectGa = findChildGA(componentContainerShape.getGraphicsAlgorithm(), RoundedRectangle.class);
+					if (rectGa != null && rectGa instanceof RoundedRectangle) {
+						rectGa.setWidth(componentContainerShape.getGraphicsAlgorithm().getWidth() - (StyleUtil.COMPONENT_INVISIBLE_RECT_RIGHT * 2));
+					}
+				}
+			}
 			
 			addComponentServices(component, componentContainerShape, featureProvider, diagram, x, y);
 
@@ -274,6 +311,61 @@ public class DIImport {
 			}
 
 			innery = innery + StyleUtil.SERVICE_HEIGHT + 20;
+
+			ContainerShape componentContainerShape = (ContainerShape)featureProvider.getPictogramElementForBusinessObject(service).getGraphicsAlgorithm().eContainer();
+
+			GraphicsAlgorithm componentGa = findChildGA(componentContainerShape.getGraphicsAlgorithm(), Text.class);
+			if (componentGa != null && componentGa instanceof Text) {
+				Text text = (Text) componentGa;
+				IDimension dims = CalculateUtil.calculateTextSize(service.getName(), text.getFont());
+				if (componentGa.getWidth() < dims.getWidth()) {
+					int diff = dims.getWidth() - componentGa.getWidth();
+					componentGa.setWidth(dims.getWidth());
+					componentContainerShape.getGraphicsAlgorithm().setWidth(diff + componentContainerShape.getGraphicsAlgorithm().getWidth());
+					GraphicsAlgorithm rectGa = findChildGA(componentContainerShape.getGraphicsAlgorithm(), Polygon.class);
+					if (rectGa != null && rectGa instanceof Polygon) {
+						Polygon polygon = (Polygon) rectGa;
+						int width = componentContainerShape.getGraphicsAlgorithm().getWidth();
+						int height = componentContainerShape.getGraphicsAlgorithm().getHeight();
+						EList<Point> points = polygon.getPoints();
+						float maxX = 0;
+						float maxY = 0;
+						for (Iterator<Point> iteratorPoints = points.iterator(); iteratorPoints.hasNext();) {
+							Point point = iteratorPoints.next();
+							if (point.getX() > maxX) {
+								maxX = point.getX();
+							}
+							if (point.getY() > maxY) {
+								maxY = point.getY();
+							}
+						}
+
+						// Compute scale factor
+						float scaleX = width / maxX;
+						float scaleY = height / maxY;
+						
+						int left = 0;
+						
+						if (scaleX != 1 || scaleY != 1) {
+							int i = -1;
+							for (Iterator<Point> iteratorPoints = points.iterator(); iteratorPoints
+									.hasNext();) {
+								i++;
+								Point point = iteratorPoints.next();
+								int newX = Math.round(point.getX() * scaleX);
+								if (i == 5) left = newX;
+								point.setX(newX);
+								int newY = Math.round(point.getY() * scaleY);
+								point.setY(newY);
+							}
+						}
+						text.setX(left + 10);
+						text.setY(0);
+						text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+						text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
+					}
+				}
+			}
 		}
 	}
 	
