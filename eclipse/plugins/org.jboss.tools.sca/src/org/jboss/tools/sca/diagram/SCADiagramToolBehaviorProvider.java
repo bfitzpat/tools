@@ -38,6 +38,9 @@ import org.eclipse.soa.sca.sca1_1.model.sca.ComponentService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
+import org.jboss.tools.sca.ImageProvider;
+import org.jboss.tools.switchyard.model.hornetq.BindingType;
+import org.jboss.tools.switchyard.model.soap.SOAPBindingType;
 
 public class SCADiagramToolBehaviorProvider extends DefaultToolBehaviorProvider {
 
@@ -57,13 +60,23 @@ public class SCADiagramToolBehaviorProvider extends DefaultToolBehaviorProvider 
 				ArrayList<IDecorator> decorators = new ArrayList<IDecorator>();
 				for (Binding binding : bindings) {
 					IDecorator imageRenderingDecorator =
-							new ImageDecorator(
-									IPlatformImageConstants.IMG_ECLIPSE_WARNING_TSK);
+							new ImageDecorator( ImageProvider.IMG_16_CHAIN );
+					String text = binding.getClass().getSimpleName();
+					if (binding instanceof SOAPBindingType) {
+						SOAPBindingType soapBinding = (SOAPBindingType) binding;
+						text = "SOAP Binding:\n";
+						text = text + soapBinding.getUri() + "\n";
+						text = text + soapBinding.getWsdl();
+					} else if (binding instanceof BindingType) {
+						BindingType hornetQBinding = (BindingType) binding;
+						text = "HornetQ Binding:\n";
+						text = text + hornetQBinding.getUri();
+					}
 					imageRenderingDecorator
-						.setMessage(binding.getName());
+						.setMessage(text);
 					decorators.add(imageRenderingDecorator);
 				}
-				return (IDecorator[]) decorators.toArray();
+				return decorators.toArray(new IDecorator[decorators.size()]);
 			}
 		}
 		return super.getDecorators(pe);
