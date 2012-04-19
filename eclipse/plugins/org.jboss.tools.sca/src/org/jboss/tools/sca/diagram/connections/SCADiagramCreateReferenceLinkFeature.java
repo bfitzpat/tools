@@ -45,30 +45,13 @@ AbstractCreateConnectionFeature {
 			Object source = getEClass(context.getSourceAnchor());
 			Object target = getEClass(context.getTargetAnchor());
 			if (source != null && target != null) {
-				if (source instanceof Service && target instanceof Component) {
-					Service service = (Service) source;
-					Component component = (Component) target;
-					if (service != null && component != null && service != component) {
-						System.out.println("1");
-						return true;
-					}
-				} else if (source instanceof Component && target instanceof Component) {
+				if (source instanceof Component && target instanceof Reference) {
 					Object src = 
 							getFeatureProvider().getBusinessObjectForPictogramElement(
 									context.getSourceAnchor().getLink().getPictogramElement());
-					Object tgt = 
-							getFeatureProvider().getBusinessObjectForPictogramElement(
-									context.getTargetAnchor().getLink().getPictogramElement());
-					if (src != null && src instanceof ComponentService && tgt != null && tgt instanceof ComponentReference) {
-						System.out.println("2");
+					if (src != null && src instanceof ComponentReference) {
 						return true;
 					}
-				} else if (source instanceof Component && target instanceof Reference) {
-					System.out.println("3");
-					return true;
-				} else if (source instanceof Reference && target instanceof Component) {
-					System.out.println("4");
-					return true;
 				}
 			}
 		}
@@ -92,47 +75,43 @@ AbstractCreateConnectionFeature {
 		Object source = getEClass(context.getSourceAnchor());
 		Object target = getEClass(context.getTargetAnchor());
 		
-		System.out.println("Ref Connect: src = " + source + ", tgt = " + target);
-		if (source instanceof Service && target instanceof Component) {
-
-			// get EClasses which should be connected
-			Service src = (Service) getEClass(context.getSourceAnchor());
-			Component tgt = (Component) getEClass(context.getTargetAnchor());
-	
-			if (source != null && target != null) {
-				// create new business object 
-				ComponentReference eReference = createComponentReference(src, tgt);
-	
-				// add connection for business object
-				AddConnectionContext addContext =
-						new AddConnectionContext(context.getSourceAnchor(), context
-								.getTargetAnchor());
-				addContext.setNewObject(eReference);
-				newConnection =
-						(Connection) getFeatureProvider().addIfPossible(addContext);
-			}
-		} else if (source instanceof Component && target instanceof Component) {
-			// get EClasses which should be connected
-//			Component src = (Component) getEClass(context.getSourceAnchor());
+//		if (source instanceof Service && target instanceof Component) {
+//
+//			// get EClasses which should be connected
+//			Service src = (Service) getEClass(context.getSourceAnchor());
 //			Component tgt = (Component) getEClass(context.getTargetAnchor());
-			ComponentService cs = 
-					(ComponentService) getFeatureProvider().getBusinessObjectForPictogramElement(
-							context.getSourceAnchor().getLink().getPictogramElement());
-			ComponentReference cref = 
-					(ComponentReference) getFeatureProvider().getBusinessObjectForPictogramElement(
-							context.getTargetAnchor().getLink().getPictogramElement());
-	
-			if (cs != null && target != cref) {
-				// add connection for business object
-				AddConnectionContext addContext =
-						new AddConnectionContext(context.getSourceAnchor(), context
-								.getTargetAnchor());
-				addContext.setNewObject(cref);
-				cref.setName(cs.getName());
-				newConnection =
-						(Connection) getFeatureProvider().addIfPossible(addContext);
-			}
-		} else if (source instanceof Component && target instanceof Reference) {
+//	
+//			if (source != null && target != null) {
+//				// create new business object 
+//				ComponentReference eReference = createComponentReference(src, tgt);
+//	
+//				// add connection for business object
+//				AddConnectionContext addContext =
+//						new AddConnectionContext(context.getSourceAnchor(), context
+//								.getTargetAnchor());
+//				addContext.setNewObject(eReference);
+//				newConnection =
+//						(Connection) getFeatureProvider().addIfPossible(addContext);
+//			}
+//		} else if (source instanceof Component && target instanceof Component) {
+//			ComponentService cs = 
+//					(ComponentService) getFeatureProvider().getBusinessObjectForPictogramElement(
+//							context.getSourceAnchor().getLink().getPictogramElement());
+//			ComponentReference cref = 
+//					(ComponentReference) getFeatureProvider().getBusinessObjectForPictogramElement(
+//							context.getTargetAnchor().getLink().getPictogramElement());
+//	
+//			if (cs != null && target != cref) {
+//				// add connection for business object
+//				AddConnectionContext addContext =
+//						new AddConnectionContext(context.getSourceAnchor(), context
+//								.getTargetAnchor());
+//				addContext.setNewObject(cref);
+//				cref.setName(cs.getName());
+//				newConnection =
+//						(Connection) getFeatureProvider().addIfPossible(addContext);
+//			}
+		/*} else */if (source instanceof Component && target instanceof Reference) {
 			// get EClasses which should be connected
 			Component src = (Component) getEClass(context.getSourceAnchor());
 			Reference tgt = (Reference) getEClass(context.getTargetAnchor());
