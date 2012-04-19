@@ -12,8 +12,6 @@
  ******************************************************************************/
 package org.jboss.tools.sca.diagram.connections;
 
-import java.util.ArrayList;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateConnectionContext;
@@ -25,8 +23,6 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentReference;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
-import org.eclipse.soa.sca.sca1_1.model.sca.ScaFactory;
-import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.jboss.tools.sca.ImageProvider;
 
 public class SCADiagramCreateReferenceLinkFeature extends
@@ -38,14 +34,42 @@ AbstractCreateConnectionFeature {
 
 	@Override
 	public boolean canCreate(ICreateConnectionContext context) {
-		// return true if both anchors belong to an EClass
-		// and those EClasses are not identical
 		if (context.getSourceAnchor() != null && context.getTargetAnchor() != null) {
 			
-			Object source = getEClass(context.getSourceAnchor());
-			Object target = getEClass(context.getTargetAnchor());
+			Object source = getObjectForAnchor(context.getSourceAnchor());
+			Object target = getObjectForAnchor(context.getTargetAnchor());
 			if (source != null && target != null) {
 				if (source instanceof Component && target instanceof Reference) {
+					Object src = 
+							getFeatureProvider().getBusinessObjectForPictogramElement(
+									context.getSourceAnchor().getLink().getPictogramElement());
+					if (src != null && src instanceof ComponentReference) {
+						return true;
+					}
+				} else 	if (source instanceof Component && target instanceof Component) {
+					Object src = 
+							getFeatureProvider().getBusinessObjectForPictogramElement(
+									context.getSourceAnchor().getLink().getPictogramElement());
+					Object tgt = 
+							getFeatureProvider().getBusinessObjectForPictogramElement(
+									context.getTargetAnchor().getLink().getPictogramElement());
+					if (src != null && src instanceof ComponentService && 
+							tgt != null && tgt instanceof ComponentReference) {
+						return true;
+					}
+				}
+
+			}
+		}
+		return false;
+	}
+
+	public boolean canStartConnection(ICreateConnectionContext context) {
+		// return true if start anchor is a component/component reference
+		if (getObjectForAnchor(context.getSourceAnchor()) != null) {
+			Object source = getObjectForAnchor(context.getSourceAnchor());
+			if (source != null) {
+				if (source instanceof Component) {
 					Object src = 
 							getFeatureProvider().getBusinessObjectForPictogramElement(
 									context.getSourceAnchor().getLink().getPictogramElement());
@@ -56,65 +80,18 @@ AbstractCreateConnectionFeature {
 			}
 		}
 		return false;
-
-
-	}
-
-	public boolean canStartConnection(ICreateConnectionContext context) {
-		// return true if start anchor belongs to a EClass
-		if (getEClass(context.getSourceAnchor()) != null) {
-			return true;
-		}
-		return true;
-
 	}
 
 	public Connection create(ICreateConnectionContext context) {
 		Connection newConnection = null;
 
-		Object source = getEClass(context.getSourceAnchor());
-		Object target = getEClass(context.getTargetAnchor());
+		Object source = getObjectForAnchor(context.getSourceAnchor());
+		Object target = getObjectForAnchor(context.getTargetAnchor());
 		
-//		if (source instanceof Service && target instanceof Component) {
-//
-//			// get EClasses which should be connected
-//			Service src = (Service) getEClass(context.getSourceAnchor());
-//			Component tgt = (Component) getEClass(context.getTargetAnchor());
-//	
-//			if (source != null && target != null) {
-//				// create new business object 
-//				ComponentReference eReference = createComponentReference(src, tgt);
-//	
-//				// add connection for business object
-//				AddConnectionContext addContext =
-//						new AddConnectionContext(context.getSourceAnchor(), context
-//								.getTargetAnchor());
-//				addContext.setNewObject(eReference);
-//				newConnection =
-//						(Connection) getFeatureProvider().addIfPossible(addContext);
-//			}
-//		} else if (source instanceof Component && target instanceof Component) {
-//			ComponentService cs = 
-//					(ComponentService) getFeatureProvider().getBusinessObjectForPictogramElement(
-//							context.getSourceAnchor().getLink().getPictogramElement());
-//			ComponentReference cref = 
-//					(ComponentReference) getFeatureProvider().getBusinessObjectForPictogramElement(
-//							context.getTargetAnchor().getLink().getPictogramElement());
-//	
-//			if (cs != null && target != cref) {
-//				// add connection for business object
-//				AddConnectionContext addContext =
-//						new AddConnectionContext(context.getSourceAnchor(), context
-//								.getTargetAnchor());
-//				addContext.setNewObject(cref);
-//				cref.setName(cs.getName());
-//				newConnection =
-//						(Connection) getFeatureProvider().addIfPossible(addContext);
-//			}
-		/*} else */if (source instanceof Component && target instanceof Reference) {
+		if (source instanceof Component && target instanceof Reference) {
 			// get EClasses which should be connected
-			Component src = (Component) getEClass(context.getSourceAnchor());
-			Reference tgt = (Reference) getEClass(context.getTargetAnchor());
+			Component src = (Component) getObjectForAnchor(context.getSourceAnchor());
+			Reference tgt = (Reference) getObjectForAnchor(context.getTargetAnchor());
 	
 			if (source != null && target != null) {
 				// create new business object 
@@ -128,19 +105,33 @@ AbstractCreateConnectionFeature {
 				newConnection =
 						(Connection) getFeatureProvider().addIfPossible(addContext);
 			}
+		} else 	if (source instanceof Component && target instanceof Component) {
+			Component src = (Component) getObjectForAnchor(context.getSourceAnchor());
+			Component tgt = (Component) getObjectForAnchor(context.getTargetAnchor());
+
+			// create new business object 
+			ComponentReference eReference = createComponentReference(src, tgt);
+
+			// add connection for business object
+			AddConnectionContext addContext =
+					new AddConnectionContext(context.getSourceAnchor(), context
+							.getTargetAnchor());
+			addContext.setNewObject(eReference);
+			newConnection =
+					(Connection) getFeatureProvider().addIfPossible(addContext);
 		}
 
 		return newConnection;
 	}
 
 	/**
-	 * Returns the EClass belonging to the anchor, or null if not available.
+	 * Returns the object belonging to the anchor, or null if not available.
 	 */
-	private Object getEClass(Anchor anchor) {
+	private Object getObjectForAnchor(Anchor anchor) {
 		if (anchor != null) {
 			Object object =
 					getBusinessObjectForPictogramElement(anchor.getParent());
-			if (object instanceof Service || object instanceof Component || object instanceof Reference) {
+			if (object instanceof Component || object instanceof Reference) {
 				return object;
 			}
 		}
@@ -148,19 +139,8 @@ AbstractCreateConnectionFeature {
 	}
 
 	/**
-	 * Creates a Binding between a service and a components.
+	 * Creates a connection between a component reference and a reference
 	 */
-	private ComponentReference createComponentReference(Service source, Component target) {
-
-		ComponentReference eReference = ScaFactory.eINSTANCE.createComponentReference();
-		eReference.setName(source.getName());
-		ArrayList<String> targetRef = new ArrayList<String>();
-		targetRef.add(target.getName());
-		target.getReference().add(eReference);
-		getDiagram().eResource().getContents().add(eReference);
-		return eReference;
-	}
-
 	private ComponentReference createComponentReference (Component source, Reference target) {
 		EList<ComponentReference> references = source.getReference();
 		ComponentReference eRef = null;
@@ -171,6 +151,24 @@ AbstractCreateConnectionFeature {
 		target.getPromote().add(eRef);
 		return eRef;
 	}
+
+	private ComponentReference createComponentReference (Component source, Component target) {
+		EList<ComponentService> services = source.getService();
+		ComponentService eSvc = null;
+		for (ComponentService componentService : services) {
+			eSvc = componentService;
+			break;
+		}
+		EList<ComponentReference> references = target.getReference();
+		ComponentReference eRef = null;
+		for (ComponentReference componentReference : references) {
+			eRef = componentReference;
+			break;
+		}
+		eRef.setName(eSvc.getName());
+		return eRef;
+	}
+
 	@Override
 	public String getCreateImageId() {
 		return ImageProvider.IMG_16_CONNECTION;

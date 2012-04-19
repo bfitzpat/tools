@@ -172,4 +172,57 @@ public class SCADiagramColoredAreas
 				LocationType.LOCATION_TYPE_ABSOLUTE_END);
 		return gradientColoredAreas;
 	}
+
+	public static AdaptedGradientColoredAreas getReferenceAdaptions() {
+		final AdaptedGradientColoredAreas agca = StylesFactory.eINSTANCE.createAdaptedGradientColoredAreas();
+		agca.setDefinedStyleId(REFERENCE_ID);
+		agca.setGradientType(IGradientType.VERTICAL);
+		agca.getAdaptedGradientColoredAreas().add(IPredefinedRenderingStyle.STYLE_ADAPTATION_DEFAULT
+				, getReferenceDefaultAreas());
+		agca.getAdaptedGradientColoredAreas().add(IPredefinedRenderingStyle.STYLE_ADAPTATION_PRIMARY_SELECTED,
+				getReferencePrimarySelectedAreas());
+		agca.getAdaptedGradientColoredAreas().add(IPredefinedRenderingStyle.STYLE_ADAPTATION_SECONDARY_SELECTED,
+				getReferenceSecondarySelectedAreas());
+		return agca;
+	}
+
+	private static GradientColoredAreas getReferenceDefaultAreas() {
+		final GradientColoredAreas gradientColoredAreas = StylesFactory.eINSTANCE.createGradientColoredAreas();
+		gradientColoredAreas.setStyleAdaption(IPredefinedRenderingStyle.STYLE_ADAPTATION_DEFAULT);
+		final EList<GradientColoredArea> gcas = gradientColoredAreas.getGradientColor();
+
+		addGradientColoredArea(gcas, "F7EEEB",  //$NON-NLS-1$
+				0, LocationType.LOCATION_TYPE_ABSOLUTE_START, 
+				"F69679", 0, //$NON-NLS-2$
+				LocationType.LOCATION_TYPE_ABSOLUTE_END);
+		return gradientColoredAreas;
+	}
+
+	private static GradientColoredAreas getReferencePrimarySelectedAreas() {
+		final GradientColoredAreas gradientColoredAreas = StylesFactory.eINSTANCE.createGradientColoredAreas();
+		gradientColoredAreas.setStyleAdaption(IPredefinedRenderingStyle.STYLE_ADAPTATION_PRIMARY_SELECTED);
+		final EList<GradientColoredArea> gcas = gradientColoredAreas.getGradientColor();
+
+		addGradientColoredArea(gcas, "99cc99", //$NON-NLS-1$
+				0, LocationType.LOCATION_TYPE_ABSOLUTE_START, 
+				"6E956E", 0, //$NON-NLS-1$ 
+				LocationType.LOCATION_TYPE_ABSOLUTE_END);
+		return gradientColoredAreas;
+	}
+
+	/**
+	 * The color-areas, which are used for secondary selected elements with the
+	 * ID {@link #BLUE_WHITE_ID}.
+	 */
+	private static GradientColoredAreas getReferenceSecondarySelectedAreas() {
+		final GradientColoredAreas gradientColoredAreas = StylesFactory.eINSTANCE.createGradientColoredAreas();
+		gradientColoredAreas.setStyleAdaption(IPredefinedRenderingStyle.STYLE_ADAPTATION_SECONDARY_SELECTED);
+		final EList<GradientColoredArea> gcas = gradientColoredAreas.getGradientColor();
+
+		addGradientColoredArea(gcas, "C5E0F7", //$NON-NLS-1$
+				0, LocationType.LOCATION_TYPE_ABSOLUTE_START, 
+				"BBDAF7", 0, //$NON-NLS-1$ 
+				LocationType.LOCATION_TYPE_ABSOLUTE_END);
+		return gradientColoredAreas;
+	}
 }

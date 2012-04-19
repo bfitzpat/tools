@@ -114,10 +114,9 @@ public class StyleUtil {
             IGaService gaService = Graphiti.getGaService();
             style = gaService.createStyle(diagram, styleId);
             style.setForeground(gaService.manageColor(diagram,
-            		GREEN));
-            style.setBackground(gaService.manageColor(diagram, ORANGE));
-//            gaService.setRenderingStyle(style,
-//            		SCADiagramColoredAreas.getServiceAdaptions());
+            		BLACK));
+            gaService.setRenderingStyle(style,
+            		SCADiagramColoredAreas.getReferenceAdaptions());
             style.setLineWidth(2);
         }
 

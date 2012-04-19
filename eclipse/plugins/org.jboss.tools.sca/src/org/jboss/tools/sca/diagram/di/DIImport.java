@@ -493,42 +493,44 @@ public class DIImport {
 		return null;
 	}
 
-//	private ContainerShape[] findShapesWithName ( IFeatureProvider fp, ContainerShape root, String name) {
-//		ArrayList<ContainerShape> foundItems = new ArrayList<ContainerShape>();
-//		if (root instanceof Diagram) {
-//			Collection<Shape> shapes = peService.getAllContainedShapes(root);
-//			for (Shape shape : shapes) {
-//				Object test = fp.getBusinessObjectForPictogramElement(shape);
-//				String testName = null;
-//				if (test instanceof Component) {
-//					Component testcomponent = (Component) test;
-//					testName = testcomponent.getName();
-//				} else if (test instanceof Service) {
-//					Service testservice = (Service) test;
-//					testName = testservice.getName();
-//				} else if (test instanceof ComponentService) {
-//					ComponentService testservice = (ComponentService) test;
-//					testName = testservice.getName();
-//				} else if (test instanceof Composite) {
-//					Composite testcomposite = (Composite) test;
-//					testName = testcomposite.getName();
-//				} else if (test instanceof Reference) {
-//					Reference testref = (Reference) test;
-//					testName = testref.getName();
-//				} else {
-//					System.out.println("Couldn't find shape named '" + name + "'");
-//				}
-//				if (testName != null && testName.contentEquals(name) && shape instanceof ContainerShape) {
-//					foundItems.add((ContainerShape) shape);
-//				}
-//			}
-//		}
-//		return foundItems.toArray(new ContainerShape[foundItems.size()]);
-//	}
+	public static ContainerShape[] findShapesWithName ( IFeatureProvider fp, ContainerShape root, String name) {
+		ArrayList<ContainerShape> foundItems = new ArrayList<ContainerShape>();
+		if (root instanceof Diagram) {
+			IPeService peService = Graphiti.getPeService();
+			Collection<Shape> shapes = peService.getAllContainedShapes(root);
+			for (Shape shape : shapes) {
+				Object test = fp.getBusinessObjectForPictogramElement(shape);
+				String testName = null;
+				if (test instanceof Component) {
+					Component testcomponent = (Component) test;
+					testName = testcomponent.getName();
+				} else if (test instanceof Service) {
+					Service testservice = (Service) test;
+					testName = testservice.getName();
+				} else if (test instanceof ComponentService) {
+					ComponentService testservice = (ComponentService) test;
+					testName = testservice.getName();
+				} else if (test instanceof Composite) {
+					Composite testcomposite = (Composite) test;
+					testName = testcomposite.getName();
+				} else if (test instanceof Reference) {
+					Reference testref = (Reference) test;
+					testName = testref.getName();
+				} else {
+					System.out.println("Couldn't find shape named '" + name + "'");
+				}
+				if (testName != null && testName.contentEquals(name) && shape instanceof ContainerShape) {
+					foundItems.add((ContainerShape) shape);
+				}
+			}
+		}
+		return foundItems.toArray(new ContainerShape[foundItems.size()]);
+	}
 	
-	private Anchor[] findAnchorsWithName ( IFeatureProvider fp, ContainerShape root, String name) {
+	public static Anchor[] findAnchorsWithName ( IFeatureProvider fp, ContainerShape root, String name) {
 		ArrayList<Anchor> foundItems = new ArrayList<Anchor>();
 		if (root instanceof Diagram) {
+			IPeService peService = Graphiti.getPeService();
 			Collection<Shape> shapes = peService.getAllContainedShapes(root);
 			for (Shape shape : shapes) {
 				if (shape instanceof ContainerShape) {
