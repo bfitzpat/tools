@@ -12,17 +12,14 @@
  ******************************************************************************/
 package org.jboss.tools.sca.diagram.composite;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.features.impl.AbstractAddShapeFeature;
-import org.eclipse.graphiti.mm.algorithms.Polygon;
 import org.eclipse.graphiti.mm.algorithms.Rectangle;
 import org.eclipse.graphiti.mm.algorithms.RoundedRectangle;
 import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.algorithms.styles.Font;
 import org.eclipse.graphiti.mm.algorithms.styles.Orientation;
-import org.eclipse.graphiti.mm.pictograms.BoxRelativeAnchor;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
@@ -30,7 +27,6 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.graphiti.services.IPeCreateService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
-import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.jboss.tools.sca.diagram.StyleUtil;
 
 public class SCADiagramAddCompositeFeature extends AbstractAddShapeFeature {
@@ -83,8 +79,6 @@ public class SCADiagramAddCompositeFeature extends AbstractAddShapeFeature {
 					gaService.createRoundedRectangle(invisibleRectangle, 6, 0);
             roundedRectangle.setStyle(StyleUtil
                     .getStyleForComposite(getDiagram()));
-//			roundedRectangle.setForeground(manageColor(StyleUtil.ORANGE));
-//			roundedRectangle.setBackground(manageColor(StyleUtil.PERIWINKLE_BLUE));
 			roundedRectangle.setLineWidth(2);
 
 			gaService.setLocationAndSize(roundedRectangle,
@@ -118,37 +112,6 @@ public class SCADiagramAddCompositeFeature extends AbstractAddShapeFeature {
 			text.setFont(font);
 			gaService.setLocationAndSize(text, edge + 2, edge + 2, width, font.getSize() * 2);
 
-		}
-
-		if (addedComposite.getReference().size() > 0) {
-			
-			EList<Reference> references = addedComposite.getReference();
-			for (Reference compositetReference : references) {
-				
-				// create a box relative anchor at middle-right
-				final BoxRelativeAnchor boxAnchorRight = peCreateService.createBoxRelativeAnchor(containerShape);
-				boxAnchorRight.setRelativeWidth(1.0);
-				boxAnchorRight.setRelativeHeight(0.38); // Use golden section
-				
-				// anchor references visible rectangle instead of invisible rectangle
-				boxAnchorRight.setReferencedGraphicsAlgorithm(roundedRectangle);
-				
-				// assign a graphics algorithm for the box relative anchor
-		        Polygon pbox2 = gaService.createPolygon(boxAnchorRight, StyleUtil.LARGE_RIGHT_ARROW);
-		        pbox2.setBackground(manageColor(StyleUtil.ORANGE));
-		        pbox2.setForeground(manageColor(StyleUtil.GREEN));
-		        pbox2.setLineVisible(true);
-		        pbox2.setFilled(true);
-		        
-				// anchor is located on the right border of the visible rectangle
-				// and touches the border of the invisible rectangle
-				final int w2 = StyleUtil.COMPOSITE_INVISIBLE_RECT_RIGHT;
-				gaService.setLocationAndSize(pbox2, 
-						-w2 + StyleUtil.COMPOSITE_INVISIBLE_RECT_RIGHT - 75, 
-						-w2, StyleUtil.LARGE_RIGHT_ARROW_WIDTH, StyleUtil.LARGE_RIGHT_ARROW_HEIGHT);
-				
-				link (boxAnchorRight, compositetReference);
-			}
 		}
 
 //        Image compositeImage = gaService.createImage(invisibleRectangle, ImageProvider.IMG_16_CHAIN);

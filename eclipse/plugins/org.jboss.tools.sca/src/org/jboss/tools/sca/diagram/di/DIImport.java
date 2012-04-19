@@ -44,6 +44,7 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentReference;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
+import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.jboss.tools.sca.core.ModelHandler;
 import org.jboss.tools.sca.diagram.StyleUtil;
@@ -128,6 +129,10 @@ public class DIImport {
 			
 			addComponents(composite, compositeContainerShape, featureProvider, diagram, x, y);
 			
+			addCompositeReferences(composite, compositeContainerShape, featureProvider, diagram, x, y);
+			
+			handleCompositeReferences(diagram, featureProvider, compositeContainerShape);
+			
 			expandCompositeShapeIfNecessary(compositeContainerShape);
 			
 			return compositeContainerShape;
@@ -162,21 +167,21 @@ public class DIImport {
 		
 		Composite composite = (Composite) featureProvider.getBusinessObjectForPictogramElement(compositeContainerShape);
 		if (composite != null && !composite.getReference().isEmpty()) {
-			farX = farX + StyleUtil.LARGE_RIGHT_ARROW_WIDTH;
+			farX = farX - (StyleUtil.LARGE_RIGHT_ARROW_WIDTH/2);
 		}
 
 		GraphicsAlgorithm containerGA = compositeContainerShape.getGraphicsAlgorithm();
 		containerGA.setHeight(farY + 50);
 		containerGA.setWidth(farX + 50);
 		
-		EList<Anchor> anchors = compositeContainerShape.getAnchors();
-		for (Anchor anchor : anchors) {
-			Object anchorObj = featureProvider.getBusinessObjectForPictogramElement(anchor);
-			if (anchorObj != null) {
-				GraphicsAlgorithm gaAnchor = anchor.getGraphicsAlgorithm();
-				gaAnchor.setY(gaAnchor.getY() + 20);
-			}
-		}
+//		EList<Anchor> anchors = compositeContainerShape.getAnchors();
+//		for (Anchor anchor : anchors) {
+//			Object anchorObj = featureProvider.getBusinessObjectForPictogramElement(anchor);
+//			if (anchorObj != null) {
+//				GraphicsAlgorithm gaAnchor = anchor.getGraphicsAlgorithm();
+//				gaAnchor.setY(gaAnchor.getY() + 20);
+//			}
+//		}
 
 		layoutAll();
 	}
@@ -198,7 +203,7 @@ public class DIImport {
 
 	private void addComponents(Composite composite, ContainerShape compositeContainerShape, IFeatureProvider featureProvider, Diagram diagram, int x, int y) {
 		int innerx = compositeContainerShape.getGraphicsAlgorithm().getX() + 20;
-		int innery = compositeContainerShape.getGraphicsAlgorithm().getY() + 20;
+		int innery = compositeContainerShape.getGraphicsAlgorithm().getY() + 30;
 		int colOneX = innerx;
 		int colTwoX = innerx + StyleUtil.COMPONENT_WIDTH + 50;
 		int colThreeX = colTwoX + StyleUtil.COMPONENT_WIDTH + 50;
@@ -281,8 +286,98 @@ public class DIImport {
 		}
 	}
 
+	private void addCompositeReferences ( Composite composite, ContainerShape compositeContainerShape, IFeatureProvider featureProvider, Diagram diagram, int x, int y) {
+		int innerx = compositeContainerShape.getGraphicsAlgorithm().getX() + 50;
+		int innery = compositeContainerShape.getGraphicsAlgorithm().getY() + 20;
+		int colOneX = innerx;
+		int colTwoX = colOneX + StyleUtil.COMPONENT_WIDTH + 50;
+		int colThreeX = colTwoX + StyleUtil.COMPONENT_WIDTH + 50;
+		int colFourX = colThreeX + StyleUtil.COMPOSITE_REFERENCE_WIDTH + (StyleUtil.COMPOSITE_REFERENCE_WIDTH/2) + 50;
+
+		if (composite.getReference() != null && composite.getReference().size() > 0) {
+			EList<Reference> references = composite.getReference();
+			for (Reference compositeReference : references) {
+				
+				innerx = colFourX;
+
+				// Create the context information
+				AddContext addRefContext = new AddContext();
+				addRefContext.setNewObject(compositeReference);
+				addRefContext.setTargetContainer(compositeContainerShape);
+
+				addRefContext.setX(innerx);
+				addRefContext.setY(innery);
+
+				if (innerx > furthestX) furthestX = innerx;
+				if (innery > furthestY) furthestY = innery;
+		
+				IAddFeature addRefFeature = featureProvider.getAddFeature(addRefContext);
+				if (addRefFeature.canAdd(addRefContext)) {
+					addRefFeature.add(addRefContext);
+				}
+
+				innery = innery + StyleUtil.COMPOSITE_REFERENCE_HEIGHT + 20;
+				
+				ContainerShape componentContainerShape = (ContainerShape)featureProvider.getPictogramElementForBusinessObject(compositeReference).getGraphicsAlgorithm().eContainer();
+
+				GraphicsAlgorithm componentGa = findChildGA(componentContainerShape.getGraphicsAlgorithm(), Text.class);
+				if (componentGa != null && componentGa instanceof Text) {
+					Text text = (Text) componentGa;
+					IDimension dims = CalculateUtil.calculateTextSize(compositeReference.getName(), text.getFont());
+					if (componentGa.getWidth() < dims.getWidth()) {
+						int diff = dims.getWidth() - componentGa.getWidth();
+						componentGa.setWidth(dims.getWidth());
+						componentContainerShape.getGraphicsAlgorithm().setWidth(diff + componentContainerShape.getGraphicsAlgorithm().getWidth());
+						GraphicsAlgorithm rectGa = findChildGA(componentContainerShape.getGraphicsAlgorithm(), Polygon.class);
+						if (rectGa != null && rectGa instanceof Polygon) {
+							Polygon polygon = (Polygon) rectGa;
+							int width = componentContainerShape.getGraphicsAlgorithm().getWidth();
+							int height = componentContainerShape.getGraphicsAlgorithm().getHeight();
+							EList<Point> points = polygon.getPoints();
+							float maxX = 0;
+							float maxY = 0;
+							for (Iterator<Point> iteratorPoints = points.iterator(); iteratorPoints.hasNext();) {
+								Point point = iteratorPoints.next();
+								if (point.getX() > maxX) {
+									maxX = point.getX();
+								}
+								if (point.getY() > maxY) {
+									maxY = point.getY();
+								}
+							}
+
+							// Compute scale factor
+							float scaleX = width / maxX;
+							float scaleY = height / maxY;
+							
+							int left = 0;
+							
+							if (scaleX != 1 || scaleY != 1) {
+								int i = -1;
+								for (Iterator<Point> iteratorPoints = points.iterator(); iteratorPoints
+										.hasNext();) {
+									i++;
+									Point point = iteratorPoints.next();
+									int newX = Math.round(point.getX() * scaleX);
+									if (i == 5) left = newX;
+									point.setX(newX);
+									int newY = Math.round(point.getY() * scaleY);
+									point.setY(newY);
+								}
+							}
+							text.setX(left + 10);
+							text.setY(0);
+							text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+							text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	private void addCompositeServices ( Composite composite, ContainerShape compositeContainerShape, IFeatureProvider featureProvider, Diagram diagram, int x, int y) {
-		int innerx = compositeContainerShape.getGraphicsAlgorithm().getX() + 30;
+		int innerx = compositeContainerShape.getGraphicsAlgorithm().getX() + 50;
 		int innery = compositeContainerShape.getGraphicsAlgorithm().getY() + 30;
 		EList<Service> services = composite.getService();
 		for (Iterator<Service> iterator = services.iterator(); iterator.hasNext();) {
@@ -313,7 +408,8 @@ public class DIImport {
 			innery = innery + StyleUtil.SERVICE_HEIGHT + 20;
 
 			ContainerShape componentContainerShape = (ContainerShape)featureProvider.getPictogramElementForBusinessObject(service).getGraphicsAlgorithm().eContainer();
-
+			
+			Polygon polygon = null;
 			GraphicsAlgorithm componentGa = findChildGA(componentContainerShape.getGraphicsAlgorithm(), Text.class);
 			if (componentGa != null && componentGa instanceof Text) {
 				Text text = (Text) componentGa;
@@ -324,7 +420,7 @@ public class DIImport {
 					componentContainerShape.getGraphicsAlgorithm().setWidth(diff + componentContainerShape.getGraphicsAlgorithm().getWidth());
 					GraphicsAlgorithm rectGa = findChildGA(componentContainerShape.getGraphicsAlgorithm(), Polygon.class);
 					if (rectGa != null && rectGa instanceof Polygon) {
-						Polygon polygon = (Polygon) rectGa;
+						polygon = (Polygon) rectGa;
 						int width = componentContainerShape.getGraphicsAlgorithm().getWidth();
 						int height = componentContainerShape.getGraphicsAlgorithm().getHeight();
 						EList<Point> points = polygon.getPoints();
@@ -366,6 +462,7 @@ public class DIImport {
 					}
 				}
 			}
+			
 		}
 	}
 	
@@ -415,6 +512,11 @@ public class DIImport {
 				} else if (test instanceof Composite) {
 					Composite testcomposite = (Composite) test;
 					testName = testcomposite.getName();
+				} else if (test instanceof Reference) {
+					Reference testref = (Reference) test;
+					testName = testref.getName();
+				} else {
+					System.out.println("Couldn't find shape named '" + name + "'");
 				}
 				if (testName != null && testName.contentEquals(name) && shape instanceof ContainerShape) {
 					foundItems.add((ContainerShape) shape);
@@ -424,6 +526,83 @@ public class DIImport {
 		return foundItems.toArray(new ContainerShape[foundItems.size()]);
 	}
 	
+	private Anchor[] findAnchorsWithName ( IFeatureProvider fp, ContainerShape root, String name) {
+		ArrayList<Anchor> foundItems = new ArrayList<Anchor>();
+		if (root instanceof Diagram) {
+			Collection<Shape> shapes = peService.getAllContainedShapes(root);
+			for (Shape shape : shapes) {
+				if (shape instanceof ContainerShape) {
+					EList<Anchor> anchors = shape.getAnchors();
+					String anchortestname = null;
+					for (Anchor anchor: anchors) {
+						Object anchortest = fp.getBusinessObjectForPictogramElement(anchor);
+						if (anchortest instanceof ComponentService) {
+							ComponentService testservice = (ComponentService) anchortest;
+							anchortestname = testservice.getName();
+							if (anchortestname != null && anchortestname.contentEquals(name)) {
+								foundItems.add(anchor);
+							}
+						} else if (anchortest instanceof Service) {
+							Service testservice = (Service) anchortest;
+							anchortestname = testservice.getName();
+							if (anchortestname != null && anchortestname.contentEquals(name)) {
+								foundItems.add(anchor);
+							}
+						} else if (anchortest instanceof Reference) {
+							Reference testref = (Reference) anchortest;
+							anchortestname = testref.getName();
+							if (anchortestname != null && anchortestname.contentEquals(name)) {
+								foundItems.add(anchor);
+							}
+						} else if (anchortest instanceof ComponentReference) {
+							ComponentReference testref = (ComponentReference) anchortest;
+							anchortestname = testref.getName();
+							if (anchortestname != null && anchortestname.contentEquals(name)) {
+								foundItems.add(anchor);
+							}
+						}
+					}
+				}
+			}
+		}
+		return foundItems.toArray(new Anchor[foundItems.size()]);
+	}
+
+	private void handleCompositeReferences ( Diagram diagram, IFeatureProvider featureProvider, ContainerShape parent ) {
+		
+		EList<Shape> shapes = parent.getChildren();
+		for (Shape shape : shapes) {
+			Object shapeObj = featureProvider.getBusinessObjectForPictogramElement(shape);
+			if (shapeObj instanceof Reference) {
+				Reference ref = (Reference) shapeObj;
+				if (!ref.getPromote().isEmpty()) {
+					String referencedShapeName = ref.getPromote().get(0).getName();
+					Anchor[] anchors = findAnchorsWithName(featureProvider, diagram, referencedShapeName);
+					Anchor sourceAnchor = null;
+					for (int i = 0; i < anchors.length; i++) {
+						Object testObj = featureProvider.getBusinessObjectForPictogramElement(anchors[i]);
+						if (testObj instanceof ComponentReference) {
+							sourceAnchor = anchors[i];
+							break;
+						}
+					}
+					Anchor targetAnchor = shape.getAnchors().get(0);
+
+					AddConnectionContext addReferenceContext = new AddConnectionContext(sourceAnchor, targetAnchor);
+					ArrayList<String> targetRef = new ArrayList<String>();
+					targetRef.add(referencedShapeName);
+					addReferenceContext.setNewObject(ref);
+					addReferenceContext.setTargetContainer((ContainerShape) parent);
+	
+					IAddFeature addServiceFeature = featureProvider.getAddFeature(addReferenceContext);
+					if (addServiceFeature.canAdd(addReferenceContext)) {
+						addServiceFeature.add(addReferenceContext);
+					}
+				}
+			}
+		}
+	}
+
 	private void handleComponentReferences ( Diagram diagram, IFeatureProvider featureProvider, ContainerShape parent ) {
 		Object parentObj = featureProvider.getBusinessObjectForPictogramElement(parent);
 

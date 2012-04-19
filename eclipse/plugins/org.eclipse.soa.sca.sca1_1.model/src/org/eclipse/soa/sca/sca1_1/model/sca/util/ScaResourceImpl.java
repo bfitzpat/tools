@@ -107,8 +107,18 @@ public class ScaResourceImpl extends XMLResourceImpl {
             public String getIDREF(EObject obj) {
                 // get the "correct" id's for promote fields
                 if (obj.eClass() == ScaPackage.eINSTANCE.getComponentService()) {
+                	if (obj.eContainer() == null || 
+                			obj.eContainer().eContainer() == null || 
+                			((Component) obj.eContainer()).getName() == null) {
+                		return null;
+                	}
                     return ((Component) obj.eContainer()).getName() + '/' + ((ComponentService) obj).getName();
-                } else if (obj.eClass() == ScaPackage.eINSTANCE.getComponentService()) {
+                } else if (obj.eClass() == ScaPackage.eINSTANCE.getComponentReference()) {
+                	if (obj.eContainer() == null || 
+                			obj.eContainer().eContainer() == null || 
+                				((Component) obj.eContainer()).getName() == null) {
+                		return null;
+                	}
                     return ((Component) obj.eContainer()).getName() + '/' + ((ComponentReference) obj).getName();
                 }
 

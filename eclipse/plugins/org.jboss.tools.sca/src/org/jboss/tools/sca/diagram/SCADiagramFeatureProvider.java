@@ -56,6 +56,10 @@ import org.jboss.tools.sca.diagram.composite.SCADiagramMoveCompositeFeature;
 import org.jboss.tools.sca.diagram.composite.SCADiagramUpdateCompositeFeature;
 import org.jboss.tools.sca.diagram.compositereference.SCADiagramAddCompositeReferenceFeature;
 import org.jboss.tools.sca.diagram.compositereference.SCADiagramCreateCompositeReferenceFeature;
+import org.jboss.tools.sca.diagram.compositereference.SCADiagramDirectEditCompositeReferenceFeature;
+import org.jboss.tools.sca.diagram.compositereference.SCADiagramLayoutCompositeReferenceFeature;
+import org.jboss.tools.sca.diagram.compositereference.SCADiagramMoveCompositeReferenceFeature;
+import org.jboss.tools.sca.diagram.compositereference.SCADiagramResizeCompositeReferenceFeature;
 import org.jboss.tools.sca.diagram.connections.SCADiagramAddComponentServiceLinkFeature;
 import org.jboss.tools.sca.diagram.connections.SCADiagramAddReferenceLinkFeature;
 import org.jboss.tools.sca.diagram.connections.SCADiagramCreateComponentServiceLinkFeature;
@@ -87,7 +91,11 @@ public class SCADiagramFeatureProvider extends DefaultFeatureProvider {
 			return new SCADiagramAddServiceFeature(this);
 		}
 		if (context.getNewObject() instanceof Reference) {
-			return new SCADiagramAddCompositeReferenceFeature(this);
+			if (context instanceof AddConnectionContext) {
+				return new SCADiagramAddReferenceLinkFeature(this);
+			} else {
+				return new SCADiagramAddCompositeReferenceFeature(this);
+			}
 		}
 		if (context.getNewObject() instanceof ComponentReference) {
 			if (context instanceof AddConnectionContext) {
@@ -148,6 +156,9 @@ public class SCADiagramFeatureProvider extends DefaultFeatureProvider {
 		if (bo instanceof Service) {
 			return new SCADiagramMoveServiceFeature(this);
 		}
+		if (bo instanceof Reference) {
+			return new SCADiagramMoveCompositeReferenceFeature(this);
+		}
 		return super.getMoveShapeFeature(context);
 	}
 
@@ -171,6 +182,9 @@ public class SCADiagramFeatureProvider extends DefaultFeatureProvider {
 		if (bo instanceof Service) {
 			return new SCADiagramDirectEditServiceFeature(this);
 		}
+		if (bo instanceof Reference) {
+			return new SCADiagramDirectEditCompositeReferenceFeature(this);
+		}
 		return super.getDirectEditingFeature(context);
 	}
 
@@ -184,6 +198,9 @@ public class SCADiagramFeatureProvider extends DefaultFeatureProvider {
 		if (bo instanceof Service) {
 			return new SCADiagramLayoutServiceFeature(this);
 		}
+		if (bo instanceof Reference) {
+			return new SCADiagramLayoutCompositeReferenceFeature(this);
+		}
 		return super.getLayoutFeature(context);
 	}
 
@@ -196,6 +213,9 @@ public class SCADiagramFeatureProvider extends DefaultFeatureProvider {
 		}
 		if (bo instanceof Component) {
 			return new SCADiagramResizeComponentFeature(this);
+		}
+		if (bo instanceof Reference) {
+			return new SCADiagramResizeCompositeReferenceFeature(this);
 		}
 		return super.getResizeShapeFeature(context);
 	}

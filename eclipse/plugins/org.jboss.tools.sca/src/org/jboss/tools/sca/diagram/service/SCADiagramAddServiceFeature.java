@@ -115,5 +115,4 @@ public class SCADiagramAddServiceFeature extends AbstractAddShapeFeature {
 		return containerShape;
 
 	}
-
 }

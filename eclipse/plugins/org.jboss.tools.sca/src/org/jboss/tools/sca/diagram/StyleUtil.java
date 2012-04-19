@@ -55,7 +55,11 @@ public class StyleUtil {
 	public static final int SERVICE_HEIGHT = 50;
 	public static final int SERVICE_INVISIBLE_RECT_RIGHT = 10;
 
-    public static Style getStyleForComposite(Diagram diagram) {
+	public static final int COMPOSITE_REFERENCE_WIDTH = 100;
+	public static final int COMPOSITE_REFERENCE_HEIGHT = 50;
+	public static final int COMPOSITE_REFERENCE_INVISIBLE_RECT_RIGHT = 10;
+
+	public static Style getStyleForComposite(Diagram diagram) {
         final String styleId = "Composite";
         Style style = findStyle(diagram, styleId);
         if (style ==null) {// style not found - create new style
@@ -97,6 +101,23 @@ public class StyleUtil {
             		BRIGHT_ORANGE));
             gaService.setRenderingStyle(style,
             		SCADiagramColoredAreas.getServiceAdaptions());
+            style.setLineWidth(2);
+        }
+
+        return style;
+    }
+
+    public static Style getStyleForCompositeReference(Diagram diagram) {
+        final String styleId = "CompositeReference";
+        Style style = findStyle(diagram, styleId);
+        if (style ==null) {// style not found - create new style
+            IGaService gaService = Graphiti.getGaService();
+            style = gaService.createStyle(diagram, styleId);
+            style.setForeground(gaService.manageColor(diagram,
+            		GREEN));
+            style.setBackground(gaService.manageColor(diagram, ORANGE));
+//            gaService.setRenderingStyle(style,
+//            		SCADiagramColoredAreas.getServiceAdaptions());
             style.setLineWidth(2);
         }
 

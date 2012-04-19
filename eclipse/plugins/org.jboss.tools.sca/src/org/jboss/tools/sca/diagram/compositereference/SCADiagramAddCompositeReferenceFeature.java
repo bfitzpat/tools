@@ -12,13 +12,15 @@
  ******************************************************************************/
 package org.jboss.tools.sca.diagram.compositereference;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.features.impl.AbstractAddShapeFeature;
 import org.eclipse.graphiti.mm.algorithms.Polygon;
-import org.eclipse.graphiti.mm.pictograms.Anchor;
-import org.eclipse.graphiti.mm.pictograms.BoxRelativeAnchor;
+import org.eclipse.graphiti.mm.algorithms.Rectangle;
+import org.eclipse.graphiti.mm.algorithms.Text;
+import org.eclipse.graphiti.mm.algorithms.styles.Font;
+import org.eclipse.graphiti.mm.algorithms.styles.Orientation;
+import org.eclipse.graphiti.mm.pictograms.ChopboxAnchor;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.services.Graphiti;
@@ -36,7 +38,6 @@ public class SCADiagramAddCompositeReferenceFeature extends AbstractAddShapeFeat
 
 	@Override
 	public boolean canAdd(IAddContext context) {
-		// check if user wants to add a EClass
 		if (context.getNewObject() instanceof Reference) {
 			ContainerShape targetContainer = context.getTargetContainer();
 			// check if user wants to add to a diagram
@@ -49,59 +50,70 @@ public class SCADiagramAddCompositeReferenceFeature extends AbstractAddShapeFeat
 
 	@Override
 	public PictogramElement add(IAddContext context) {
-		ContainerShape targetContainer = context.getTargetContainer();
-		Composite addedComposite = (Composite) getBusinessObjectForPictogramElement(targetContainer);
-		
+		Reference addedReference = null;
+		if (context.getNewObject() instanceof Reference) {
+			addedReference = (Reference) context.getNewObject();
+		}
+		ContainerShape targetContainerShape = null;
+		if (context.getTargetContainer() instanceof ContainerShape) 
+			targetContainerShape = (ContainerShape) context.getTargetContainer();
+
+		// CONTAINER SHAPE WITH ROUNDED RECTANGLE
 		IPeCreateService peCreateService = Graphiti.getPeCreateService();
 		IGaService gaService = Graphiti.getGaService();
-
-		if (addedComposite.getReference().size() > 0) {
-			
-			EList<Reference> references = addedComposite.getReference();
-			for (Reference compositetReference : references) {
-				
-				if (!anchorComponentAlreadyExists(targetContainer, compositetReference)) {
-					// create a box relative anchor at middle-right
-					final BoxRelativeAnchor boxAnchorRight = 
-							peCreateService.createBoxRelativeAnchor(targetContainer);
-					boxAnchorRight.setRelativeWidth(1.0);
-					boxAnchorRight.setRelativeHeight(0.38); // Use golden section
-					
-					// assign a graphics algorithm for the box relative anchor
-			        Polygon pbox2 = gaService.createPolygon(boxAnchorRight, StyleUtil.LARGE_RIGHT_ARROW);
-			        pbox2.setBackground(manageColor(StyleUtil.ORANGE));
-			        pbox2.setForeground(manageColor(StyleUtil.GREEN));
-			        pbox2.setLineVisible(true);
-			        pbox2.setFilled(true);
-			        
-					// anchor is located on the right border of the visible rectangle
-					// and touches the border of the invisible rectangle
-					final int w2 = StyleUtil.COMPONENT_INVISIBLE_RECT_RIGHT;
-					gaService.setLocationAndSize(pbox2, -w2 - (StyleUtil.LARGE_RIGHT_ARROW_WIDTH/2), 
-							-w2, 
-							StyleUtil.LARGE_RIGHT_ARROW_WIDTH, StyleUtil.LARGE_RIGHT_ARROW_HEIGHT);
-					
-					link (boxAnchorRight, compositetReference);
-				}
-			}
-		}
-
-		// call the layout feature
-		layoutPictogramElement(targetContainer);
-
-		return targetContainer;
-	}
-	
-	private boolean anchorComponentAlreadyExists (ContainerShape targetContainer, Reference reference) {
 		
-		EList<Anchor> anchors = targetContainer.getAnchors();
-		for (Anchor anchor : anchors) {
-			Object testObject = getBusinessObjectForPictogramElement(anchor);
-			if (testObject.equals(reference)) {
-				return true;
-			}
+		ContainerShape containerShape = peCreateService.createContainerShape(targetContainerShape, true);
+
+	    // check whether the context has a size (e.g. from a create feature)
+        // otherwise define a default size for the shape
+        int width = context.getWidth() <= 0 ? StyleUtil.COMPOSITE_REFERENCE_WIDTH : context.getWidth();
+        int height = context.getHeight() <= 0 ? StyleUtil.COMPOSITE_REFERENCE_HEIGHT : context.getHeight();
+ 
+        Rectangle invisibleRectangle = gaService.createInvisibleRectangle(containerShape);
+        gaService.setLocationAndSize(invisibleRectangle,
+                context.getX() , context.getY(), width , height);
+
+        Polygon p = null;
+        // create service
+		{
+			// arrow through points: top-middle, bottom-right, bottom-left
+			p = gaService.createPolygon(invisibleRectangle, StyleUtil.LARGE_RIGHT_ARROW);
+            p.setStyle(StyleUtil
+                    .getStyleForCompositeReference(getDiagram()));
+	        p.setParentGraphicsAlgorithm(invisibleRectangle);
+
+			gaService.setLocationAndSize(p,
+					0, 0, width, height);
+
+			Graphiti.getPeService().setPropertyValue(p, "sca-type", "composite-reference");
+
+			// create link and wire it
+			link(containerShape, addedReference);
+
+			ChopboxAnchor anchor = 
+					peCreateService.createChopboxAnchor(containerShape);
+			anchor.setActive(true);
+			link(anchor, addedReference);
 		}
-		return false;
+		// SHAPE WITH TEXT
+		{
+			// create and set text graphics algorithm
+			Text text = gaService.createDefaultText(getDiagram(), p,
+					addedReference.getName());
+			Font font = gaService.manageFont(getDiagram(), text.getFont().getName(), text.getFont().getSize(), false, true);
+			text.setFont(font);
+
+			text.setForeground(manageColor(StyleUtil.BLACK));
+			int left = p.getPoints().get(5).getX();
+			int right = p.getPoints().get(1).getX();
+			text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+			text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
+			gaService.setLocationAndSize(text, left + 10, 0, right - left - 10, height );
+
+		}
+
+		return containerShape;
+
 	}
 
 }

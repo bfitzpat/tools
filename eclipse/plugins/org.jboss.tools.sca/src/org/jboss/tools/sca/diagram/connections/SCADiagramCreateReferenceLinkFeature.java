@@ -14,6 +14,7 @@ package org.jboss.tools.sca.diagram.connections;
 
 import java.util.ArrayList;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateConnectionContext;
 import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
@@ -22,6 +23,7 @@ import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentReference;
+import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.eclipse.soa.sca.sca1_1.model.sca.ScaFactory;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.jboss.tools.sca.ImageProvider;
@@ -48,8 +50,11 @@ AbstractCreateConnectionFeature {
 					if (service != null && component != null && service != component) {
 						return true;
 					}
-				}
-				if (source instanceof Component && target instanceof Component) {
+				} else if (source instanceof Component && target instanceof Component) {
+					return true;
+				} else if (source instanceof Component && target instanceof Reference) {
+					return true;
+				} else if (source instanceof Reference && target instanceof Component) {
 					return true;
 				}
 			}
@@ -74,6 +79,7 @@ AbstractCreateConnectionFeature {
 		Object source = getEClass(context.getSourceAnchor());
 		Object target = getEClass(context.getTargetAnchor());
 		
+		System.out.println("Ref Connect: src = " + source + ", tgt = " + target);
 		if (source instanceof Service && target instanceof Component) {
 
 			// get EClasses which should be connected
@@ -109,6 +115,23 @@ AbstractCreateConnectionFeature {
 				newConnection =
 						(Connection) getFeatureProvider().addIfPossible(addContext);
 			}
+		} else if (source instanceof Component && target instanceof Reference) {
+			// get EClasses which should be connected
+			Component src = (Component) getEClass(context.getSourceAnchor());
+			Reference tgt = (Reference) getEClass(context.getTargetAnchor());
+	
+			if (source != null && target != null) {
+				// create new business object 
+				ComponentReference eReference = createComponentReference(src, tgt);
+	
+				// add connection for business object
+				AddConnectionContext addContext =
+						new AddConnectionContext(context.getSourceAnchor(), context
+								.getTargetAnchor());
+				addContext.setNewObject(eReference);
+				newConnection =
+						(Connection) getFeatureProvider().addIfPossible(addContext);
+			}
 		}
 
 		return newConnection;
@@ -121,7 +144,7 @@ AbstractCreateConnectionFeature {
 		if (anchor != null) {
 			Object object =
 					getBusinessObjectForPictogramElement(anchor.getParent());
-			if (object instanceof Service || object instanceof Component) {
+			if (object instanceof Service || object instanceof Component || object instanceof Reference) {
 				return object;
 			}
 		}
@@ -150,6 +173,16 @@ AbstractCreateConnectionFeature {
 		return eReference;
 	}
 
+	private ComponentReference createComponentReference (Component source, Reference target) {
+		EList<ComponentReference> references = source.getReference();
+		ComponentReference eRef = null;
+		for (ComponentReference componentReference : references) {
+			eRef = componentReference;
+			break;
+		}
+		target.getPromote().add(eRef);
+		return eRef;
+	}
 	@Override
 	public String getCreateImageId() {
 		return ImageProvider.IMG_16_CONNECTION;
