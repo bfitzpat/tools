@@ -49,6 +49,7 @@ AbstractCreateConnectionFeature {
 					Service service = (Service) source;
 					Component component = (Component) target;
 					if (service != null && component != null && service != component) {
+						System.out.println("1");
 						return true;
 					}
 				} else if (source instanceof Component && target instanceof Component) {
@@ -58,11 +59,15 @@ AbstractCreateConnectionFeature {
 					Object tgt = 
 							getFeatureProvider().getBusinessObjectForPictogramElement(
 									context.getTargetAnchor().getLink().getPictogramElement());
-					if (src != null && src instanceof ComponentService && tgt != null && tgt instanceof ComponentReference)
+					if (src != null && src instanceof ComponentService && tgt != null && tgt instanceof ComponentReference) {
+						System.out.println("2");
 						return true;
+					}
 				} else if (source instanceof Component && target instanceof Reference) {
+					System.out.println("3");
 					return true;
 				} else if (source instanceof Reference && target instanceof Component) {
+					System.out.println("4");
 					return true;
 				}
 			}

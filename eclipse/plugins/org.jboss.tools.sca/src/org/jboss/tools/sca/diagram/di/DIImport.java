@@ -631,15 +631,17 @@ public class DIImport {
 					}
 				}
 				if (sourceAnchor != null && targetAnchor != null) {
-					AddConnectionContext addReferenceContext = new AddConnectionContext(sourceAnchor, targetAnchor);
-					ArrayList<String> targetRef = new ArrayList<String>();
-					targetRef.add(referencedShapeName);
-					addReferenceContext.setNewObject(componentReference);
-					addReferenceContext.setTargetContainer((ContainerShape) parent);
-	
-					IAddFeature addServiceFeature = featureProvider.getAddFeature(addReferenceContext);
-					if (addServiceFeature.canAdd(addReferenceContext)) {
-						addServiceFeature.add(addReferenceContext);
+					if (sourceAnchor.getParent() != targetAnchor.getParent()) {
+						AddConnectionContext addReferenceContext = new AddConnectionContext(sourceAnchor, targetAnchor);
+						ArrayList<String> targetRef = new ArrayList<String>();
+						targetRef.add(referencedShapeName);
+						addReferenceContext.setNewObject(componentReference);
+						addReferenceContext.setTargetContainer((ContainerShape) parent);
+		
+						IAddFeature addServiceFeature = featureProvider.getAddFeature(addReferenceContext);
+						if (addServiceFeature.canAdd(addReferenceContext)) {
+							addServiceFeature.add(addReferenceContext);
+						}
 					}
 				}
 			}
