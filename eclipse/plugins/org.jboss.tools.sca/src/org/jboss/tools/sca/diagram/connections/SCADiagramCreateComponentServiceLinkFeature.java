@@ -12,7 +12,6 @@
  ******************************************************************************/
 package org.jboss.tools.sca.diagram.connections;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateConnectionContext;
 import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
@@ -35,8 +34,8 @@ AbstractCreateConnectionFeature {
 	public boolean canCreate(ICreateConnectionContext context) {
 		if (context.getSourceAnchor() != null && context.getTargetAnchor() != null) {
 			
-			Object source = getEClass(context.getSourceAnchor());
-			Object target = getEClass(context.getTargetAnchor());
+			Object source = getAnchorObject(context.getSourceAnchor());
+			Object target = getAnchorObject(context.getTargetAnchor());
 			if (source != null && target != null) {
 				if (source instanceof Service && target instanceof Component) {
 					return true;
@@ -47,13 +46,11 @@ AbstractCreateConnectionFeature {
 			}
 		}
 		return false;
-
-
 	}
 
 	public boolean canStartConnection(ICreateConnectionContext context) {
-		// return true if start anchor belongs to a EClass
-		if (getEClass(context.getSourceAnchor()) != null) {
+		// return true if start anchor belongs to a service or component
+		if (getAnchorObject(context.getSourceAnchor()) != null) {
 			return true;
 		}
 		return true;
@@ -63,15 +60,22 @@ AbstractCreateConnectionFeature {
 	public Connection create(ICreateConnectionContext context) {
 		Connection newConnection = null;
 
-		Object source = getEClass(context.getSourceAnchor());
-		Object target = getEClass(context.getTargetAnchor());
+		Object source = getAnchorObject(context.getSourceAnchor());
+		Object target = getAnchorObject(context.getTargetAnchor());
 		
 		if (source != null && target != null) {
 			// add connection for business object
 			AddConnectionContext addContext =
 					new AddConnectionContext(context.getSourceAnchor(), context
 							.getTargetAnchor());
-			ComponentService cs = getComponentServiceFromEndpoints(source, target);
+			
+			Anchor sourceAnchor = context.getSourceAnchor();
+			
+			ComponentService cs = 
+					(ComponentService) getFeatureProvider().getBusinessObjectForPictogramElement(
+							sourceAnchor.getLink().getPictogramElement());
+			Service service = (Service) target;
+			cs.setName(service.getName());
 			addContext.setNewObject(cs);
 			newConnection = (Connection) getFeatureProvider().addIfPossible(addContext);
 		}
@@ -79,32 +83,7 @@ AbstractCreateConnectionFeature {
 		return newConnection;
 	}
 
-	private ComponentService getComponentServiceFromEndpoints ( Object source, Object target) {
-		Service service = null;
-		Component component = null;
-		if (source instanceof Service)
-			service = (Service) source;
-		else if (target instanceof Service)
-			service = (Service) target;
-		if (source instanceof Component) 
-			component = (Component) source;
-		else if (target instanceof Component)
-			component = (Component) target;
-		if (component != null && service !=  null) {
-			EList<ComponentService> cservices = component.getService();
-			for (ComponentService componentService : cservices) {
-				if (componentService.getName().contentEquals(service.getName())) {
-					return componentService;
-				}
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Returns the EClass belonging to the anchor, or null if not available.
-	 */
-	private Object getEClass(Anchor anchor) {
+	private Object getAnchorObject(Anchor anchor) {
 		if (anchor != null) {
 			Object object =
 					getBusinessObjectForPictogramElement(anchor.getParent());

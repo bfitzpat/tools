@@ -23,6 +23,7 @@ import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentReference;
+import org.eclipse.soa.sca.sca1_1.model.sca.ComponentService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.eclipse.soa.sca.sca1_1.model.sca.ScaFactory;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
@@ -51,7 +52,14 @@ AbstractCreateConnectionFeature {
 						return true;
 					}
 				} else if (source instanceof Component && target instanceof Component) {
-					return true;
+					Object src = 
+							getFeatureProvider().getBusinessObjectForPictogramElement(
+									context.getSourceAnchor().getLink().getPictogramElement());
+					Object tgt = 
+							getFeatureProvider().getBusinessObjectForPictogramElement(
+									context.getTargetAnchor().getLink().getPictogramElement());
+					if (src != null && src instanceof ComponentService && tgt != null && tgt instanceof ComponentReference)
+						return true;
 				} else if (source instanceof Component && target instanceof Reference) {
 					return true;
 				} else if (source instanceof Reference && target instanceof Component) {
@@ -100,18 +108,22 @@ AbstractCreateConnectionFeature {
 			}
 		} else if (source instanceof Component && target instanceof Component) {
 			// get EClasses which should be connected
-			Component src = (Component) getEClass(context.getSourceAnchor());
-			Component tgt = (Component) getEClass(context.getTargetAnchor());
+//			Component src = (Component) getEClass(context.getSourceAnchor());
+//			Component tgt = (Component) getEClass(context.getTargetAnchor());
+			ComponentService cs = 
+					(ComponentService) getFeatureProvider().getBusinessObjectForPictogramElement(
+							context.getSourceAnchor().getLink().getPictogramElement());
+			ComponentReference cref = 
+					(ComponentReference) getFeatureProvider().getBusinessObjectForPictogramElement(
+							context.getTargetAnchor().getLink().getPictogramElement());
 	
-			if (source != null && target != null) {
-				// create new business object 
-				ComponentReference eReference = createComponentReference(src, tgt);
-	
+			if (cs != null && target != cref) {
 				// add connection for business object
 				AddConnectionContext addContext =
 						new AddConnectionContext(context.getSourceAnchor(), context
 								.getTargetAnchor());
-				addContext.setNewObject(eReference);
+				addContext.setNewObject(cref);
+				cref.setName(cs.getName());
 				newConnection =
 						(Connection) getFeatureProvider().addIfPossible(addContext);
 			}
@@ -160,14 +172,6 @@ AbstractCreateConnectionFeature {
 		eReference.setName(source.getName());
 		ArrayList<String> targetRef = new ArrayList<String>();
 		targetRef.add(target.getName());
-		target.getReference().add(eReference);
-		getDiagram().eResource().getContents().add(eReference);
-		return eReference;
-	}
-
-	private ComponentReference createComponentReference (Component source, Component target) {
-		ComponentReference eReference = ScaFactory.eINSTANCE.createComponentReference();
-		eReference.setName(source.getName());
 		target.getReference().add(eReference);
 		getDiagram().eResource().getContents().add(eReference);
 		return eReference;

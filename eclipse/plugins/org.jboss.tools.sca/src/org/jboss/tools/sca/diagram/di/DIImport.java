@@ -493,38 +493,38 @@ public class DIImport {
 		return null;
 	}
 
-	private ContainerShape[] findShapesWithName ( IFeatureProvider fp, ContainerShape root, String name) {
-		ArrayList<ContainerShape> foundItems = new ArrayList<ContainerShape>();
-		if (root instanceof Diagram) {
-			Collection<Shape> shapes = peService.getAllContainedShapes(root);
-			for (Shape shape : shapes) {
-				Object test = fp.getBusinessObjectForPictogramElement(shape);
-				String testName = null;
-				if (test instanceof Component) {
-					Component testcomponent = (Component) test;
-					testName = testcomponent.getName();
-				} else if (test instanceof Service) {
-					Service testservice = (Service) test;
-					testName = testservice.getName();
-				} else if (test instanceof ComponentService) {
-					ComponentService testservice = (ComponentService) test;
-					testName = testservice.getName();
-				} else if (test instanceof Composite) {
-					Composite testcomposite = (Composite) test;
-					testName = testcomposite.getName();
-				} else if (test instanceof Reference) {
-					Reference testref = (Reference) test;
-					testName = testref.getName();
-				} else {
-					System.out.println("Couldn't find shape named '" + name + "'");
-				}
-				if (testName != null && testName.contentEquals(name) && shape instanceof ContainerShape) {
-					foundItems.add((ContainerShape) shape);
-				}
-			}
-		}
-		return foundItems.toArray(new ContainerShape[foundItems.size()]);
-	}
+//	private ContainerShape[] findShapesWithName ( IFeatureProvider fp, ContainerShape root, String name) {
+//		ArrayList<ContainerShape> foundItems = new ArrayList<ContainerShape>();
+//		if (root instanceof Diagram) {
+//			Collection<Shape> shapes = peService.getAllContainedShapes(root);
+//			for (Shape shape : shapes) {
+//				Object test = fp.getBusinessObjectForPictogramElement(shape);
+//				String testName = null;
+//				if (test instanceof Component) {
+//					Component testcomponent = (Component) test;
+//					testName = testcomponent.getName();
+//				} else if (test instanceof Service) {
+//					Service testservice = (Service) test;
+//					testName = testservice.getName();
+//				} else if (test instanceof ComponentService) {
+//					ComponentService testservice = (ComponentService) test;
+//					testName = testservice.getName();
+//				} else if (test instanceof Composite) {
+//					Composite testcomposite = (Composite) test;
+//					testName = testcomposite.getName();
+//				} else if (test instanceof Reference) {
+//					Reference testref = (Reference) test;
+//					testName = testref.getName();
+//				} else {
+//					System.out.println("Couldn't find shape named '" + name + "'");
+//				}
+//				if (testName != null && testName.contentEquals(name) && shape instanceof ContainerShape) {
+//					foundItems.add((ContainerShape) shape);
+//				}
+//			}
+//		}
+//		return foundItems.toArray(new ContainerShape[foundItems.size()]);
+//	}
 	
 	private Anchor[] findAnchorsWithName ( IFeatureProvider fp, ContainerShape root, String name) {
 		ArrayList<Anchor> foundItems = new ArrayList<Anchor>();
@@ -611,75 +611,35 @@ public class DIImport {
 			EList<ComponentReference> references = component.getReference();
 			for (ComponentReference componentReference : references) {
 				String referencedShapeName = componentReference.getName();
-				ContainerShape[] targetShapes = findShapesWithName(featureProvider, diagram, referencedShapeName);
-				ContainerShape targetShape = null;
-				Object targetObj = null;
-				for (int i = 0; i < targetShapes.length; i++) {
-					Object testObj = featureProvider.getBusinessObjectForPictogramElement(targetShapes[i]);
-					if (testObj instanceof ComponentService) {
-						targetShape = targetShapes[i];
-						targetObj = testObj;
-						break;
-					} else if (testObj instanceof Component) {
-						targetShape = targetShapes[i];
-						targetObj = testObj;
-						break;
+				Anchor targetAnchor = null;
+				Anchor sourceAnchor = null;
+				Anchor[] anchors = findAnchorsWithName(featureProvider, diagram, referencedShapeName);
+				for (Anchor anchor : anchors) {
+					Object testObj = featureProvider.getBusinessObjectForPictogramElement(anchor);
+					if (testObj instanceof ComponentReference) {
+						ComponentReference cref = (ComponentReference) testObj;
+						if (cref.getName().contentEquals(referencedShapeName)) {
+							targetAnchor = anchor;
+							continue;
+						}
+					} else if (testObj instanceof ComponentService) {
+						ComponentService cs = (ComponentService) testObj;
+						if (cs.getName().contentEquals(referencedShapeName)) {
+							sourceAnchor = anchor;
+							continue;
+						}
 					}
 				}
-				String targetName = null;
-				if (targetObj instanceof Component) {
-					Component targetComponent = (Component) targetObj;
-					targetName = targetComponent.getName();
-				}
-
-				if (targetShape != null) {
-					EList<Anchor> targetAnchors = targetShape.getAnchors();
-					Anchor target = null;
-					for (Anchor anchor : targetAnchors) {
-						Object anchorObj = featureProvider.getBusinessObjectForPictogramElement(anchor);
-						if (anchorObj instanceof ComponentService) {
-							ComponentService cservice = (ComponentService) anchorObj;
-							if (cservice.getName().contentEquals(referencedShapeName)) {
-								target = anchor;
-								break;
-							}
-						} else if (anchorObj instanceof Service) {
-							Service cservice = (Service) anchorObj;
-							if (cservice.getName().contentEquals(referencedShapeName)) {
-								target = anchor;
-								break;
-							}
-						}
-					}
-					EList<Anchor> sourceAnchors = parent.getAnchors();
-					Anchor source = null;
-					for (Anchor anchor : sourceAnchors) {
-						Object anchorObj = featureProvider.getBusinessObjectForPictogramElement(anchor);
-						if (anchorObj instanceof ComponentReference) {
-							ComponentReference cref = (ComponentReference) anchorObj;
-							if (cref.getName().contentEquals(referencedShapeName)) {
-								source = anchor;
-								break;
-							}
-						} else if (anchorObj instanceof ComponentService) {
-							ComponentService cservice = (ComponentService) anchorObj;
-							if (cservice.getName().contentEquals(referencedShapeName)) {
-								source = anchor;
-								break;
-							}
-						}
-					}
-					if (source != null && target != null) {
-						AddConnectionContext addReferenceContext = new AddConnectionContext(target, source);
-						ArrayList<String> targetRef = new ArrayList<String>();
-						targetRef.add(targetName);
-						addReferenceContext.setNewObject(componentReference);
-						addReferenceContext.setTargetContainer((ContainerShape) parent);
-		
-						IAddFeature addServiceFeature = featureProvider.getAddFeature(addReferenceContext);
-						if (addServiceFeature.canAdd(addReferenceContext)) {
-							addServiceFeature.add(addReferenceContext);
-						}
+				if (sourceAnchor != null && targetAnchor != null) {
+					AddConnectionContext addReferenceContext = new AddConnectionContext(sourceAnchor, targetAnchor);
+					ArrayList<String> targetRef = new ArrayList<String>();
+					targetRef.add(referencedShapeName);
+					addReferenceContext.setNewObject(componentReference);
+					addReferenceContext.setTargetContainer((ContainerShape) parent);
+	
+					IAddFeature addServiceFeature = featureProvider.getAddFeature(addReferenceContext);
+					if (addServiceFeature.canAdd(addReferenceContext)) {
+						addServiceFeature.add(addReferenceContext);
 					}
 				}
 			}
