@@ -1,3 +1,15 @@
+/******************************************************************************* 
+ * Copyright (c) 2012 Red Hat, Inc. 
+ *  All rights reserved. 
+ * This program is made available under the terms of the 
+ * Eclipse Public License v1.0 which accompanies this distribution, 
+ * and is available at http://www.eclipse.org/legal/epl-v10.html 
+ * 
+ * Contributors: 
+ * Red Hat, Inc. - initial API and implementation 
+ *
+ * @author bfitzpat
+ ******************************************************************************/
 package org.jboss.tools.sca.diagram.service;
 
 import java.io.IOException;
@@ -5,6 +17,7 @@ import java.util.ArrayList;
 
 import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
+import org.eclipse.graphiti.features.context.IContext;
 import org.eclipse.graphiti.features.context.ICustomContext;
 import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
 import org.eclipse.graphiti.features.context.impl.AddContext;
@@ -14,10 +27,10 @@ import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.soa.sca.sca1_1.model.sca.Component;
-import org.eclipse.soa.sca.sca1_1.model.sca.ComponentReference;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
+import org.jboss.tools.sca.ImageProvider;
 import org.jboss.tools.sca.core.ModelHandler;
 import org.jboss.tools.sca.core.ModelHandlerLocator;
 import org.jboss.tools.sca.diagram.di.DIImport;
@@ -53,7 +66,7 @@ public class SCADiagramCustomPromoteServiceFeature extends
 						}
             		} else {
             			try {
-            				ContainerShape componentShape = (ContainerShape) pes[0];
+//            				ContainerShape componentShape = (ContainerShape) pes[0];
             				Composite composite = (Composite) component.eContainer();
 							ModelHandler handler = ModelHandlerLocator.getModelHandler(getDiagram().eResource());
 							Service newService = handler.createService(composite);
@@ -72,7 +85,7 @@ public class SCADiagramCustomPromoteServiceFeature extends
 
 							IAddFeature addServiceFeature = getFeatureProvider().getAddFeature(addServiceContext);
 							if (addServiceFeature.canAdd(addServiceContext)) {
-								Shape serviceShape = (Shape) addServiceFeature.add(addServiceContext);
+//								Shape serviceShape = (Shape) addServiceFeature.add(addServiceContext);
 
 								String referencedShapeName = cservice.getName();
 								Anchor targetAnchor = null;
@@ -149,6 +162,16 @@ public class SCADiagramCustomPromoteServiceFeature extends
 	@Override
 	public boolean hasDoneChanges() {
 		return this.hasDoneChanges;
+	}
+
+	@Override
+	public String getImageId() {
+		return ImageProvider.IMG_16_PLUS;
+	}
+
+	@Override
+	public boolean isAvailable(IContext context) {
+		return true;
 	}
 
 }

@@ -14,18 +14,27 @@ Require-Bundle: org.eclipse.graphiti,
  org.eclipse.ui.ide,
  org.jboss.tools.switchyard1_0.model,
  org.eclipse.gef,
- org.eclipse.zest.core;bundle-version="1.3.0",
- org.eclipse.zest.layouts;bundle-version="1.1.0",
- org.eclipse.ui.workbench.texteditor;bundle-version="3.7.0",
- org.eclipse.ui.editors;bundle-version="3.7.0"
+ org.eclipse.zest.core,
+ org.eclipse.zest.layouts,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.ui.editors,
+ org.eclipse.jdt,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.sca,
+ org.jboss.tools.sca.core,
  org.jboss.tools.sca.diagram,
  org.jboss.tools.sca.diagram.component,
  org.jboss.tools.sca.diagram.componentreference,
  org.jboss.tools.sca.diagram.componentservice,
+ org.jboss.tools.sca.diagram.componentservice.wizards,
  org.jboss.tools.sca.diagram.composite,
+ org.jboss.tools.sca.diagram.compositereference,
  org.jboss.tools.sca.diagram.connections,
+ org.jboss.tools.sca.diagram.di,
  org.jboss.tools.sca.diagram.service,
- org.jboss.tools.sca.property
+ org.jboss.tools.sca.editor,
+ org.jboss.tools.sca.property,
+ org.jboss.tools.sca.util

@@ -36,6 +36,7 @@ public class ImageProvider extends AbstractImageProvider {
 	public static final String IMG_16_CONNECTION = PREFIX + "connection" + dot16;
 	
 	public static final String IMG_16_CHAIN = PREFIX + "binding" + dot16;
+	public static final String IMG_16_PLUS = PREFIX + "plus" + dot16;
 
 	@Override
 	protected void addAvailableImages() {
@@ -47,6 +48,7 @@ public class ImageProvider extends AbstractImageProvider {
 		addImageFilePath(IMG_16_COMPONENT_REFERENCE, ICONS_16 + "Reference.gif");
 		addImageFilePath(IMG_16_CONNECTION, ICONS_16 + "Wire.gif");
 		addImageFilePath(IMG_16_CHAIN, ICONS_16 + "chain_small.png");
+		addImageFilePath(IMG_16_PLUS, ICONS_16 + "plus.png");
 	}
 
 }

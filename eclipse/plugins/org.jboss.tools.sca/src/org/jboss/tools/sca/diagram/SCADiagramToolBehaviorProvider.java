@@ -20,13 +20,18 @@ import org.eclipse.graphiti.dt.IDiagramTypeProvider;
 import org.eclipse.graphiti.features.ICreateConnectionFeature;
 import org.eclipse.graphiti.features.ICreateFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
+import org.eclipse.graphiti.features.context.IPictogramElementContext;
+import org.eclipse.graphiti.features.context.impl.CustomContext;
+import org.eclipse.graphiti.features.custom.ICustomFeature;
 import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.palette.IPaletteCompartmentEntry;
 import org.eclipse.graphiti.palette.impl.ConnectionCreationToolEntry;
 import org.eclipse.graphiti.palette.impl.ObjectCreationToolEntry;
 import org.eclipse.graphiti.palette.impl.PaletteCompartmentEntry;
+import org.eclipse.graphiti.tb.ContextButtonEntry;
 import org.eclipse.graphiti.tb.DefaultToolBehaviorProvider;
+import org.eclipse.graphiti.tb.IContextButtonPadData;
 import org.eclipse.graphiti.tb.IDecorator;
 import org.eclipse.graphiti.tb.ImageDecorator;
 import org.eclipse.soa.sca.sca1_1.model.sca.Binding;
@@ -37,6 +42,7 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.jboss.tools.sca.ImageProvider;
+import org.jboss.tools.sca.diagram.service.SCADiagramCustomPromoteServiceFeature;
 import org.jboss.tools.switchyard.model.hornetq.BindingType;
 import org.jboss.tools.switchyard.model.soap.SOAPBindingType;
 
@@ -177,5 +183,33 @@ public class SCADiagramToolBehaviorProvider extends DefaultToolBehaviorProvider 
         
         return ret.toArray(new IPaletteCompartmentEntry[ret.size()]);
     }
+
+//	@Override
+//	public IContextButtonPadData getContextButtonPad(
+//			IPictogramElementContext context) {
+//
+//		IContextButtonPadData data = super.getContextButtonPad(context);
+//		PictogramElement pe = context.getPictogramElement();
+//
+//		// 1. set the generic context buttons
+//		// note, that we do not add 'remove' (just as an example)
+//		setGenericContextButtons(data, pe, CONTEXT_BUTTON_DELETE | 
+//				CONTEXT_BUTTON_UPDATE);
+//
+//		// 2. set the collapse button 
+//		// simply use a dummy custom feature (senseless example)
+//		CustomContext cc = new CustomContext(new PictogramElement[] { pe });
+//		ICustomFeature[] cf = getFeatureProvider().getCustomFeatures(cc);
+//		for (int i = 0; i < cf.length; i++) {
+//			ICustomFeature iCustomFeature = cf[i];
+//			if (iCustomFeature instanceof SCADiagramCustomPromoteServiceFeature) {
+//				ContextButtonEntry button = new ContextButtonEntry(iCustomFeature, context);
+//				data.getGenericContextButtons().add(button);
+//				break;
+//			}
+//		}
+//
+//		return data;
+//	}
 
 }
