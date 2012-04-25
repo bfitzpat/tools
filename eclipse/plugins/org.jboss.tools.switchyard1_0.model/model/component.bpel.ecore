@@ -3,7 +3,7 @@
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="bpel"
     nsURI="http://docs.oasis-open.org/ns/opencsa/sca/200903" nsPrefix="bpel">
-  <eClassifiers xsi:type="ecore:EClass" name="BPELImplementation" eSuperTypes="../../org.eclipse.soa.sca.sca1_1.model/model/sca.ecore#//Implementation">
+  <eClassifiers xsi:type="ecore:EClass" name="BPELImplementation" eSuperTypes="platform:/plugin/org.eclipse.soa.sca.sca1_1.model/model/sca.ecore#//Implementation">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
       <details key="name" value="BPELImplementation"/>
       <details key="kind" value="empty"/>

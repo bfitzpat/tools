@@ -31,81 +31,81 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Implementation;
  */
 public interface BPMImplementationType extends Implementation {
 	/**
-     * Returns the value of the '<em><b>Action</b></em>' containment reference list.
-     * The list contents are of type {@link org.jboss.tools.switchyard.model.bpm.ActionType1}.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Action</b></em>' containment reference list.
+	 * The list contents are of type {@link org.jboss.tools.switchyard.model.bpm.ActionType1}.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Action</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Action</em>' containment reference list.
-     * @see org.jboss.tools.switchyard.model.bpm.BPMPackage#getBPMImplementationType_Action()
-     * @model containment="true"
-     *        extendedMetaData="kind='element' name='action' namespace='##targetNamespace'"
-     * @generated
-     */
+	 * @return the value of the '<em>Action</em>' containment reference list.
+	 * @see org.jboss.tools.switchyard.model.bpm.BPMPackage#getBPMImplementationType_Action()
+	 * @model containment="true"
+	 *        extendedMetaData="kind='element' name='action' namespace='##targetNamespace'"
+	 * @generated
+	 */
 	EList<ActionType1> getAction();
 
 	/**
-     * Returns the value of the '<em><b>Audit</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Audit</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Audit</em>' containment reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Audit</em>' containment reference.
-     * @see #setAudit(AuditType)
-     * @see org.jboss.tools.switchyard.model.bpm.BPMPackage#getBPMImplementationType_Audit()
-     * @model containment="true"
-     *        extendedMetaData="kind='element' name='audit' namespace='##targetNamespace'"
-     * @generated
-     */
+	 * @return the value of the '<em>Audit</em>' containment reference.
+	 * @see #setAudit(AuditType)
+	 * @see org.jboss.tools.switchyard.model.bpm.BPMPackage#getBPMImplementationType_Audit()
+	 * @model containment="true"
+	 *        extendedMetaData="kind='element' name='audit' namespace='##targetNamespace'"
+	 * @generated
+	 */
 	AuditType getAudit();
 
 	/**
-     * Sets the value of the '{@link org.jboss.tools.switchyard.model.bpm.BPMImplementationType#getAudit <em>Audit</em>}' containment reference.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link org.jboss.tools.switchyard.model.bpm.BPMImplementationType#getAudit <em>Audit</em>}' containment reference.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Audit</em>' containment reference.
-     * @see #getAudit()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Audit</em>' containment reference.
+	 * @see #getAudit()
+	 * @generated
+	 */
 	void setAudit(AuditType value);
 
 	/**
-     * Returns the value of the '<em><b>Task Handler</b></em>' containment reference list.
-     * The list contents are of type {@link org.jboss.tools.switchyard.model.bpm.TaskHandlerType}.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Task Handler</b></em>' containment reference list.
+	 * The list contents are of type {@link org.jboss.tools.switchyard.model.bpm.TaskHandlerType}.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Task Handler</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Task Handler</em>' containment reference list.
-     * @see org.jboss.tools.switchyard.model.bpm.BPMPackage#getBPMImplementationType_TaskHandler()
-     * @model containment="true"
-     *        extendedMetaData="kind='element' name='taskHandler' namespace='##targetNamespace'"
-     * @generated
-     */
+	 * @return the value of the '<em>Task Handler</em>' containment reference list.
+	 * @see org.jboss.tools.switchyard.model.bpm.BPMPackage#getBPMImplementationType_TaskHandler()
+	 * @model containment="true"
+	 *        extendedMetaData="kind='element' name='taskHandler' namespace='##targetNamespace'"
+	 * @generated
+	 */
 	EList<TaskHandlerType> getTaskHandler();
 
 	/**
-     * Returns the value of the '<em><b>Resource</b></em>' containment reference list.
-     * The list contents are of type {@link org.jboss.tools.switchyard.model.bpm.ResourceType}.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Resource</b></em>' containment reference list.
+	 * The list contents are of type {@link org.jboss.tools.switchyard.model.bpm.ResourceType}.
+	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Resource</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Resource</em>' containment reference list.
-     * @see org.jboss.tools.switchyard.model.bpm.BPMPackage#getBPMImplementationType_Resource()
-     * @model containment="true"
-     *        extendedMetaData="kind='element' name='resource' namespace='##targetNamespace'"
-     * @generated
-     */
+	 * @return the value of the '<em>Resource</em>' containment reference list.
+	 * @see org.jboss.tools.switchyard.model.bpm.BPMPackage#getBPMImplementationType_Resource()
+	 * @model containment="true"
+	 *        extendedMetaData="kind='element' name='resource' namespace='##targetNamespace'"
+	 * @generated
+	 */
 	EList<ResourceType> getResource();
 
 } // BPMImplementationType

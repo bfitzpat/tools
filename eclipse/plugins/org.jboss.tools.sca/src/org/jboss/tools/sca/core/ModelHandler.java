@@ -45,6 +45,7 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.jboss.tools.sca.Activator;
 import org.jboss.tools.switchyard.model.bean.BeanPackage;
 import org.jboss.tools.switchyard.model.bpm.BPMPackage;
+import org.jboss.tools.switchyard.model.camel.CamelPackage;
 import org.jboss.tools.switchyard.model.clojure.ClojurePackage;
 import org.jboss.tools.switchyard.model.commonrules.CommonRulesPackage;
 import org.jboss.tools.switchyard.model.hornetq.HornetQPackage;
@@ -209,6 +210,7 @@ public class ModelHandler {
 		resourceSet.getPackageRegistry().put("urn:switchyard-component-hornetq:config:1.0", HornetQPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put("urn:switchyard-component-common-rules:config:1.0", CommonRulesPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put("urn:switchyard-component-clojure:config:1.0", ClojurePackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put("urn:switchyard-component-camel:config:1.0", CamelPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put("urn:switchyard-component-bpm:config:1.0", BPMPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put("http://docs.oasis-open.org/ns/opencsa/sca/200903", BPELPackage.eINSTANCE);
 	}

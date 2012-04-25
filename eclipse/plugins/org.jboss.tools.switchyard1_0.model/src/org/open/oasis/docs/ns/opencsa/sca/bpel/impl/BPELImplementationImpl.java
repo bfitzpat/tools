@@ -7,6 +7,7 @@
 package org.open.oasis.docs.ns.opencsa.sca.bpel.impl;
 
 import org.eclipse.emf.ecore.EClass;
+
 import org.eclipse.soa.sca.sca1_1.model.sca.impl.ImplementationImpl;
 
 import org.open.oasis.docs.ns.opencsa.sca.bpel.BPELImplementation;
@@ -23,22 +24,22 @@ import org.open.oasis.docs.ns.opencsa.sca.bpel.BPELPackage;
  */
 public class BPELImplementationImpl extends ImplementationImpl implements BPELImplementation {
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected BPELImplementationImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return BPELPackage.Literals.BPEL_IMPLEMENTATION;
-    }
+		return BPELPackage.Literals.BPEL_IMPLEMENTATION;
+	}
 
 } //BPELImplementationImpl
