@@ -42,6 +42,8 @@ import org.eclipse.soa.sca.sca1_1.model.sca.ComponentService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
+import org.jboss.tools.sca.diagram.binding.SCADiagramAddBindingFeature;
+import org.jboss.tools.sca.diagram.binding.SCADiagramCreateBindingFeature;
 import org.jboss.tools.sca.diagram.component.SCADiagramAddComponentFeature;
 import org.jboss.tools.sca.diagram.component.SCADiagramCreateComponentFeature;
 import org.jboss.tools.sca.diagram.component.SCADiagramDirectEditComponentFeature;
@@ -73,6 +75,7 @@ import org.jboss.tools.sca.diagram.service.SCADiagramDirectEditServiceFeature;
 import org.jboss.tools.sca.diagram.service.SCADiagramLayoutServiceFeature;
 import org.jboss.tools.sca.diagram.service.SCADiagramMoveServiceFeature;
 import org.jboss.tools.sca.diagram.service.SCADiagramResizeServiceFeature;
+import org.jboss.tools.switchyard.model.switchyard.SwitchYardBindingType;
 
 public class SCADiagramFeatureProvider extends DefaultFeatureProvider {
 
@@ -92,6 +95,9 @@ public class SCADiagramFeatureProvider extends DefaultFeatureProvider {
 		}
 		if (context.getNewObject() instanceof Service) {
 			return new SCADiagramAddServiceFeature(this);
+		}
+		if (context.getNewObject() instanceof SwitchYardBindingType) {
+			return new SCADiagramAddBindingFeature(this);
 		}
 		if (context.getNewObject() instanceof Reference) {
 			if (context instanceof AddConnectionContext) {
@@ -124,7 +130,8 @@ public class SCADiagramFeatureProvider extends DefaultFeatureProvider {
 				new SCADiagramCreateServiceFeature(this),
 				new SCADiagramCreateComponentServiceFeature(this),
 				new SCADiagramCreateComponentReferenceFeature(this),
-				new SCADiagramCreateCompositeReferenceFeature(this)
+				new SCADiagramCreateCompositeReferenceFeature(this),
+				new SCADiagramCreateBindingFeature(this)
 			};
 	}
 

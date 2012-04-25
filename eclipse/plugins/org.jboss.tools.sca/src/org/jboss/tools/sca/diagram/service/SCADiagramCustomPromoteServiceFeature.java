@@ -64,6 +64,7 @@ public class SCADiagramCustomPromoteServiceFeature extends
 								this.hasDoneChanges = true;
 							}
 						}
+						getDiagramEditor().refresh();
             		} else {
             			try {
 //            				ContainerShape componentShape = (ContainerShape) pes[0];
@@ -85,7 +86,8 @@ public class SCADiagramCustomPromoteServiceFeature extends
 
 							IAddFeature addServiceFeature = getFeatureProvider().getAddFeature(addServiceContext);
 							if (addServiceFeature.canAdd(addServiceContext)) {
-//								Shape serviceShape = (Shape) addServiceFeature.add(addServiceContext);
+								Shape serviceShape = (Shape) addServiceFeature.add(addServiceContext);
+								getDiagramEditor().refresh(serviceShape);
 
 								String referencedShapeName = cservice.getName();
 								Anchor targetAnchor = null;
@@ -121,6 +123,7 @@ public class SCADiagramCustomPromoteServiceFeature extends
 										}
 									}
 								}
+								
 							}
 							
 						} catch (IOException e) {

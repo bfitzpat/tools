@@ -20,18 +20,13 @@ import org.eclipse.graphiti.dt.IDiagramTypeProvider;
 import org.eclipse.graphiti.features.ICreateConnectionFeature;
 import org.eclipse.graphiti.features.ICreateFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
-import org.eclipse.graphiti.features.context.IPictogramElementContext;
-import org.eclipse.graphiti.features.context.impl.CustomContext;
-import org.eclipse.graphiti.features.custom.ICustomFeature;
 import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.palette.IPaletteCompartmentEntry;
 import org.eclipse.graphiti.palette.impl.ConnectionCreationToolEntry;
 import org.eclipse.graphiti.palette.impl.ObjectCreationToolEntry;
 import org.eclipse.graphiti.palette.impl.PaletteCompartmentEntry;
-import org.eclipse.graphiti.tb.ContextButtonEntry;
 import org.eclipse.graphiti.tb.DefaultToolBehaviorProvider;
-import org.eclipse.graphiti.tb.IContextButtonPadData;
 import org.eclipse.graphiti.tb.IDecorator;
 import org.eclipse.graphiti.tb.ImageDecorator;
 import org.eclipse.soa.sca.sca1_1.model.sca.Binding;
@@ -42,7 +37,6 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.jboss.tools.sca.ImageProvider;
-import org.jboss.tools.sca.diagram.service.SCADiagramCustomPromoteServiceFeature;
 import org.jboss.tools.switchyard.model.hornetq.BindingType;
 import org.jboss.tools.switchyard.model.soap.SOAPBindingType;
 
@@ -155,6 +149,11 @@ public class SCADiagramToolBehaviorProvider extends DefaultToolBehaviorProvider 
             new PaletteCompartmentEntry("Components", null);
         ret.add(componentEntry);
 
+        // add new compartment for components
+        PaletteCompartmentEntry bindingsEntry =
+            new PaletteCompartmentEntry("Bindings", null);
+        ret.add(bindingsEntry);
+
         // add new compartment for anything else
         PaletteCompartmentEntry miscEntry =
             new PaletteCompartmentEntry("Other", null);
@@ -174,6 +173,8 @@ public class SCADiagramToolBehaviorProvider extends DefaultToolBehaviorProvider 
             	componentEntry.addToolEntry(objectCreationToolEntry);
             else if (cf.getCreateName().contains("Service"))
             	compositeEntry.addToolEntry(objectCreationToolEntry);
+            else if (cf.getCreateName().contains("Binding"))
+            	bindingsEntry.addToolEntry(objectCreationToolEntry);
             else
             	miscEntry.addToolEntry(objectCreationToolEntry);
         }

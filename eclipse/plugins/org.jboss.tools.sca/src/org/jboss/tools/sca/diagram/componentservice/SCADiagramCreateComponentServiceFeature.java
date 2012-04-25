@@ -14,12 +14,6 @@ package org.jboss.tools.sca.diagram.componentservice;
 
 import java.io.IOException;
 
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.impl.EReferenceImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.ExtendedMetaData;
-import org.eclipse.emf.ecore.util.FeatureMap.Entry;
-import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
@@ -39,12 +33,8 @@ import org.jboss.tools.sca.ImageProvider;
 import org.jboss.tools.sca.core.ModelHandler;
 import org.jboss.tools.sca.core.ModelHandlerLocator;
 import org.jboss.tools.sca.diagram.componentservice.wizards.SCADiagramAddComponentServiceWizard;
-import org.jboss.tools.sca.util.ExampleUtil;
 
 public class SCADiagramCreateComponentServiceFeature extends AbstractCreateFeature {
-
-	private static final String TITLE = "Create component service";
-    private static final String USER_QUESTION = "Enter new component service name";
 
     public SCADiagramCreateComponentServiceFeature(IFeatureProvider fp) {
     	super (fp, "Component Service", "Create component service");

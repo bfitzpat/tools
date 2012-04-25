@@ -45,11 +45,14 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.jboss.tools.sca.Activator;
 import org.jboss.tools.switchyard.model.bean.BeanPackage;
 import org.jboss.tools.switchyard.model.bpm.BPMPackage;
+import org.jboss.tools.switchyard.model.camel.CamelBindingType;
 import org.jboss.tools.switchyard.model.camel.CamelPackage;
 import org.jboss.tools.switchyard.model.clojure.ClojurePackage;
 import org.jboss.tools.switchyard.model.commonrules.CommonRulesPackage;
 import org.jboss.tools.switchyard.model.hornetq.HornetQPackage;
 import org.jboss.tools.switchyard.model.rules.RulesPackage;
+import org.jboss.tools.switchyard.model.soap.SOAPBindingType;
+import org.jboss.tools.switchyard.model.soap.SOAPFactory;
 import org.jboss.tools.switchyard.model.soap.SOAPPackage;
 import org.jboss.tools.switchyard.model.switchyard.DocumentRoot;
 import org.jboss.tools.switchyard.model.switchyard.SwitchYardType;
@@ -199,6 +202,24 @@ public class ModelHandler {
 		return componentService;
 	}
 
+	public SOAPBindingType createSOAPBinding(Service source) {
+		SOAPBindingType soapBinding = SOAPFactory.eINSTANCE.createSOAPBindingType();
+		source.getBindingGroup().add(SOAPPackage.eINSTANCE.getDocumentRoot_BindingSoap(), soapBinding);
+		return soapBinding;
+	}
+
+	public SOAPBindingType createSOAPBinding(Reference source) {
+		SOAPBindingType soapBinding = createSOAP(SOAPBindingType.class);
+		source.getBindingGroup().add(SOAPPackage.eINSTANCE.getDocumentRoot_BindingSoap(), soapBinding);
+		return soapBinding;
+	}
+
+	public CamelBindingType createCamelBinding(Service source) {
+		CamelBindingType camelBinding = createSY(CamelBindingType.class);
+		source.getBindingGroup().add(CamelPackage.eINSTANCE.getDocumentRoot_BindingCamel(), camelBinding);
+		return camelBinding;
+	}
+
 	public static void registerPackages ( ResourceSet resourceSet ) {
 		resourceSet.getPackageRegistry().put("http://docs.oasis-open.org/ns/opencsa/sca/200912", ScaPackage.eINSTANCE);
 		resourceSet.getPackageRegistry().put("urn:switchyard-config:switchyard:1.0", SwitchyardPackage.eINSTANCE);
@@ -282,6 +303,22 @@ public class ModelHandler {
 		return (T)newObject;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public <T extends EObject> T createSOAP(Class<T> clazz) {
+		EObject newObject = null;
+		EClassifier eClassifier = SwitchyardPackage.eINSTANCE.getEClassifier(clazz.getSimpleName());
+		if (eClassifier instanceof EClass) {
+			EClass eClass = (EClass)eClassifier;
+			newObject = SOAPFactory.eINSTANCE.create(eClass);
+		}
+		
+		if (newObject!=null) {
+			initialize(newObject);
+		}
+
+		return (T)newObject;
+	}
+
 	@SuppressWarnings("unchecked")
 	public <T extends EObject> T createSCA(Class<T> clazz) {
 		EObject newObject = null;
