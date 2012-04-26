@@ -8,7 +8,6 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.Implementation;
-import org.eclipse.soa.sca.sca1_1.model.sca.ScaPackage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -24,10 +23,9 @@ import org.jboss.tools.sca.diagram.internal.wizards.IRefreshablePage;
 import org.jboss.tools.switchyard.model.camel.CamelImplementationType;
 import org.jboss.tools.switchyard.model.spring.RouteDefinition;
 import org.jboss.tools.switchyard.model.spring.SpringFactory;
-import org.jboss.tools.switchyard.model.spring.SpringPackage;
 import org.jboss.tools.switchyard.model.spring.ToDefinition;
 
-public class SCADiagramAddComponentImplementationCamelPage extends BaseWizardPage implements IRefreshablePage, IUpdatesImplementation {
+public class SCADiagramAddComponentImplementationCamelPage extends BaseWizardPage implements IRefreshablePage {
 
 	private Text mCamelRouteToText;
 	private String sCamelRouteTo = null;
@@ -88,6 +86,49 @@ public class SCADiagramAddComponentImplementationCamelPage extends BaseWizardPag
 	
 	private void handleModify() {
 		sCamelRouteTo = mCamelRouteToText.getText().trim();
+		if (startPage != null) {
+			Diagram diagram = null;
+			Component parent = null;
+			if (getWizard() instanceof SCADiagramAddImplementationWizard) {
+				diagram = ((SCADiagramAddImplementationWizard) getWizard()).getDiagram();
+				parent = ((SCADiagramAddImplementationWizard) getWizard()).getComponent();
+			}
+			if (diagram != null && parent != null) {
+				ModelHandler mh;
+				try {
+					mh = ModelHandlerLocator.getModelHandler(diagram.eResource());
+					Implementation impl = getImplementationFromStartPage();
+					if (impl instanceof CamelImplementationType) {
+						CamelImplementationType camelImpl = (CamelImplementationType) impl;
+						RouteDefinition defn = camelImpl.getRoute();
+						boolean alreadyExists = false;
+						if (defn != null) {
+							EList<ToDefinition> toDefs = defn.getTo();
+							for (ToDefinition toDefinition : toDefs) {
+								if (toDefinition.getUri().contentEquals(sCamelRouteTo)) {
+									alreadyExists = true;
+									break;
+								}
+							}
+						}
+						EList<ToDefinition> toDefs = null;
+						if (!alreadyExists) {
+							defn = mh.createRouteDefinition(camelImpl);
+							toDefs = defn.getTo();
+						} else {
+							toDefs = defn.getTo();
+						}
+						if (defn != null && toDefs != null) {
+							ToDefinition todef = SpringFactory.eINSTANCE.createToDefinition();
+							todef.setUri(sCamelRouteTo);
+							toDefs.add(todef);
+						}
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		validate();
 	}
 
@@ -131,58 +172,12 @@ public class SCADiagramAddComponentImplementationCamelPage extends BaseWizardPag
 			if (impl instanceof CamelImplementationType) {
 				CamelImplementationType camelImpl = (CamelImplementationType) impl;
 				if (camelImpl.getRoute() != null) {
-					mCamelRouteToText.setText(camelImpl.getRoute().getTo().toString());
-				}
-			}
-		}
-	}
-
-	@Override
-	public Implementation getUpdatedImplementation() {
-		if (startPage != null) {
-			Diagram diagram = null;
-			Component parent = null;
-			if (getWizard() instanceof SCADiagramAddImplementationWizard) {
-				diagram = ((SCADiagramAddImplementationWizard) getWizard()).getDiagram();
-				parent = ((SCADiagramAddImplementationWizard) getWizard()).getComponent();
-			}
-			if (diagram != null && parent != null) {
-				ModelHandler mh;
-				try {
-					mh = ModelHandlerLocator.getModelHandler(diagram.eResource());
-					Implementation impl = getImplementationFromStartPage();
-					if (impl instanceof CamelImplementationType) {
-						CamelImplementationType camelImpl = (CamelImplementationType) impl;
-						RouteDefinition defn = camelImpl.getRoute();
-						boolean alreadyExists = false;
-						if (defn != null) {
-							EList<ToDefinition> toDefs = defn.getTo();
-							for (ToDefinition toDefinition : toDefs) {
-								if (toDefinition.getUri().contentEquals(sCamelRouteTo)) {
-									alreadyExists = true;
-									break;
-								}
-							}
-						}
-						EList<ToDefinition> toDefs = null;
-						if (!alreadyExists) {
-							defn = mh.createRouteDefinition(camelImpl);
-							toDefs = defn.getTo();
-						} else {
-							toDefs = defn.getTo();
-						}
-						if (defn != null && toDefs != null) {
-							ToDefinition todef = SpringFactory.eINSTANCE.createToDefinition();
-							todef.setUri(sCamelRouteTo);
-							toDefs.add(todef);
-						}
-						return impl;
+					RouteDefinition defn = camelImpl.getRoute();
+					if (!defn.getTo().isEmpty()) {
+						mCamelRouteToText.setText(defn.getTo().get(0).getUri());
 					}
-				} catch (IOException e) {
-					e.printStackTrace();
 				}
 			}
 		}
-		return null;
 	}
 }

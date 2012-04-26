@@ -171,7 +171,8 @@
       <details key="name" value="CamelImplementationType"/>
       <details key="kind" value="elementOnly"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="route" eType="ecore:EClass camel-spring.ecore#//RouteDefinition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="route" eType="ecore:EClass camel-spring.ecore#//RouteDefinition"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="java" eType="#//JavaDSLType"
         containment="true" resolveProxies="false">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">

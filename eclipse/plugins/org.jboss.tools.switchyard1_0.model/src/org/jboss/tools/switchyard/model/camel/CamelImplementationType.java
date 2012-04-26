@@ -29,26 +29,26 @@ import org.jboss.tools.switchyard.model.spring.RouteDefinition;
  */
 public interface CamelImplementationType extends Implementation {
 	/**
-	 * Returns the value of the '<em><b>Route</b></em>' reference.
+	 * Returns the value of the '<em><b>Route</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Route</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Route</em>' reference.
+	 * @return the value of the '<em>Route</em>' containment reference.
 	 * @see #setRoute(RouteDefinition)
 	 * @see org.jboss.tools.switchyard.model.camel.CamelPackage#getCamelImplementationType_Route()
-	 * @model
+	 * @model containment="true"
 	 * @generated
 	 */
 	RouteDefinition getRoute();
 
 	/**
-	 * Sets the value of the '{@link org.jboss.tools.switchyard.model.camel.CamelImplementationType#getRoute <em>Route</em>}' reference.
+	 * Sets the value of the '{@link org.jboss.tools.switchyard.model.camel.CamelImplementationType#getRoute <em>Route</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Route</em>' reference.
+	 * @param value the new value of the '<em>Route</em>' containment reference.
 	 * @see #getRoute()
 	 * @generated
 	 */
