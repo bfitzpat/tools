@@ -21,7 +21,7 @@ public class SCADiagramAddBindingWizard extends Wizard {
 	
 	@Override
 	public boolean performFinish() {
-		if (startPage != null && startPage.getBindingName() != null) {
+		if (startPage != null && startPage.getBinding() != null) {
 			return true;
 		}
 		return false;
@@ -31,12 +31,6 @@ public class SCADiagramAddBindingWizard extends Wizard {
 	public void addPages() {
 		addPage(startPage);
 		addPage(soapPage);
-	}
-
-	public String getBindingName() {
-		if (startPage != null) 
-			return startPage.getBindingName();
-		return null;
 	}
 
 	public SwitchYardBindingType getBinding() {

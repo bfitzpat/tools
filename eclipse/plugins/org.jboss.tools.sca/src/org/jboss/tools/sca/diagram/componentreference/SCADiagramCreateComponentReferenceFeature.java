@@ -18,18 +18,23 @@ import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateFeature;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentReference;
+import org.eclipse.soa.sca.sca1_1.model.sca.Interface;
+import org.eclipse.soa.sca.sca1_1.model.sca.JavaInterface;
+import org.eclipse.soa.sca.sca1_1.model.sca.ScaPackage;
+import org.eclipse.soa.sca.sca1_1.model.sca.WSDLPortType;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.sca.Activator;
 import org.jboss.tools.sca.ImageProvider;
 import org.jboss.tools.sca.core.ModelHandler;
 import org.jboss.tools.sca.core.ModelHandlerLocator;
-import org.jboss.tools.sca.util.ExampleUtil;
+import org.jboss.tools.sca.diagram.componentreference.wizards.SCADiagramAddComponentReferenceWizard;
 
 public class SCADiagramCreateComponentReferenceFeature extends AbstractCreateFeature {
-
-	private static final String TITLE = "Create component reference";
-    private static final String USER_QUESTION = "Enter new component reference name";
 
     public SCADiagramCreateComponentReferenceFeature(IFeatureProvider fp) {
     	super (fp, "Component Reference", "Create component reference");
@@ -51,11 +56,18 @@ public class SCADiagramCreateComponentReferenceFeature extends AbstractCreateFea
 	@Override
 	public Object[] create(ICreateContext context) {
 		
-        // ask user for new component reference name
-        String newClassName = ExampleUtil.askString(TITLE, USER_QUESTION, "");
-        if (newClassName == null || newClassName.trim().length() == 0) {
-            return EMPTY;
-        }
+		String newClassName = null;
+		Interface newInterface = null;
+		SCADiagramAddComponentReferenceWizard wizard = new SCADiagramAddComponentReferenceWizard();
+		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		WizardDialog wizDialog = new WizardDialog(shell, wizard);
+		int rtn_code = wizDialog.open();
+		if (rtn_code == Window.OK) {
+			newClassName = wizard.getComponentReferenceName();
+			newInterface = wizard.getInterface();
+		} else {
+			return EMPTY;
+		}
 
         ComponentReference newCReference = null;
 
@@ -64,6 +76,13 @@ public class SCADiagramCreateComponentReferenceFeature extends AbstractCreateFea
 			Object o = getBusinessObjectForPictogramElement(context.getTargetContainer());
 			newCReference = mh.createComponentReference((Component)o);
 			newCReference.setName(newClassName);
+			if (newInterface != null) {
+				// do something with it
+				if (newInterface instanceof JavaInterface) 
+					newCReference.getInterfaceGroup().set(ScaPackage.eINSTANCE.getDocumentRoot_InterfaceJava(), newInterface);
+				else if (newInterface instanceof WSDLPortType) 
+					newCReference.getInterfaceGroup().set(ScaPackage.eINSTANCE.getDocumentRoot_InterfaceWsdl(), newInterface);
+			}
 		} catch (IOException e) {
 			Activator.logError(e);
 		}

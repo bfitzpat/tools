@@ -1,6 +1,8 @@
 package org.jboss.tools.sca.diagram.component.wizards;
 
+import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.jface.wizard.IWizardPage;
+import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.Implementation;
 import org.jboss.tools.sca.diagram.internal.wizards.BaseWizard;
 import org.jboss.tools.switchyard.model.camel.CamelImplementationType;
@@ -9,6 +11,8 @@ public class SCADiagramAddComponentWizard extends BaseWizard {
 
 	private SCADiagramAddComponentStartPage startPage = null;
 	private SCADiagramAddComponentImplementationCamelPage camelPage = null;
+	private Diagram diagram = null;
+	private Component component = null;
 	
 	public SCADiagramAddComponentWizard() {
 		super();
@@ -16,6 +20,23 @@ public class SCADiagramAddComponentWizard extends BaseWizard {
 		setWindowTitle("New Component");
 	}
 	
+	public void setComponent ( Component component ) {
+		this.component = component;
+	}
+	
+	public Component getComponent() {
+		return this.component;
+	}
+	
+	public void setDiagram( Diagram diagram ) {
+		this.diagram = diagram;
+	}
+	
+	public Diagram getDiagram() {
+		return this.diagram;
+	}
+	
+
 	private void initPages() {
 		startPage = new SCADiagramAddComponentStartPage("start");
 		camelPage = new SCADiagramAddComponentImplementationCamelPage(startPage, "camel");

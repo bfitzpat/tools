@@ -171,6 +171,8 @@ public class DIImport {
 		}
 
 		GraphicsAlgorithm containerGA = compositeContainerShape.getGraphicsAlgorithm();
+		if (farX == 0) farX = StyleUtil.COMPOSITE_WIDTH;
+		if (farY == 0) farY = StyleUtil.COMPOSITE_HEIGHT;
 		containerGA.setHeight(farY + 50);
 		containerGA.setWidth(farX + 50);
 		

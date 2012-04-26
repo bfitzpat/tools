@@ -76,6 +76,31 @@ public class SCADiagramToolBehaviorProvider extends DefaultToolBehaviorProvider 
 				}
 				return decorators.toArray(new IDecorator[decorators.size()]);
 			}
+		} else 	if (bo instanceof Reference) {
+			Reference reference = (Reference) bo;
+			if (!reference.getBinding().isEmpty()) {
+				EList<Binding> bindings = reference.getBinding();
+				ArrayList<IDecorator> decorators = new ArrayList<IDecorator>();
+				for (Binding binding : bindings) {
+					IDecorator imageRenderingDecorator =
+							new ImageDecorator( ImageProvider.IMG_16_CHAIN );
+					String text = binding.getClass().getSimpleName();
+					if (binding instanceof SOAPBindingType) {
+						SOAPBindingType soapBinding = (SOAPBindingType) binding;
+						text = "SOAP Binding:\n";
+						text = text + soapBinding.getWsdl();
+					} else if (binding instanceof BindingType) {
+						BindingType hornetQBinding = (BindingType) binding;
+						text = "HornetQ Binding:\n";
+						text = text + hornetQBinding.getUri();
+					}
+					imageRenderingDecorator
+						.setMessage(text);
+					decorators.add(imageRenderingDecorator);
+				}
+				return decorators.toArray(new IDecorator[decorators.size()]);
+			}
+
 		} else if (bo instanceof Component) {
 			Component component = (Component) bo;
 			if (component.getImplementation() != null) {

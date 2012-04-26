@@ -6,7 +6,6 @@ import java.net.URI;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.Implementation;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -86,14 +85,15 @@ public class SCADiagramAddComponentImplementationCamelPage extends BaseWizardPag
 	
 	private void handleModify() {
 		sCamelRouteTo = mCamelRouteToText.getText().trim();
+		validate();
 		if (startPage != null) {
 			Diagram diagram = null;
-			Component parent = null;
 			if (getWizard() instanceof SCADiagramAddImplementationWizard) {
 				diagram = ((SCADiagramAddImplementationWizard) getWizard()).getDiagram();
-				parent = ((SCADiagramAddImplementationWizard) getWizard()).getComponent();
+			} else if (getWizard() instanceof SCADiagramAddComponentWizard) {
+				diagram = ((SCADiagramAddComponentWizard) getWizard()).getDiagram();
 			}
-			if (diagram != null && parent != null) {
+			if (diagram != null) {
 				ModelHandler mh;
 				try {
 					mh = ModelHandlerLocator.getModelHandler(diagram.eResource());
@@ -129,7 +129,6 @@ public class SCADiagramAddComponentImplementationCamelPage extends BaseWizardPag
 				}
 			}
 		}
-		validate();
 	}
 
 	private void validate() {

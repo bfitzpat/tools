@@ -55,10 +55,14 @@ public class SCADiagramCreateComponentFeature extends AbstractCreateFeature {
 	@Override
 	public Object[] create(ICreateContext context) {
 		
+		Object o = getBusinessObjectForPictogramElement(context.getTargetContainer());
+		Composite composite = (Composite) o;
 		Component newComponent = null;
 		String newComponentName = null;
 		Implementation newImplementation = null;
 		SCADiagramAddComponentWizard wizard = new SCADiagramAddComponentWizard();
+		wizard.setDiagram(getDiagram());
+		wizard.setComponent(null);
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		WizardDialog wizDialog = new WizardDialog(shell, wizard);
 		int rtn_code = wizDialog.open();
@@ -76,8 +80,7 @@ public class SCADiagramCreateComponentFeature extends AbstractCreateFeature {
 
 		try {
 			ModelHandler mh = ModelHandlerLocator.getModelHandler(getDiagram().eResource());
-			Object o = getBusinessObjectForPictogramElement(context.getTargetContainer());
-			newComponent = mh.createComponent((Composite)o);
+			newComponent = mh.createComponent(composite);
 			newComponent.setName(newComponentName);
 			if (newImplementation != null) {
 				// do something with it

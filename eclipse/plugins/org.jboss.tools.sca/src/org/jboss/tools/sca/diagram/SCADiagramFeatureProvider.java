@@ -51,6 +51,7 @@ import org.jboss.tools.sca.diagram.component.SCADiagramDirectEditComponentFeatur
 import org.jboss.tools.sca.diagram.component.SCADiagramResizeComponentFeature;
 import org.jboss.tools.sca.diagram.componentreference.SCADiagramAddComponentReferenceFeature;
 import org.jboss.tools.sca.diagram.componentreference.SCADiagramCreateComponentReferenceFeature;
+import org.jboss.tools.sca.diagram.componentreference.SCADiagramCustomPromoteReferenceFeature;
 import org.jboss.tools.sca.diagram.componentservice.SCADiagramAddComponentServiceFeature;
 import org.jboss.tools.sca.diagram.componentservice.SCADiagramCreateComponentServiceFeature;
 import org.jboss.tools.sca.diagram.composite.SCADiagramAddCompositeFeature;
@@ -243,7 +244,8 @@ public class SCADiagramFeatureProvider extends DefaultFeatureProvider {
 		if (pes != null && pes.length == 1) {
 			Object bo = getBusinessObjectForPictogramElement(pes[0]);
 			if (bo instanceof Component) {
-				return new ICustomFeature[] { new SCADiagramCustomPromoteServiceFeature(this) };
+				return new ICustomFeature[] { new SCADiagramCustomPromoteServiceFeature(this),
+						new SCADiagramCustomPromoteReferenceFeature(this)};
 			}
 		}
 		return super.getCustomFeatures(context);

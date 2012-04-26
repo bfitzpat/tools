@@ -12,21 +12,16 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.switchyard.model.soap.SOAPBindingType;
 import org.jboss.tools.switchyard.model.soap.SOAPFactory;
 import org.jboss.tools.switchyard.model.switchyard.SwitchYardBindingType;
 
 public class SCADiagramAddBindingStartPage extends WizardPage {
 
-	private Text mBindingName;
-	private String sBindingName = null;
     private ListViewer listViewer;
     private SwitchYardBindingType cBinding = null;
 
@@ -43,7 +38,7 @@ public class SCADiagramAddBindingStartPage extends WizardPage {
     protected SCADiagramAddBindingStartPage(String pageName) {
 		super(pageName);
 		setTitle("Create a New Binding");
-		setDescription("Specify the name and binding type details for the new binding.");
+		setDescription("Specify binding type and details.");
 	}
 
 	@Override
@@ -52,17 +47,7 @@ public class SCADiagramAddBindingStartPage extends WizardPage {
 		GridLayout gl = new GridLayout();
 		gl.numColumns = 2;
 		composite.setLayout(gl);
-		// Component service name
-		new Label(composite, SWT.NONE).setText("Name:");
-		mBindingName = new Text(composite, SWT.BORDER);
-		mBindingName.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				handleModify();
-			}
-		});
 
-		mBindingName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
 		Label listLabel = new Label(composite, SWT.NONE);
 		listLabel.setText("Binding Type:");
 		GridData labelGD = new GridData(GridData.FILL_HORIZONTAL);
@@ -113,6 +98,7 @@ public class SCADiagramAddBindingStartPage extends WizardPage {
 				IStructuredSelection ssel = (IStructuredSelection) event.getSelection();
 				if (!ssel.isEmpty() && ssel.getFirstElement() instanceof SwitchYardBindingType) {
 					cBinding = (SwitchYardBindingType) ssel.getFirstElement();
+					handleModify();
 				}
 				
 			}
@@ -125,36 +111,33 @@ public class SCADiagramAddBindingStartPage extends WizardPage {
 		setErrorMessage(null);
 	}
 
-	public String getBindingName() {
-		return this.sBindingName;
-	}
-	
 	public SwitchYardBindingType getBinding(){
 		return this.cBinding;
 	}
 	
 	private void handleModify() {
-		sBindingName = mBindingName.getText().trim();
 		validate();
 	}
 
 	private void validate() {
 		String errorMessage = null;
-		String cpName = mBindingName.getText();
-
-		if (cpName == null || cpName.trim().length() == 0) {
-			errorMessage = "No name specified";
-		}
-		else if (cpName.trim().length() < cpName.length() ) {
-			errorMessage = "No spaces allowed in name";
-		}
+		if (cBinding == null)
+			errorMessage = "Please select a binding type.";
+//		String cpName = mBindingName.getText();
+//
+//		if (cpName == null || cpName.trim().length() == 0) {
+//			errorMessage = "No name specified";
+//		}
+//		else if (cpName.trim().length() < cpName.length() ) {
+//			errorMessage = "No spaces allowed in name";
+//		}
 		setErrorMessage(errorMessage);
 		setPageComplete(errorMessage == null);
 	}
 	
 	private void getBindingTypes ( List<SwitchYardBindingType> types ) {
 		SwitchYardBindingType soapBindingType = SOAPFactory.eINSTANCE.createSOAPBindingType();
-		((SOAPBindingType)soapBindingType).setUri("http://www.someenchanteduri.com");
+		((SOAPBindingType)soapBindingType).setWsdl("http://www.someenchanteduri.com");
 		types.add(soapBindingType);
 	}
 	

@@ -56,14 +56,12 @@ public class SCADiagramCreateBindingFeature extends AbstractCreateFeature {
 	@Override
 	public Object[] create(ICreateContext context) {
 		
-		String newClassName = null;
 		SwitchYardBindingType newBinding = null;
 		SCADiagramAddBindingWizard wizard = new SCADiagramAddBindingWizard();
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		WizardDialog wizDialog = new WizardDialog(shell, wizard);
 		int rtn_code = wizDialog.open();
 		if (rtn_code == Window.OK) {
-			newClassName = wizard.getBindingName();
 			newBinding = wizard.getBinding();
 		} else {
 			return EMPTY;
@@ -72,17 +70,16 @@ public class SCADiagramCreateBindingFeature extends AbstractCreateFeature {
 		ContainerShape targetContainer = context.getTargetContainer();
 		Object targetBO = getBusinessObjectForPictogramElement(targetContainer);
 		if (newBinding != null) {
-			newBinding.setName(newClassName);
 			if (targetBO instanceof Service) {
 				if (newBinding instanceof SOAPBindingType) { 
-					if (targetBO instanceof Service) {
-						((Service)targetBO).getBindingGroup().add(SOAPPackage.eINSTANCE.getDocumentRoot_BindingSoap(), newBinding);
-					} else if (targetBO instanceof Reference) {
-						((Reference)targetBO).getBindingGroup().add(SOAPPackage.eINSTANCE.getDocumentRoot_BindingSoap(), newBinding);
-					}
-
+					((Service)targetBO).getBindingGroup().add(SOAPPackage.eINSTANCE.getDocumentRoot_BindingSoap(), newBinding);
+				}
+			} else 	if (targetBO instanceof Reference) {
+				if (newBinding instanceof SOAPBindingType) { 
+					((Reference)targetBO).getBindingGroup().add(SOAPPackage.eINSTANCE.getDocumentRoot_BindingSoap(), newBinding);
 				}
 			}
+
 		}
 
         // do the add

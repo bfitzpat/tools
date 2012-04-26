@@ -1,4 +1,4 @@
-package org.jboss.tools.sca.diagram.component.wizards;
+package org.jboss.tools.sca.diagram.componentreference.wizards;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,10 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.soa.sca.sca1_1.model.sca.Implementation;
+import org.eclipse.soa.sca.sca1_1.model.sca.Interface;
+import org.eclipse.soa.sca.sca1_1.model.sca.JavaInterface;
+import org.eclipse.soa.sca.sca1_1.model.sca.ScaFactory;
+import org.eclipse.soa.sca.sca1_1.model.sca.WSDLPortType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -20,17 +23,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.sca.diagram.internal.wizards.BaseWizardPage;
-import org.jboss.tools.switchyard.model.bean.BeanFactory;
-import org.jboss.tools.switchyard.model.bean.BeanImplementationType;
-import org.jboss.tools.switchyard.model.camel.CamelFactory;
-import org.jboss.tools.switchyard.model.camel.CamelImplementationType;
 
-public class SCADiagramAddComponentStartPage extends BaseWizardPage {
+public class SCADiagramAddComponentReferenceStartPage extends BaseWizardPage {
 
-	private Text mComponentName;
-	private String sComponentName = null;
+	private Text mComponentReferenceName;
+	private String sComponentReferenceName = null;
     private ListViewer listViewer;
-    private Implementation cImplementation = null;
+    private Interface cInterface = null;
 
     /**
      * List width in characters.
@@ -42,10 +41,10 @@ public class SCADiagramAddComponentStartPage extends BaseWizardPage {
      */
     private final static int LIST_HEIGHT = 10;
 
-    protected SCADiagramAddComponentStartPage(String pageName) {
+    protected SCADiagramAddComponentReferenceStartPage(String pageName) {
 		super(pageName);
-		setTitle("Create a New Component");
-		setDescription("Specify the name and implementation type details for the new component.");
+		setTitle("Create a New Component Reference");
+		setDescription("Specify the name and interface details for the new component reference.");
 	}
 
 	@Override
@@ -56,17 +55,17 @@ public class SCADiagramAddComponentStartPage extends BaseWizardPage {
 		composite.setLayout(gl);
 		// Component service name
 		new Label(composite, SWT.NONE).setText("Name:");
-		mComponentName = new Text(composite, SWT.BORDER);
-		mComponentName.addModifyListener(new ModifyListener() {
+		mComponentReferenceName = new Text(composite, SWT.BORDER);
+		mComponentReferenceName.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				handleModify();
 			}
 		});
 
-		mComponentName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		mComponentReferenceName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		Label listLabel = new Label(composite, SWT.NONE);
-		listLabel.setText("Implementation Type:");
+		listLabel.setText("Interface Type:");
 		GridData labelGD = new GridData(GridData.FILL_HORIZONTAL);
 		labelGD.horizontalSpan = 2;
 		listLabel.setLayoutData(labelGD);
@@ -79,16 +78,16 @@ public class SCADiagramAddComponentStartPage extends BaseWizardPage {
         data.widthHint = convertWidthInCharsToPixels(LIST_WIDTH);
         listViewer.getList().setLayoutData(data);
         listViewer.getList().setFont(parent.getFont());
-        ArrayList<Implementation> typeList = new ArrayList<Implementation>();
+        ArrayList<Interface> typeList = new ArrayList<Interface>();
 		getInterfaceTypes(typeList);
         // Set the label provider		
         listViewer.setLabelProvider(new LabelProvider() {
             public String getText(Object element) {
-            	Implementation interfaceType = (Implementation) element;
-            	if (interfaceType instanceof CamelImplementationType)
-            		return "Camel";
-            	else if (interfaceType instanceof BeanImplementationType)
-            		return "Bean (NYI)";
+            	Interface interfaceType = (Interface) element;
+            	if (interfaceType instanceof JavaInterface)
+            		return "Java";
+            	else if (interfaceType instanceof WSDLPortType)
+            		return "WSDL";
             	else
             		return "";
             }
@@ -115,8 +114,8 @@ public class SCADiagramAddComponentStartPage extends BaseWizardPage {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				IStructuredSelection ssel = (IStructuredSelection) event.getSelection();
-				if (!ssel.isEmpty() && ssel.getFirstElement() instanceof Implementation) {
-					cImplementation = (Implementation) ssel.getFirstElement();
+				if (!ssel.isEmpty() && ssel.getFirstElement() instanceof Interface) {
+					cInterface = (Interface) ssel.getFirstElement();
 					handleModify();
 				}
 				
@@ -130,22 +129,22 @@ public class SCADiagramAddComponentStartPage extends BaseWizardPage {
 		setErrorMessage(null);
 	}
 
-	public String getComponentName() {
-		return this.sComponentName;
+	public String getComponentReferenceName() {
+		return this.sComponentReferenceName;
 	}
 	
-	public Implementation getImplementation(){
-		return this.cImplementation;
+	public Interface getInterface(){
+		return this.cInterface;
 	}
 	
 	private void handleModify() {
-		sComponentName = mComponentName.getText().trim();
+		sComponentReferenceName = mComponentReferenceName.getText().trim();
 		validate();
 	}
 
 	private void validate() {
 		String errorMessage = null;
-		String cpName = mComponentName.getText();
+		String cpName = mComponentReferenceName.getText();
 
 		if (cpName == null || cpName.trim().length() == 0) {
 			errorMessage = "No name specified";
@@ -157,11 +156,13 @@ public class SCADiagramAddComponentStartPage extends BaseWizardPage {
 		setPageComplete(errorMessage == null);
 	}
 	
-	private void getInterfaceTypes ( List<Implementation> types ) {
-		Implementation camelImplementationType = CamelFactory.eINSTANCE.createCamelImplementationType();
-		types.add(camelImplementationType);
-		Implementation beanImplementation = BeanFactory.eINSTANCE.createBeanImplementationType();
-		types.add(beanImplementation);
+	private void getInterfaceTypes ( List<Interface> types ) {
+		Interface javaInterfaceType = ScaFactory.eINSTANCE.createJavaInterface();
+		((JavaInterface)javaInterfaceType).setInterface("uno.dos.tres");
+		types.add(javaInterfaceType);
+		Interface wsdlPortType = ScaFactory.eINSTANCE.createWSDLPortType();
+		((WSDLPortType)wsdlPortType).setInterface("http://wwww.someserver.com/mywsdl.wsdl");
+		types.add(wsdlPortType);
 	}
 	
 //	private void getImplementationTypes ( List<Implementation> types ) {

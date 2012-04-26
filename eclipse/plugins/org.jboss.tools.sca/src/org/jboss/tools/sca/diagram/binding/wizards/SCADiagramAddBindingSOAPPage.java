@@ -1,5 +1,7 @@
 package org.jboss.tools.sca.diagram.binding.wizards;
 
+import java.net.URI;
+
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -9,11 +11,16 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.jboss.tools.switchyard.model.soap.SOAPBindingType;
+import org.jboss.tools.switchyard.model.switchyard.ContextMapperType;
+import org.jboss.tools.switchyard.model.switchyard.SwitchyardFactory;
 
 public class SCADiagramAddBindingSOAPPage extends WizardPage {
 
-	private Text mBindingName;
+	private Text mWSDLURIText;
 	private String sBindingURI = null;
+	private Text mWSDLPortText;
+	private String sBindingPort = null;
 	private SCADiagramAddBindingStartPage startPage = null;
 
 	public SCADiagramAddBindingSOAPPage ( SCADiagramAddBindingStartPage start, String pageName) {
@@ -34,15 +41,27 @@ public class SCADiagramAddBindingSOAPPage extends WizardPage {
 		gl.numColumns = 2;
 		composite.setLayout(gl);
 
-		new Label(composite, SWT.NONE).setText("URI:");
-		mBindingName = new Text(composite, SWT.BORDER);
-		mBindingName.addModifyListener(new ModifyListener() {
+		new Label(composite, SWT.NONE).setText("WSDL URI:");
+		mWSDLURIText = new Text(composite, SWT.BORDER);
+		mWSDLURIText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
+				sBindingURI = mWSDLURIText.getText().trim();
 				handleModify();
 			}
 		});
 
-		mBindingName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		mWSDLURIText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		new Label(composite, SWT.NONE).setText("WSDL Port:");
+		mWSDLPortText = new Text(composite, SWT.BORDER);
+		mWSDLPortText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				sBindingPort = mWSDLPortText.getText().trim();
+				handleModify();
+			}
+		});
+
+		mWSDLPortText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		setControl(composite);
 
@@ -50,25 +69,54 @@ public class SCADiagramAddBindingSOAPPage extends WizardPage {
 		setErrorMessage(null);
 	}
 
-	public String getComponentServiceName() {
+	public String getBindingURI() {
 		return this.sBindingURI;
 	}
 	
+	public String getBindingPort() {
+		return this.sBindingPort;
+	}
+
 	private void handleModify() {
-		startPage.getBinding().setUri(sBindingURI);
-		startPage.getBinding().setName(mBindingName.getText().trim());
+		SOAPBindingType binding = (SOAPBindingType) startPage.getBinding();
+		binding.setWsdl(sBindingURI);
+		if (sBindingPort != null && sBindingPort.trim().length() > 0) {
+			try {
+				Integer.parseInt(sBindingPort);
+				binding.setSocketAddr(sBindingPort);
+			} catch (NumberFormatException nfe) {
+				binding.setSocketAddr(null);
+			}
+		}
+		ContextMapperType contextMapper = SwitchyardFactory.eINSTANCE.createContextMapperType();
+		binding.setContextMapper(contextMapper);
 		validate();
 	}
 
 	private void validate() {
 		String errorMessage = null;
-		String cpName = mBindingName.getText();
+		String uriString = sBindingURI;
 
-		if (cpName == null || cpName.trim().length() == 0) {
-			errorMessage = "No name specified";
+		if (uriString == null || uriString.trim().length() == 0) {
+			errorMessage = "No URI specified";
 		}
-		else if (cpName.trim().length() < cpName.length() ) {
-			errorMessage = "No spaces allowed in name";
+		else if (uriString.trim().length() < uriString.length() ) {
+			errorMessage = "No spaces allowed in URI";
+		} else {
+			try {
+				URI.create(uriString);
+			} catch (IllegalArgumentException e) {
+				errorMessage = "Invalid URI";
+			}
+		}
+		
+		String portString = sBindingPort;
+		if (portString != null && portString.trim().length() > 0) {
+			try {
+				Integer.parseInt(sBindingPort);
+			} catch (NumberFormatException nfe) {
+				errorMessage = "Port must be a valid integer";
+			}
 		}
 		setErrorMessage(errorMessage);
 		setPageComplete(errorMessage == null);
