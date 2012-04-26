@@ -780,7 +780,7 @@ public interface CamelPackage extends EPackage {
 	int CAMEL_IMPLEMENTATION_TYPE__REQUIRES = ScaPackage.IMPLEMENTATION__REQUIRES;
 
 	/**
-	 * The feature id for the '<em><b>Route</b></em>' attribute.
+	 * The feature id for the '<em><b>Route</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2063,15 +2063,15 @@ public interface CamelPackage extends EPackage {
 	EClass getCamelImplementationType();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.jboss.tools.switchyard.model.camel.CamelImplementationType#getRoute <em>Route</em>}'.
+	 * Returns the meta object for the reference '{@link org.jboss.tools.switchyard.model.camel.CamelImplementationType#getRoute <em>Route</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Route</em>'.
+	 * @return the meta object for the reference '<em>Route</em>'.
 	 * @see org.jboss.tools.switchyard.model.camel.CamelImplementationType#getRoute()
 	 * @see #getCamelImplementationType()
 	 * @generated
 	 */
-	EAttribute getCamelImplementationType_Route();
+	EReference getCamelImplementationType_Route();
 
 	/**
 	 * Returns the meta object for the containment reference '{@link org.jboss.tools.switchyard.model.camel.CamelImplementationType#getJava <em>Java</em>}'.
@@ -3008,12 +3008,12 @@ public interface CamelPackage extends EPackage {
 		EClass CAMEL_IMPLEMENTATION_TYPE = eINSTANCE.getCamelImplementationType();
 
 		/**
-		 * The meta object literal for the '<em><b>Route</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Route</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute CAMEL_IMPLEMENTATION_TYPE__ROUTE = eINSTANCE.getCamelImplementationType_Route();
+		EReference CAMEL_IMPLEMENTATION_TYPE__ROUTE = eINSTANCE.getCamelImplementationType_Route();
 
 		/**
 		 * The meta object literal for the '<em><b>Java</b></em>' containment reference feature.

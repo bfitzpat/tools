@@ -49,6 +49,10 @@ import org.jboss.tools.switchyard.model.soap.SOAPPackage;
 
 import org.jboss.tools.switchyard.model.soap.impl.SOAPPackageImpl;
 
+import org.jboss.tools.switchyard.model.spring.SpringPackage;
+
+import org.jboss.tools.switchyard.model.spring.impl.SpringPackageImpl;
+
 import org.jboss.tools.switchyard.model.switchyard.SwitchyardPackage;
 
 import org.jboss.tools.switchyard.model.switchyard.impl.SwitchyardPackageImpl;
@@ -171,6 +175,10 @@ public class ValidatePackageImpl extends EPackageImpl implements ValidatePackage
 		SOAPPackageImpl theSOAPPackage = (SOAPPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SOAPPackage.eNS_URI) instanceof SOAPPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SOAPPackage.eNS_URI) : SOAPPackage.eINSTANCE);
 		TransformPackageImpl theTransformPackage = (TransformPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(TransformPackage.eNS_URI) instanceof TransformPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(TransformPackage.eNS_URI) : TransformPackage.eINSTANCE);
 		CamelPackageImpl theCamelPackage = (CamelPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CamelPackage.eNS_URI) instanceof CamelPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CamelPackage.eNS_URI) : CamelPackage.eINSTANCE);
+		SpringPackageImpl theSpringPackage = (SpringPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SpringPackage.eNS_URI) instanceof SpringPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SpringPackage.eNS_URI) : SpringPackage.eINSTANCE);
+
+		// Load packages
+		theSpringPackage.loadPackage();
 
 		// Create package meta-data objects
 		theValidatePackage.createPackageContents();
@@ -199,6 +207,9 @@ public class ValidatePackageImpl extends EPackageImpl implements ValidatePackage
 		theSOAPPackage.initializePackageContents();
 		theTransformPackage.initializePackageContents();
 		theCamelPackage.initializePackageContents();
+
+		// Fix loaded packages
+		theSpringPackage.fixPackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theValidatePackage.freeze();

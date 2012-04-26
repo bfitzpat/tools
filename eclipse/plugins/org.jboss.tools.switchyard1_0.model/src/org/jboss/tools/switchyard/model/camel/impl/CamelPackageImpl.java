@@ -61,6 +61,10 @@ import org.jboss.tools.switchyard.model.soap.SOAPPackage;
 
 import org.jboss.tools.switchyard.model.soap.impl.SOAPPackageImpl;
 
+import org.jboss.tools.switchyard.model.spring.SpringPackage;
+
+import org.jboss.tools.switchyard.model.spring.impl.SpringPackageImpl;
+
 import org.jboss.tools.switchyard.model.switchyard.SwitchyardPackage;
 
 import org.jboss.tools.switchyard.model.switchyard.impl.SwitchyardPackageImpl;
@@ -237,6 +241,10 @@ public class CamelPackageImpl extends EPackageImpl implements CamelPackage {
 		SOAPPackageImpl theSOAPPackage = (SOAPPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SOAPPackage.eNS_URI) instanceof SOAPPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SOAPPackage.eNS_URI) : SOAPPackage.eINSTANCE);
 		TransformPackageImpl theTransformPackage = (TransformPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(TransformPackage.eNS_URI) instanceof TransformPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(TransformPackage.eNS_URI) : TransformPackage.eINSTANCE);
 		ValidatePackageImpl theValidatePackage = (ValidatePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ValidatePackage.eNS_URI) instanceof ValidatePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ValidatePackage.eNS_URI) : ValidatePackage.eINSTANCE);
+		SpringPackageImpl theSpringPackage = (SpringPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SpringPackage.eNS_URI) instanceof SpringPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SpringPackage.eNS_URI) : SpringPackage.eINSTANCE);
+
+		// Load packages
+		theSpringPackage.loadPackage();
 
 		// Create package meta-data objects
 		theCamelPackage.createPackageContents();
@@ -265,6 +273,9 @@ public class CamelPackageImpl extends EPackageImpl implements CamelPackage {
 		theSOAPPackage.initializePackageContents();
 		theTransformPackage.initializePackageContents();
 		theValidatePackage.initializePackageContents();
+
+		// Fix loaded packages
+		theSpringPackage.fixPackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theCamelPackage.freeze();
@@ -487,8 +498,8 @@ public class CamelPackageImpl extends EPackageImpl implements CamelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getCamelImplementationType_Route() {
-		return (EAttribute)camelImplementationTypeEClass.getEStructuralFeatures().get(0);
+	public EReference getCamelImplementationType_Route() {
+		return (EReference)camelImplementationTypeEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1140,7 +1151,7 @@ public class CamelPackageImpl extends EPackageImpl implements CamelPackage {
 		createEReference(camelFileBindingTypeEClass, CAMEL_FILE_BINDING_TYPE__PRODUCE);
 
 		camelImplementationTypeEClass = createEClass(CAMEL_IMPLEMENTATION_TYPE);
-		createEAttribute(camelImplementationTypeEClass, CAMEL_IMPLEMENTATION_TYPE__ROUTE);
+		createEReference(camelImplementationTypeEClass, CAMEL_IMPLEMENTATION_TYPE__ROUTE);
 		createEReference(camelImplementationTypeEClass, CAMEL_IMPLEMENTATION_TYPE__JAVA);
 
 		camelMockBindingTypeEClass = createEClass(CAMEL_MOCK_BINDING_TYPE);
@@ -1244,6 +1255,7 @@ public class CamelPackageImpl extends EPackageImpl implements CamelPackage {
 		SwitchyardPackage theSwitchyardPackage = (SwitchyardPackage)EPackage.Registry.INSTANCE.getEPackage(SwitchyardPackage.eNS_URI);
 		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
 		ScaPackage theScaPackage = (ScaPackage)EPackage.Registry.INSTANCE.getEPackage(ScaPackage.eNS_URI);
+		SpringPackage theSpringPackage = (SpringPackage)EPackage.Registry.INSTANCE.getEPackage(SpringPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -1288,7 +1300,7 @@ public class CamelPackageImpl extends EPackageImpl implements CamelPackage {
 		initEReference(getCamelFileBindingType_Produce(), this.getFileProducerType(), null, "produce", null, 0, 1, CamelFileBindingType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(camelImplementationTypeEClass, CamelImplementationType.class, "CamelImplementationType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getCamelImplementationType_Route(), theXMLTypePackage.getAnySimpleType(), "route", null, 0, 1, CamelImplementationType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCamelImplementationType_Route(), theSpringPackage.getRouteDefinition(), null, "route", null, 0, 1, CamelImplementationType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCamelImplementationType_Java(), this.getJavaDSLType(), null, "java", null, 0, 1, CamelImplementationType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(camelMockBindingTypeEClass, CamelMockBindingType.class, "CamelMockBindingType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1558,14 +1570,6 @@ public class CamelPackageImpl extends EPackageImpl implements CamelPackage {
 		   new String[] {
 			 "name", "CamelImplementationType",
 			 "kind", "elementOnly"
-		   });		
-		addAnnotation
-		  (getCamelImplementationType_Route(), 
-		   source, 
-		   new String[] {
-			 "kind", "element",
-			 "name", "route",
-			 "namespace", "http://camel.apache.org/schema/spring"
 		   });		
 		addAnnotation
 		  (getCamelImplementationType_Java(), 

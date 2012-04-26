@@ -19,5 +19,4 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Implementation;
  * @generated
  */
 public interface BPELImplementation extends Implementation {
-
 } // BPELImplementation

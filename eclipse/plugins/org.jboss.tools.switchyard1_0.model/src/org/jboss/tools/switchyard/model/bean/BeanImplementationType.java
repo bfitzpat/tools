@@ -25,7 +25,6 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Implementation;
  * @generated
  */
 public interface BeanImplementationType extends Implementation {
-
 	/**
 	 * Returns the value of the '<em><b>Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -52,4 +51,5 @@ public interface BeanImplementationType extends Implementation {
 	 * @generated
 	 */
 	void setClass(String value);
+
 } // BeanImplementationType

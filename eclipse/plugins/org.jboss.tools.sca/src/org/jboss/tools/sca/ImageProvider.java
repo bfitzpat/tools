@@ -17,6 +17,7 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentReference;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
+import org.eclipse.soa.sca.sca1_1.model.sca.Implementation;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 
@@ -28,6 +29,7 @@ public class ImageProvider extends AbstractImageProvider {
 	public static final String PREFIX = ImageProvider.class.getPackage().getName() + ".";
 
 	public static final String IMG_16_COMPOSITE = PREFIX + Composite.class.getSimpleName().toLowerCase() + dot16;
+	public static final String IMG_16_IMPLEMENTATION_TYPE = PREFIX + Implementation.class.getSimpleName().toLowerCase() + dot16;
 	public static final String IMG_16_COMPONENT = PREFIX + Component.class.getSimpleName().toLowerCase() + dot16;
 	public static final String IMG_16_SERVICE = PREFIX + Service.class.getSimpleName().toLowerCase() + dot16;
 	public static final String IMG_16_REFERENCE = PREFIX + Reference.class.getSimpleName().toLowerCase() + dot16;
@@ -49,6 +51,7 @@ public class ImageProvider extends AbstractImageProvider {
 		addImageFilePath(IMG_16_CONNECTION, ICONS_16 + "Wire.gif");
 		addImageFilePath(IMG_16_CHAIN, ICONS_16 + "chain_small.png");
 		addImageFilePath(IMG_16_PLUS, ICONS_16 + "plus.png");
+		addImageFilePath(IMG_16_IMPLEMENTATION_TYPE, ICONS_16 + "ImplementationType.gif");
 	}
 
 }

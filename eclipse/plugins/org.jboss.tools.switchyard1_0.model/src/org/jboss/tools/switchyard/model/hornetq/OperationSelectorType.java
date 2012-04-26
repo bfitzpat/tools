@@ -6,6 +6,7 @@
  */
 package org.jboss.tools.switchyard.model.hornetq;
 
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Operation Selector Type</b></em>'.

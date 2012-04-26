@@ -34,6 +34,60 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
  */
 public interface SwitchYardType extends EObject {
 	/**
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see org.jboss.tools.switchyard.model.switchyard.SwitchyardPackage#getSwitchYardType_Name()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 *        extendedMetaData="kind='attribute' name='name'"
+	 * @generated
+	 */
+	String getName();
+
+	/**
+	 * Sets the value of the '{@link org.jboss.tools.switchyard.model.switchyard.SwitchYardType#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
+	void setName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Target Namespace</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Target Namespace</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Target Namespace</em>' attribute.
+	 * @see #setTargetNamespace(String)
+	 * @see org.jboss.tools.switchyard.model.switchyard.SwitchyardPackage#getSwitchYardType_TargetNamespace()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 *        extendedMetaData="kind='attribute' name='targetNamespace'"
+	 * @generated
+	 */
+	String getTargetNamespace();
+
+	/**
+	 * Sets the value of the '{@link org.jboss.tools.switchyard.model.switchyard.SwitchYardType#getTargetNamespace <em>Target Namespace</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Target Namespace</em>' attribute.
+	 * @see #getTargetNamespace()
+	 * @generated
+	 */
+	void setTargetNamespace(String value);
+
+	/**
 	 * Returns the value of the '<em><b>Composite</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -167,59 +221,5 @@ public interface SwitchYardType extends EObject {
 	 * @generated
 	 */
 	void setArtifacts(ArtifactsType value);
-
-	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see org.jboss.tools.switchyard.model.switchyard.SwitchyardPackage#getSwitchYardType_Name()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 *        extendedMetaData="kind='attribute' name='name'"
-	 * @generated
-	 */
-	String getName();
-
-	/**
-	 * Sets the value of the '{@link org.jboss.tools.switchyard.model.switchyard.SwitchYardType#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
-	 * @generated
-	 */
-	void setName(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Target Namespace</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Target Namespace</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Target Namespace</em>' attribute.
-	 * @see #setTargetNamespace(String)
-	 * @see org.jboss.tools.switchyard.model.switchyard.SwitchyardPackage#getSwitchYardType_TargetNamespace()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 *        extendedMetaData="kind='attribute' name='targetNamespace'"
-	 * @generated
-	 */
-	String getTargetNamespace();
-
-	/**
-	 * Sets the value of the '{@link org.jboss.tools.switchyard.model.switchyard.SwitchYardType#getTargetNamespace <em>Target Namespace</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Target Namespace</em>' attribute.
-	 * @see #getTargetNamespace()
-	 * @generated
-	 */
-	void setTargetNamespace(String value);
 
 } // SwitchYardType

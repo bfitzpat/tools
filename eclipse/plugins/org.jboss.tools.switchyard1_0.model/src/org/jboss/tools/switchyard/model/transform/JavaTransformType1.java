@@ -31,7 +31,6 @@ import org.jboss.tools.switchyard.model.switchyard.TransformType;
  * @generated
  */
 public interface JavaTransformType1 extends TransformType {
-
 	/**
 	 * Returns the value of the '<em><b>Class</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -57,4 +56,5 @@ public interface JavaTransformType1 extends TransformType {
 	 * @generated
 	 */
 	void setClass(String value);
+
 } // JavaTransformType1

@@ -34,6 +34,7 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentReference;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
+import org.eclipse.soa.sca.sca1_1.model.sca.Implementation;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.jboss.tools.sca.ImageProvider;
@@ -75,7 +76,21 @@ public class SCADiagramToolBehaviorProvider extends DefaultToolBehaviorProvider 
 				}
 				return decorators.toArray(new IDecorator[decorators.size()]);
 			}
+		} else if (bo instanceof Component) {
+			Component component = (Component) bo;
+			if (component.getImplementation() != null) {
+				ArrayList<IDecorator> decorators = new ArrayList<IDecorator>();
+				Implementation implementation = component.getImplementation();
+				String text = implementation.getClass().getSimpleName();
+				IDecorator imageRenderingDecorator =
+						new ImageDecorator( ImageProvider.IMG_16_IMPLEMENTATION_TYPE );
+				imageRenderingDecorator
+						.setMessage(text);
+				decorators.add(imageRenderingDecorator);
+				return decorators.toArray(new IDecorator[decorators.size()]);
+			}
 		}
+
 		return super.getDecorators(pe);
 	}
 
@@ -154,6 +169,11 @@ public class SCADiagramToolBehaviorProvider extends DefaultToolBehaviorProvider 
             new PaletteCompartmentEntry("Bindings", null);
         ret.add(bindingsEntry);
 
+        // add new compartment for components
+        PaletteCompartmentEntry implementationsEntry =
+            new PaletteCompartmentEntry("Implementations", null);
+        ret.add(implementationsEntry);
+
         // add new compartment for anything else
         PaletteCompartmentEntry miscEntry =
             new PaletteCompartmentEntry("Other", null);
@@ -175,6 +195,8 @@ public class SCADiagramToolBehaviorProvider extends DefaultToolBehaviorProvider 
             	compositeEntry.addToolEntry(objectCreationToolEntry);
             else if (cf.getCreateName().contains("Binding"))
             	bindingsEntry.addToolEntry(objectCreationToolEntry);
+            else if (cf.getCreateName().contains("Implementation"))
+            	implementationsEntry.addToolEntry(objectCreationToolEntry);
             else
             	miscEntry.addToolEntry(objectCreationToolEntry);
         }

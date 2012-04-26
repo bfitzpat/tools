@@ -1,12 +1,16 @@
 package org.jboss.tools.sca.diagram.componentservice.wizards;
 
-import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.soa.sca.sca1_1.model.sca.Interface;
+import org.eclipse.soa.sca.sca1_1.model.sca.JavaInterface;
+import org.eclipse.soa.sca.sca1_1.model.sca.WSDLPortType;
+import org.jboss.tools.sca.diagram.internal.wizards.BaseWizard;
 
-public class SCADiagramAddComponentServiceWizard extends Wizard {
+public class SCADiagramAddComponentServiceWizard extends BaseWizard {
 
 	private SCADiagramAddComponentServiceStartPage startPage = null;
 	private SCADiagramAddComponentServiceJavaPage javaPage = null;
+	private SCADiagramAddComponentServiceWSDLPage wsdlPage = null;
 	
 	public SCADiagramAddComponentServiceWizard() {
 		super();
@@ -17,6 +21,7 @@ public class SCADiagramAddComponentServiceWizard extends Wizard {
 	private void initPages() {
 		startPage = new SCADiagramAddComponentServiceStartPage("start");
 		javaPage = new SCADiagramAddComponentServiceJavaPage(startPage, "java");
+		wsdlPage = new SCADiagramAddComponentServiceWSDLPage(startPage, "wsdl");
 	}
 	
 	@Override
@@ -31,6 +36,7 @@ public class SCADiagramAddComponentServiceWizard extends Wizard {
 	public void addPages() {
 		addPage(startPage);
 		addPage(javaPage);
+		addPage(wsdlPage);
 	}
 
 	public String getComponentServiceName() {
@@ -43,5 +49,20 @@ public class SCADiagramAddComponentServiceWizard extends Wizard {
 		if (startPage != null) 
 			return startPage.getInterface();
 		return null;
+	}
+
+	@Override
+	public IWizardPage getNextPage(IWizardPage page) {
+		if (page.equals(startPage)) {
+			Interface interfaceToTest = startPage.getInterface();
+			if (interfaceToTest instanceof JavaInterface) {
+				javaPage.refresh();
+				return javaPage;
+			} else if (interfaceToTest instanceof WSDLPortType) {
+				wsdlPage.refresh();
+				return wsdlPage;
+			}
+		}
+		return super.getNextPage(page);
 	}
 }

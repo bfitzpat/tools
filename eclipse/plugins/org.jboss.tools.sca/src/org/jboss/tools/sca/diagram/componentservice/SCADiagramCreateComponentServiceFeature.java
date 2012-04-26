@@ -68,11 +68,6 @@ public class SCADiagramCreateComponentServiceFeature extends AbstractCreateFeatu
 		} else {
 			return EMPTY;
 		}
-//        // ask user for component service name
-//        newClassName = ExampleUtil.askString(TITLE, USER_QUESTION, "");
-//        if (newClassName == null || newClassName.trim().length() == 0) {
-//            return EMPTY;
-//        }
 
         ComponentService newCService = null;
 		try {

@@ -102,49 +102,6 @@ public interface DocumentRoot extends EObject {
 	EMap<String, String> getXSISchemaLocation();
 
 	/**
-	 * Returns the value of the '<em><b>Resource</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Resource</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Resource</em>' containment reference.
-	 * @see #setResource(ResourceType)
-	 * @see org.jboss.tools.switchyard.model.switchyard.SwitchyardPackage#getDocumentRoot_Resource()
-	 * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
-	 *        extendedMetaData="kind='element' name='resource' namespace='##targetNamespace'"
-	 * @generated
-	 */
-	ResourceType getResource();
-
-	/**
-	 * Sets the value of the '{@link org.jboss.tools.switchyard.model.switchyard.DocumentRoot#getResource <em>Resource</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Resource</em>' containment reference.
-	 * @see #getResource()
-	 * @generated
-	 */
-    void setResource(ResourceType value);
-
-    /**
-	 * Returns the value of the '<em><b>Binding Switchyard</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Binding Switchyard</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Binding Switchyard</em>' containment reference.
-	 * @see org.jboss.tools.switchyard.model.switchyard.SwitchyardPackage#getDocumentRoot_BindingSwitchyard()
-	 * @model containment="true" upper="-2" transient="true" changeable="false" volatile="true" derived="true"
-	 *        extendedMetaData="kind='element' name='binding.switchyard' namespace='##targetNamespace' affiliation='http://docs.oasis-open.org/ns/opencsa/sca/200912#binding'"
-	 * @generated
-	 */
-	SwitchYardBindingType getBindingSwitchyard();
-
-	/**
 	 * Returns the value of the '<em><b>Artifact</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -197,6 +154,22 @@ public interface DocumentRoot extends EObject {
 	 * @generated
 	 */
 	void setArtifacts(ArtifactsType value);
+
+	/**
+	 * Returns the value of the '<em><b>Binding Switchyard</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Binding Switchyard</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Binding Switchyard</em>' containment reference.
+	 * @see org.jboss.tools.switchyard.model.switchyard.SwitchyardPackage#getDocumentRoot_BindingSwitchyard()
+	 * @model containment="true" upper="-2" transient="true" changeable="false" volatile="true" derived="true"
+	 *        extendedMetaData="kind='element' name='binding.switchyard' namespace='##targetNamespace' affiliation='http://docs.oasis-open.org/ns/opencsa/sca/200912#binding'"
+	 * @generated
+	 */
+	SwitchYardBindingType getBindingSwitchyard();
 
 	/**
 	 * Returns the value of the '<em><b>Context Mapper</b></em>' containment reference.
@@ -413,6 +386,33 @@ public interface DocumentRoot extends EObject {
 	 * @generated
 	 */
 	void setProperty(PropertyType value);
+
+	/**
+	 * Returns the value of the '<em><b>Resource</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Resource</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Resource</em>' containment reference.
+	 * @see #setResource(ResourceType)
+	 * @see org.jboss.tools.switchyard.model.switchyard.SwitchyardPackage#getDocumentRoot_Resource()
+	 * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
+	 *        extendedMetaData="kind='element' name='resource' namespace='##targetNamespace'"
+	 * @generated
+	 */
+	ResourceType getResource();
+
+	/**
+	 * Sets the value of the '{@link org.jboss.tools.switchyard.model.switchyard.DocumentRoot#getResource <em>Resource</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Resource</em>' containment reference.
+	 * @see #getResource()
+	 * @generated
+	 */
+	void setResource(ResourceType value);
 
 	/**
 	 * Returns the value of the '<em><b>Switchyard</b></em>' containment reference.

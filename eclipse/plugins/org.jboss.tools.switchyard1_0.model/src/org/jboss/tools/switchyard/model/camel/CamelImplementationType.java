@@ -8,6 +8,8 @@ package org.jboss.tools.switchyard.model.camel;
 
 import org.eclipse.soa.sca.sca1_1.model.sca.Implementation;
 
+import org.jboss.tools.switchyard.model.spring.RouteDefinition;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Implementation Type</b></em>'.
@@ -27,31 +29,30 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Implementation;
  */
 public interface CamelImplementationType extends Implementation {
 	/**
-	 * Returns the value of the '<em><b>Route</b></em>' attribute.
+	 * Returns the value of the '<em><b>Route</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Route</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Route</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Route</em>' attribute.
-	 * @see #setRoute(Object)
+	 * @return the value of the '<em>Route</em>' reference.
+	 * @see #setRoute(RouteDefinition)
 	 * @see org.jboss.tools.switchyard.model.camel.CamelPackage#getCamelImplementationType_Route()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.AnySimpleType"
-	 *        extendedMetaData="kind='element' name='route' namespace='http://camel.apache.org/schema/spring'"
+	 * @model
 	 * @generated
 	 */
-	Object getRoute();
+	RouteDefinition getRoute();
 
 	/**
-	 * Sets the value of the '{@link org.jboss.tools.switchyard.model.camel.CamelImplementationType#getRoute <em>Route</em>}' attribute.
+	 * Sets the value of the '{@link org.jboss.tools.switchyard.model.camel.CamelImplementationType#getRoute <em>Route</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Route</em>' attribute.
+	 * @param value the new value of the '<em>Route</em>' reference.
 	 * @see #getRoute()
 	 * @generated
 	 */
-	void setRoute(Object value);
+	void setRoute(RouteDefinition value);
 
 	/**
 	 * Returns the value of the '<em><b>Java</b></em>' containment reference.

@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+
 import org.jboss.tools.switchyard.model.switchyard.SwitchyardPackage;
 
 /**
@@ -139,13 +140,13 @@ public interface ValidatePackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int JAVA_VALIDATE_TYPE__NAME = SwitchyardPackage.VALIDATE_TYPE__NAME;
+	int JAVA_VALIDATE_TYPE__NAME = SwitchyardPackage.VALIDATE_TYPE__NAME;
 
-    /**
+	/**
 	 * The number of structural features of the '<em>Java Validate Type</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -167,13 +168,13 @@ public interface ValidatePackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int XML_VALIDATE_TYPE__NAME = SwitchyardPackage.VALIDATE_TYPE__NAME;
+	int XML_VALIDATE_TYPE__NAME = SwitchyardPackage.VALIDATE_TYPE__NAME;
 
-    /**
+	/**
 	 * The number of structural features of the '<em>Xml Validate Type</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

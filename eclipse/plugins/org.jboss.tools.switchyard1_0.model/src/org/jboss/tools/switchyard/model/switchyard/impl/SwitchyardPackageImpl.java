@@ -49,6 +49,10 @@ import org.jboss.tools.switchyard.model.soap.SOAPPackage;
 
 import org.jboss.tools.switchyard.model.soap.impl.SOAPPackageImpl;
 
+import org.jboss.tools.switchyard.model.spring.SpringPackage;
+
+import org.jboss.tools.switchyard.model.spring.impl.SpringPackageImpl;
+
 import org.jboss.tools.switchyard.model.switchyard.ArtifactType;
 import org.jboss.tools.switchyard.model.switchyard.ArtifactsType;
 import org.jboss.tools.switchyard.model.switchyard.ContextMapperType;
@@ -277,6 +281,10 @@ public class SwitchyardPackageImpl extends EPackageImpl implements SwitchyardPac
 		TransformPackageImpl theTransformPackage = (TransformPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(TransformPackage.eNS_URI) instanceof TransformPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(TransformPackage.eNS_URI) : TransformPackage.eINSTANCE);
 		ValidatePackageImpl theValidatePackage = (ValidatePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ValidatePackage.eNS_URI) instanceof ValidatePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ValidatePackage.eNS_URI) : ValidatePackage.eINSTANCE);
 		CamelPackageImpl theCamelPackage = (CamelPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CamelPackage.eNS_URI) instanceof CamelPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CamelPackage.eNS_URI) : CamelPackage.eINSTANCE);
+		SpringPackageImpl theSpringPackage = (SpringPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SpringPackage.eNS_URI) instanceof SpringPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SpringPackage.eNS_URI) : SpringPackage.eINSTANCE);
+
+		// Load packages
+		theSpringPackage.loadPackage();
 
 		// Create package meta-data objects
 		theSwitchyardPackage.createPackageContents();
@@ -305,6 +313,9 @@ public class SwitchyardPackageImpl extends EPackageImpl implements SwitchyardPac
 		theTransformPackage.initializePackageContents();
 		theValidatePackage.initializePackageContents();
 		theCamelPackage.initializePackageContents();
+
+		// Fix loaded packages
+		theSpringPackage.fixPackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theSwitchyardPackage.freeze();

@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+
 import org.eclipse.soa.sca.sca1_1.model.sca.ScaPackage;
 
 /**
@@ -91,22 +92,22 @@ public interface BPELPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Policy Sets</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int BPEL_IMPLEMENTATION__POLICY_SETS = ScaPackage.IMPLEMENTATION__POLICY_SETS;
+	int BPEL_IMPLEMENTATION__POLICY_SETS = ScaPackage.IMPLEMENTATION__POLICY_SETS;
 
-    /**
+	/**
 	 * The feature id for the '<em><b>Requires</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int BPEL_IMPLEMENTATION__REQUIRES = ScaPackage.IMPLEMENTATION__REQUIRES;
+	int BPEL_IMPLEMENTATION__REQUIRES = ScaPackage.IMPLEMENTATION__REQUIRES;
 
-    /**
+	/**
 	 * The number of structural features of the '<em>Implementation</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

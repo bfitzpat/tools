@@ -20,6 +20,8 @@ import org.jboss.tools.switchyard.model.camel.CamelImplementationType;
 import org.jboss.tools.switchyard.model.camel.CamelPackage;
 import org.jboss.tools.switchyard.model.camel.JavaDSLType;
 
+import org.jboss.tools.switchyard.model.spring.RouteDefinition;
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Implementation Type</b></em>'.
@@ -36,24 +38,14 @@ import org.jboss.tools.switchyard.model.camel.JavaDSLType;
  */
 public class CamelImplementationTypeImpl extends ImplementationImpl implements CamelImplementationType {
 	/**
-	 * The default value of the '{@link #getRoute() <em>Route</em>}' attribute.
+	 * The cached value of the '{@link #getRoute() <em>Route</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getRoute()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final Object ROUTE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getRoute() <em>Route</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getRoute()
-	 * @generated
-	 * @ordered
-	 */
-	protected Object route = ROUTE_EDEFAULT;
+	protected RouteDefinition route;
 
 	/**
 	 * The cached value of the '{@link #getJava() <em>Java</em>}' containment reference.
@@ -89,7 +81,15 @@ public class CamelImplementationTypeImpl extends ImplementationImpl implements C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Object getRoute() {
+	public RouteDefinition getRoute() {
+		if (route != null && route.eIsProxy()) {
+			InternalEObject oldRoute = (InternalEObject)route;
+			route = (RouteDefinition)eResolveProxy(oldRoute);
+			if (route != oldRoute) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CamelPackage.CAMEL_IMPLEMENTATION_TYPE__ROUTE, oldRoute, route));
+			}
+		}
 		return route;
 	}
 
@@ -98,8 +98,17 @@ public class CamelImplementationTypeImpl extends ImplementationImpl implements C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setRoute(Object newRoute) {
-		Object oldRoute = route;
+	public RouteDefinition basicGetRoute() {
+		return route;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setRoute(RouteDefinition newRoute) {
+		RouteDefinition oldRoute = route;
 		route = newRoute;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CamelPackage.CAMEL_IMPLEMENTATION_TYPE__ROUTE, oldRoute, route));
@@ -171,7 +180,8 @@ public class CamelImplementationTypeImpl extends ImplementationImpl implements C
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case CamelPackage.CAMEL_IMPLEMENTATION_TYPE__ROUTE:
-				return getRoute();
+				if (resolve) return getRoute();
+				return basicGetRoute();
 			case CamelPackage.CAMEL_IMPLEMENTATION_TYPE__JAVA:
 				return getJava();
 		}
@@ -187,7 +197,7 @@ public class CamelImplementationTypeImpl extends ImplementationImpl implements C
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case CamelPackage.CAMEL_IMPLEMENTATION_TYPE__ROUTE:
-				setRoute(newValue);
+				setRoute((RouteDefinition)newValue);
 				return;
 			case CamelPackage.CAMEL_IMPLEMENTATION_TYPE__JAVA:
 				setJava((JavaDSLType)newValue);
@@ -205,7 +215,7 @@ public class CamelImplementationTypeImpl extends ImplementationImpl implements C
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case CamelPackage.CAMEL_IMPLEMENTATION_TYPE__ROUTE:
-				setRoute(ROUTE_EDEFAULT);
+				setRoute((RouteDefinition)null);
 				return;
 			case CamelPackage.CAMEL_IMPLEMENTATION_TYPE__JAVA:
 				setJava((JavaDSLType)null);
@@ -223,27 +233,11 @@ public class CamelImplementationTypeImpl extends ImplementationImpl implements C
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case CamelPackage.CAMEL_IMPLEMENTATION_TYPE__ROUTE:
-				return ROUTE_EDEFAULT == null ? route != null : !ROUTE_EDEFAULT.equals(route);
+				return route != null;
 			case CamelPackage.CAMEL_IMPLEMENTATION_TYPE__JAVA:
 				return java != null;
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (route: ");
-		result.append(route);
-		result.append(')');
-		return result.toString();
 	}
 
 } //CamelImplementationTypeImpl

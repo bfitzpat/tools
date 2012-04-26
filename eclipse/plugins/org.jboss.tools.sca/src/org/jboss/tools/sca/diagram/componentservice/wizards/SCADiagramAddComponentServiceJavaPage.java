@@ -6,8 +6,8 @@ import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.JavaUIMessages;
 import org.eclipse.jdt.internal.ui.dialogs.OpenTypeSelectionDialog;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.soa.sca.sca1_1.model.sca.JavaInterface;
+import org.eclipse.soa.sca.sca1_1.model.sca.WSDLPortType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -22,12 +22,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
+import org.jboss.tools.sca.diagram.internal.wizards.BaseWizardPage;
+import org.jboss.tools.sca.diagram.internal.wizards.IRefreshablePage;
 
 @SuppressWarnings("restriction")
-public class SCADiagramAddComponentServiceJavaPage extends WizardPage {
+public class SCADiagramAddComponentServiceJavaPage extends BaseWizardPage implements IRefreshablePage {
 
 	private Text mJavaInterfaceName;
-	private String sComponentServiceName = null;
+	private String sJavaInterface = null;
 	private SCADiagramAddComponentServiceStartPage startPage = null;
 
 	public SCADiagramAddComponentServiceJavaPage ( SCADiagramAddComponentServiceStartPage start, String pageName) {
@@ -85,12 +87,15 @@ public class SCADiagramAddComponentServiceJavaPage extends WizardPage {
 		setErrorMessage(null);
 	}
 
-	public String getComponentServiceName() {
-		return this.sComponentServiceName;
+	public String getJavaInterfaceString() {
+		return this.sJavaInterface;
 	}
 	
 	private void handleModify() {
-		sComponentServiceName = mJavaInterfaceName.getText().trim();
+		sJavaInterface = mJavaInterfaceName.getText().trim();
+		if (startPage != null && startPage.getInterface() instanceof WSDLPortType) {
+			((JavaInterface)startPage.getInterface()).setInterface(sJavaInterface);
+		}
 		validate();
 	}
 
@@ -121,5 +126,24 @@ public class SCADiagramAddComponentServiceJavaPage extends WizardPage {
 			return result.getFullyQualifiedName();
 		}
 		return null;
+	}
+
+	@Override
+	public boolean getSkippable() {
+		if (this.startPage != null && this.startPage.getInterface() != null) {
+			if (startPage.getInterface() instanceof JavaInterface) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		return super.getSkippable();
+	}
+
+	@Override
+	public void refresh() {
+		if (startPage != null && startPage.getInterface() instanceof JavaInterface) {
+			mJavaInterfaceName.setText(((JavaInterface)startPage.getInterface()).getInterface());
+		}
 	}
 }

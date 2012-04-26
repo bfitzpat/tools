@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+
 import org.jboss.tools.switchyard.model.switchyard.SwitchyardPackage;
 
 /**
@@ -212,22 +213,22 @@ public interface TransformPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>From</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int JAXB_TRANSFORM_TYPE__FROM = SwitchyardPackage.TRANSFORM_TYPE__FROM;
+	int JAXB_TRANSFORM_TYPE__FROM = SwitchyardPackage.TRANSFORM_TYPE__FROM;
 
-    /**
+	/**
 	 * The feature id for the '<em><b>To</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int JAXB_TRANSFORM_TYPE__TO = SwitchyardPackage.TRANSFORM_TYPE__TO;
+	int JAXB_TRANSFORM_TYPE__TO = SwitchyardPackage.TRANSFORM_TYPE__TO;
 
-    /**
+	/**
 	 * The number of structural features of the '<em>JAXB Transform Type</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -249,22 +250,22 @@ public interface TransformPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>From</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int JSON_TRANSFORM_TYPE__FROM = SwitchyardPackage.TRANSFORM_TYPE__FROM;
+	int JSON_TRANSFORM_TYPE__FROM = SwitchyardPackage.TRANSFORM_TYPE__FROM;
 
-    /**
+	/**
 	 * The feature id for the '<em><b>To</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int JSON_TRANSFORM_TYPE__TO = SwitchyardPackage.TRANSFORM_TYPE__TO;
+	int JSON_TRANSFORM_TYPE__TO = SwitchyardPackage.TRANSFORM_TYPE__TO;
 
-    /**
+	/**
 	 * The number of structural features of the '<em>Json Transform Type</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -286,22 +287,22 @@ public interface TransformPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>From</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int SMOOKS_TRANSFORM_TYPE1__FROM = SwitchyardPackage.TRANSFORM_TYPE__FROM;
+	int SMOOKS_TRANSFORM_TYPE1__FROM = SwitchyardPackage.TRANSFORM_TYPE__FROM;
 
-    /**
+	/**
 	 * The feature id for the '<em><b>To</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int SMOOKS_TRANSFORM_TYPE1__TO = SwitchyardPackage.TRANSFORM_TYPE__TO;
+	int SMOOKS_TRANSFORM_TYPE1__TO = SwitchyardPackage.TRANSFORM_TYPE__TO;
 
-    /**
+	/**
 	 * The number of structural features of the '<em>Smooks Transform Type1</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -323,22 +324,22 @@ public interface TransformPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>From</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int XSLT_TRANSFORM_TYPE__FROM = SwitchyardPackage.TRANSFORM_TYPE__FROM;
+	int XSLT_TRANSFORM_TYPE__FROM = SwitchyardPackage.TRANSFORM_TYPE__FROM;
 
-    /**
+	/**
 	 * The feature id for the '<em><b>To</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int XSLT_TRANSFORM_TYPE__TO = SwitchyardPackage.TRANSFORM_TYPE__TO;
+	int XSLT_TRANSFORM_TYPE__TO = SwitchyardPackage.TRANSFORM_TYPE__TO;
 
-    /**
+	/**
 	 * The number of structural features of the '<em>Xslt Transform Type</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

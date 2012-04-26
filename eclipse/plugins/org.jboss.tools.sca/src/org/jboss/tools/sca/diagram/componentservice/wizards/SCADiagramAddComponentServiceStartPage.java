@@ -10,7 +10,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.soa.sca.sca1_1.model.sca.Interface;
 import org.eclipse.soa.sca.sca1_1.model.sca.JavaInterface;
 import org.eclipse.soa.sca.sca1_1.model.sca.ScaFactory;
@@ -23,8 +22,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.jboss.tools.sca.diagram.internal.wizards.BaseWizardPage;
 
-public class SCADiagramAddComponentServiceStartPage extends WizardPage {
+public class SCADiagramAddComponentServiceStartPage extends BaseWizardPage {
 
 	private Text mComponentServiceName;
 	private String sComponentServiceName = null;
@@ -44,7 +44,7 @@ public class SCADiagramAddComponentServiceStartPage extends WizardPage {
     protected SCADiagramAddComponentServiceStartPage(String pageName) {
 		super(pageName);
 		setTitle("Create a New Component Service");
-		setDescription("Specify the name and implementation type details for the new component service.");
+		setDescription("Specify the name and interface details for the new component service.");
 	}
 
 	@Override
@@ -159,9 +159,9 @@ public class SCADiagramAddComponentServiceStartPage extends WizardPage {
 		Interface javaInterfaceType = ScaFactory.eINSTANCE.createJavaInterface();
 		((JavaInterface)javaInterfaceType).setInterface("uno.dos.tres");
 		types.add(javaInterfaceType);
-//		Interface wsdlPortType = ScaFactory.eINSTANCE.createWSDLPortType();
-//		((WSDLPortType)wsdlPortType).setInterface("http://wwww.someserver.com/mywsdl.wsdl");
-//		types.add(wsdlPortType);
+		Interface wsdlPortType = ScaFactory.eINSTANCE.createWSDLPortType();
+		((WSDLPortType)wsdlPortType).setInterface("http://wwww.someserver.com/mywsdl.wsdl");
+		types.add(wsdlPortType);
 	}
 	
 //	private void getImplementationTypes ( List<Implementation> types ) {

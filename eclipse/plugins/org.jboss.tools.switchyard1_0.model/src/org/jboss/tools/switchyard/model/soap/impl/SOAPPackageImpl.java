@@ -54,6 +54,10 @@ import org.jboss.tools.switchyard.model.soap.SOAPPackage;
 
 import org.jboss.tools.switchyard.model.soap.util.SOAPValidator;
 
+import org.jboss.tools.switchyard.model.spring.SpringPackage;
+
+import org.jboss.tools.switchyard.model.spring.impl.SpringPackageImpl;
+
 import org.jboss.tools.switchyard.model.switchyard.SwitchyardPackage;
 
 import org.jboss.tools.switchyard.model.switchyard.impl.SwitchyardPackageImpl;
@@ -160,6 +164,10 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage {
 		TransformPackageImpl theTransformPackage = (TransformPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(TransformPackage.eNS_URI) instanceof TransformPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(TransformPackage.eNS_URI) : TransformPackage.eINSTANCE);
 		ValidatePackageImpl theValidatePackage = (ValidatePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ValidatePackage.eNS_URI) instanceof ValidatePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ValidatePackage.eNS_URI) : ValidatePackage.eINSTANCE);
 		CamelPackageImpl theCamelPackage = (CamelPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CamelPackage.eNS_URI) instanceof CamelPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CamelPackage.eNS_URI) : CamelPackage.eINSTANCE);
+		SpringPackageImpl theSpringPackage = (SpringPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SpringPackage.eNS_URI) instanceof SpringPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SpringPackage.eNS_URI) : SpringPackage.eINSTANCE);
+
+		// Load packages
+		theSpringPackage.loadPackage();
 
 		// Create package meta-data objects
 		theSOAPPackage.createPackageContents();
@@ -188,6 +196,9 @@ public class SOAPPackageImpl extends EPackageImpl implements SOAPPackage {
 		theTransformPackage.initializePackageContents();
 		theValidatePackage.initializePackageContents();
 		theCamelPackage.initializePackageContents();
+
+		// Fix loaded packages
+		theSpringPackage.fixPackageContents();
 
 		// Register package validator
 		EValidator.Registry.INSTANCE.put

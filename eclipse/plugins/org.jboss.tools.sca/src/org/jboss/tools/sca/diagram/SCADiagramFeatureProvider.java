@@ -40,6 +40,7 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentReference;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
+import org.eclipse.soa.sca.sca1_1.model.sca.Implementation;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.jboss.tools.sca.diagram.binding.SCADiagramAddBindingFeature;
@@ -68,6 +69,8 @@ import org.jboss.tools.sca.diagram.connections.SCADiagramAddComponentServiceLink
 import org.jboss.tools.sca.diagram.connections.SCADiagramAddReferenceLinkFeature;
 import org.jboss.tools.sca.diagram.connections.SCADiagramCreateComponentServiceLinkFeature;
 import org.jboss.tools.sca.diagram.connections.SCADiagramCreateReferenceLinkFeature;
+import org.jboss.tools.sca.diagram.implementation.SCADiagramAddImplementationFeature;
+import org.jboss.tools.sca.diagram.implementation.SCADiagramCreateImplementationFeature;
 import org.jboss.tools.sca.diagram.service.SCADiagramAddServiceFeature;
 import org.jboss.tools.sca.diagram.service.SCADiagramCreateServiceFeature;
 import org.jboss.tools.sca.diagram.service.SCADiagramCustomPromoteServiceFeature;
@@ -120,6 +123,9 @@ public class SCADiagramFeatureProvider extends DefaultFeatureProvider {
 				return new SCADiagramAddComponentServiceFeature(this);
 			}
 		}
+		if (context.getNewObject() instanceof Implementation) {
+			return new SCADiagramAddImplementationFeature(this);
+		}
 		return super.getAddFeature(context);
 	}
 
@@ -131,7 +137,8 @@ public class SCADiagramFeatureProvider extends DefaultFeatureProvider {
 				new SCADiagramCreateComponentServiceFeature(this),
 				new SCADiagramCreateComponentReferenceFeature(this),
 				new SCADiagramCreateCompositeReferenceFeature(this),
-				new SCADiagramCreateBindingFeature(this)
+				new SCADiagramCreateBindingFeature(this),
+				new SCADiagramCreateImplementationFeature(this)
 			};
 	}
 
