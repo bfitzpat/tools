@@ -172,6 +172,7 @@ public class ModelHandler {
 		if (getRootSwitchYard() == null)
 			createSwitchYard();
 		Composite composite = createSCA(Composite.class);
+		composite.setTargetNamespace(getRootSwitchYard().getTargetNamespace());
 		getRootSwitchYard().setComposite(composite);
 		return composite;
 	}

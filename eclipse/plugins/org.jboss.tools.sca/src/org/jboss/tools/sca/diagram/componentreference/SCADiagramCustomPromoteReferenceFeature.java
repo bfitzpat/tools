@@ -29,10 +29,12 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentReference;
 import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
+import org.eclipse.soa.sca.sca1_1.model.sca.Multiplicity;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.jboss.tools.sca.ImageProvider;
 import org.jboss.tools.sca.core.ModelHandler;
 import org.jboss.tools.sca.core.ModelHandlerLocator;
+import org.jboss.tools.sca.diagram.StyleUtil;
 import org.jboss.tools.sca.diagram.di.DIImport;
 
 public class SCADiagramCustomPromoteReferenceFeature extends
@@ -73,6 +75,7 @@ public class SCADiagramCustomPromoteReferenceFeature extends
 							Reference newReference = handler.createCompositeReference(composite);
 							newReference.setName(cref.getName());
 							newReference.getPromote().add(cref);
+							newReference.setMultiplicity(Multiplicity._01);
 							
 							ContainerShape cshape = 
 									(ContainerShape) getFeatureProvider().
@@ -81,8 +84,8 @@ public class SCADiagramCustomPromoteReferenceFeature extends
 							AddContext addRefContext = new AddContext();
 							addRefContext.setNewObject(newReference);
 							addRefContext.setTargetContainer(cshape);
-							addRefContext.setX(0);
-							addRefContext.setY(0);
+							addRefContext.setX(cshape.getGraphicsAlgorithm().getX() + cshape.getGraphicsAlgorithm().getWidth() - StyleUtil.LARGE_RIGHT_ARROW_WIDTH);
+							addRefContext.setY(pes[0].getGraphicsAlgorithm().getY());
 
 							IAddFeature addRefFeature = getFeatureProvider().getAddFeature(addRefContext);
 							if (addRefFeature.canAdd(addRefContext)) {
