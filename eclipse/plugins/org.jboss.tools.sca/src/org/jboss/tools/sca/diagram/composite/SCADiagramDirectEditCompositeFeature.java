@@ -1,18 +1,15 @@
-/*******************************************************************************
- * <copyright>
+/******************************************************************************* 
+ * Copyright (c) 2012 Red Hat, Inc. 
+ *  All rights reserved. 
+ * This program is made available under the terms of the 
+ * Eclipse Public License v1.0 which accompanies this distribution, 
+ * and is available at http://www.eclipse.org/legal/epl-v10.html 
+ * 
+ * Contributors: 
+ * Red Hat, Inc. - initial API and implementation 
  *
- * Copyright (c) 2005, 2010 SAP AG.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    SAP AG - initial API, implementation and documentation
- *
- * </copyright>
- *
- *******************************************************************************/
+ * @author bfitzpat
+ ******************************************************************************/
 package org.jboss.tools.sca.diagram.composite;
 
 import org.eclipse.graphiti.features.IFeatureProvider;

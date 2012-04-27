@@ -1,27 +1,31 @@
+/******************************************************************************* 
+ * Copyright (c) 2012 Red Hat, Inc. 
+ *  All rights reserved. 
+ * This program is made available under the terms of the 
+ * Eclipse Public License v1.0 which accompanies this distribution, 
+ * and is available at http://www.eclipse.org/legal/epl-v10.html 
+ * 
+ * Contributors: 
+ * Red Hat, Inc. - initial API and implementation 
+ *
+ * @author bfitzpat
+ ******************************************************************************/
 package org.jboss.tools.sca.diagram.binding.wizards;
 
-import java.net.URI;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
+import org.jboss.tools.sca.diagram.internal.wizards.BaseWizardPage;
+import org.jboss.tools.sca.diagram.internal.wizards.IRefreshablePage;
+import org.jboss.tools.sca.diagram.shared.WSDLURISelectionComposite;
 import org.jboss.tools.switchyard.model.soap.SOAPBindingType;
-import org.jboss.tools.switchyard.model.switchyard.ContextMapperType;
-import org.jboss.tools.switchyard.model.switchyard.SwitchyardFactory;
 
-public class SCADiagramAddBindingSOAPPage extends WizardPage {
+public class SCADiagramAddBindingSOAPPage extends BaseWizardPage  implements IRefreshablePage {
 
-	private Text mWSDLURIText;
-	private String sBindingURI = null;
-	private Text mWSDLPortText;
-	private String sBindingPort = null;
 	private SCADiagramAddBindingStartPage startPage = null;
+	private WSDLURISelectionComposite uriComposite = null;
 
 	public SCADiagramAddBindingSOAPPage ( SCADiagramAddBindingStartPage start, String pageName) {
 		this(pageName);
@@ -36,90 +40,50 @@ public class SCADiagramAddBindingSOAPPage extends WizardPage {
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout gl = new GridLayout();
-		gl.numColumns = 2;
-		composite.setLayout(gl);
-
-		new Label(composite, SWT.NONE).setText("WSDL URI:");
-		mWSDLURIText = new Text(composite, SWT.BORDER);
-		mWSDLURIText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				sBindingURI = mWSDLURIText.getText().trim();
-				handleModify();
+		uriComposite = new WSDLURISelectionComposite();
+		if (startPage != null && startPage.getBinding() != null && startPage.getBinding() instanceof SOAPBindingType) {
+			uriComposite.setcBinding((SOAPBindingType) startPage.getBinding());
+		}
+		uriComposite.addChangeListener(new ChangeListener(){
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				setErrorMessage(uriComposite.getErrorMessage());
+				setPageComplete(uriComposite.getErrorMessage() == null);
 			}
 		});
+		uriComposite.createContents(parent, SWT.NONE);
+		
+        setControl(uriComposite.getcPanel());
 
-		mWSDLURIText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		new Label(composite, SWT.NONE).setText("WSDL Port:");
-		mWSDLPortText = new Text(composite, SWT.BORDER);
-		mWSDLPortText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				sBindingPort = mWSDLPortText.getText().trim();
-				handleModify();
-			}
-		});
-
-		mWSDLPortText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		setControl(composite);
-
-		validate();
 		setErrorMessage(null);
 	}
 
 	public String getBindingURI() {
-		return this.sBindingURI;
+		return this.uriComposite.getWSDLURI();
 	}
 	
 	public String getBindingPort() {
-		return this.sBindingPort;
+		return  this.uriComposite.getsBindingPort();
 	}
 
-	private void handleModify() {
-		SOAPBindingType binding = (SOAPBindingType) startPage.getBinding();
-		binding.setWsdl(sBindingURI);
-		if (sBindingPort != null && sBindingPort.trim().length() > 0) {
-			try {
-				Integer.parseInt(sBindingPort);
-				binding.setSocketAddr(sBindingPort);
-			} catch (NumberFormatException nfe) {
-				binding.setSocketAddr(null);
+	@Override
+	public boolean getSkippable() {
+		if (this.startPage != null && this.startPage.getBinding() != null) {
+			if (startPage.getBinding() instanceof SOAPBindingType) {
+				return false;
+			} else {
+				return true;
 			}
 		}
-		ContextMapperType contextMapper = SwitchyardFactory.eINSTANCE.createContextMapperType();
-		binding.setContextMapper(contextMapper);
-		validate();
+		return super.getSkippable();
 	}
 
-	private void validate() {
-		String errorMessage = null;
-		String uriString = sBindingURI;
-
-		if (uriString == null || uriString.trim().length() == 0) {
-			errorMessage = "No URI specified";
-		}
-		else if (uriString.trim().length() < uriString.length() ) {
-			errorMessage = "No spaces allowed in URI";
-		} else {
-			try {
-				URI.create(uriString);
-			} catch (IllegalArgumentException e) {
-				errorMessage = "Invalid URI";
+	@Override
+	public void refresh() {
+		if (startPage != null && startPage.getBinding() instanceof SOAPBindingType) {
+			if (uriComposite != null && uriComposite.getcPanel() != null) {
+				uriComposite.setcBinding((SOAPBindingType) startPage.getBinding());
 			}
 		}
-		
-		String portString = sBindingPort;
-		if (portString != null && portString.trim().length() > 0) {
-			try {
-				Integer.parseInt(sBindingPort);
-			} catch (NumberFormatException nfe) {
-				errorMessage = "Port must be a valid integer";
-			}
-		}
-		setErrorMessage(errorMessage);
-		setPageComplete(errorMessage == null);
 	}
-	
 }

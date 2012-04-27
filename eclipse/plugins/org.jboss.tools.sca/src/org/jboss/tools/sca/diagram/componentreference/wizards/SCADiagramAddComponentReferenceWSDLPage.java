@@ -1,23 +1,30 @@
+/******************************************************************************* 
+ * Copyright (c) 2012 Red Hat, Inc. 
+ *  All rights reserved. 
+ * This program is made available under the terms of the 
+ * Eclipse Public License v1.0 which accompanies this distribution, 
+ * and is available at http://www.eclipse.org/legal/epl-v10.html 
+ * 
+ * Contributors: 
+ * Red Hat, Inc. - initial API and implementation 
+ *
+ * @author bfitzpat
+ ******************************************************************************/
 package org.jboss.tools.sca.diagram.componentreference.wizards;
 
-import java.net.URI;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.eclipse.soa.sca.sca1_1.model.sca.WSDLPortType;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.sca.diagram.internal.wizards.BaseWizardPage;
 import org.jboss.tools.sca.diagram.internal.wizards.IRefreshablePage;
+import org.jboss.tools.sca.diagram.shared.WSDLURISelectionComposite;
 
 public class SCADiagramAddComponentReferenceWSDLPage extends BaseWizardPage implements IRefreshablePage {
 
-	private Text mWSDLInterfaceURIText;
-	private String sWSDLURI = null;
+	private WSDLURISelectionComposite uriComposite = null;
 	private SCADiagramAddComponentReferenceStartPage startPage = null;
 
 	public SCADiagramAddComponentReferenceWSDLPage ( SCADiagramAddComponentReferenceStartPage start, String pageName) {
@@ -33,59 +40,26 @@ public class SCADiagramAddComponentReferenceWSDLPage extends BaseWizardPage impl
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout gl = new GridLayout();
-		gl.numColumns = 3;
-		composite.setLayout(gl);
-		//  name
-		new Label(composite, SWT.NONE).setText("WSDL URI:");
-		mWSDLInterfaceURIText = new Text(composite, SWT.BORDER);
-		if (startPage != null && startPage.getInterface() instanceof WSDLPortType) {
-			mWSDLInterfaceURIText.setText(((WSDLPortType)startPage.getInterface()).getInterface());
+		uriComposite = new WSDLURISelectionComposite();
+		if (startPage != null && startPage.getInterface() != null) {
+			uriComposite.setInterface(startPage.getInterface());
 		}
-		mWSDLInterfaceURIText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				handleModify();
+		uriComposite.addChangeListener(new ChangeListener(){
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				setErrorMessage(uriComposite.getErrorMessage());
+				setPageComplete(uriComposite.getErrorMessage() == null);
 			}
 		});
-		mWSDLInterfaceURIText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		uriComposite.createContents(parent, SWT.NONE);
 		
-        setControl(composite);
+        setControl(uriComposite.getcPanel());
 
-		validate();
 		setErrorMessage(null);
 	}
 
 	public String getWSDLURI() {
-		return this.sWSDLURI;
-	}
-	
-	private void handleModify() {
-		sWSDLURI = mWSDLInterfaceURIText.getText().trim();
-		if (startPage != null && startPage.getInterface() instanceof WSDLPortType) {
-			((WSDLPortType)startPage.getInterface()).setInterface(sWSDLURI);
-		}
-		validate();
-	}
-
-	private void validate() {
-		String errorMessage = null;
-		String uriString = mWSDLInterfaceURIText.getText();
-
-		if (uriString == null || uriString.trim().length() == 0) {
-			errorMessage = "No uri specified";
-		}
-		else if (uriString.trim().length() < uriString.length() ) {
-			errorMessage = "No spaces allowed in uri";
-		} else {
-			try {
-				URI.create(uriString);
-			} catch (IllegalArgumentException e) {
-				errorMessage = "Invalid URI";
-			}
-		}
-		setErrorMessage(errorMessage);
-		setPageComplete(errorMessage == null);
+		return this.uriComposite.getWSDLURI();
 	}
 	
 	@Override
@@ -103,7 +77,9 @@ public class SCADiagramAddComponentReferenceWSDLPage extends BaseWizardPage impl
 	@Override
 	public void refresh() {
 		if (startPage != null && startPage.getInterface() instanceof WSDLPortType) {
-			mWSDLInterfaceURIText.setText(((WSDLPortType)startPage.getInterface()).getInterface());
+			if (uriComposite != null && uriComposite.getcPanel() != null) {
+				uriComposite.setInterface(startPage.getInterface());
+			}
 		}
 	}
 
