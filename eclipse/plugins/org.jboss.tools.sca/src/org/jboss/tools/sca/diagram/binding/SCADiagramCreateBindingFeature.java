@@ -28,73 +28,82 @@ import org.jboss.tools.switchyard.model.soap.SOAPBindingType;
 import org.jboss.tools.switchyard.model.soap.SOAPPackage;
 import org.jboss.tools.switchyard.model.switchyard.SwitchYardBindingType;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramCreateBindingFeature extends AbstractCreateFeature {
 
+    /**
+     * @param fp feature provider
+     */
     public SCADiagramCreateBindingFeature(IFeatureProvider fp) {
-    	super (fp, "Binding", "Create binding");
+        super(fp, "Binding", "Create binding");
     }
-    
-	@Override
-	public boolean canCreate(ICreateContext context) {
-		ContainerShape targetContainer = context.getTargetContainer();
-		// check if user wants to add to a service or reference
-		if (targetContainer instanceof Service) {
-			return true;
-		} 
-		if (getBusinessObjectForPictogramElement(targetContainer) instanceof Service) {
-			return true;
-		}
-		if (targetContainer instanceof Reference) {
-			return true;
-		} 
-		if (getBusinessObjectForPictogramElement(targetContainer) instanceof Reference) {
-			return true;
-		}
-		return false;
-	}
 
-	@Override
-	public Object[] create(ICreateContext context) {
-		
-		SwitchYardBindingType newBinding = null;
-		SCADiagramAddBindingWizard wizard = new SCADiagramAddBindingWizard();
-		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		WizardDialog wizDialog = new WizardDialog(shell, wizard);
-		int rtn_code = wizDialog.open();
-		if (rtn_code == Window.OK) {
-			newBinding = wizard.getBinding();
-		} else {
-			return EMPTY;
-		}
+    @Override
+    public boolean canCreate(ICreateContext context) {
+        ContainerShape targetContainer = context.getTargetContainer();
+        // check if user wants to add to a service or reference
+        if (targetContainer instanceof Service) {
+            return true;
+        }
+        if (getBusinessObjectForPictogramElement(targetContainer) instanceof Service) {
+            return true;
+        }
+        if (targetContainer instanceof Reference) {
+            return true;
+        }
+        if (getBusinessObjectForPictogramElement(targetContainer) instanceof Reference) {
+            return true;
+        }
+        return false;
+    }
 
-		ContainerShape targetContainer = context.getTargetContainer();
-		Object targetBO = getBusinessObjectForPictogramElement(targetContainer);
-		if (newBinding != null) {
-			if (targetBO instanceof Service) {
-				if (newBinding instanceof SOAPBindingType) { 
-					((Service)targetBO).getBindingGroup().add(SOAPPackage.eINSTANCE.getDocumentRoot_BindingSoap(), newBinding);
-				}
-			} else 	if (targetBO instanceof Reference) {
-				if (newBinding instanceof SOAPBindingType) { 
-					((Reference)targetBO).getBindingGroup().add(SOAPPackage.eINSTANCE.getDocumentRoot_BindingSoap(), newBinding);
-				}
-			}
+    @Override
+    public Object[] create(ICreateContext context) {
 
-		}
+        SwitchYardBindingType newBinding = null;
+        SCADiagramAddBindingWizard wizard = new SCADiagramAddBindingWizard();
+        Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+        WizardDialog wizDialog = new WizardDialog(shell, wizard);
+        int rtn_code = wizDialog.open();
+        if (rtn_code == Window.OK) {
+            newBinding = wizard.getBinding();
+        } else {
+            return EMPTY;
+        }
+
+        ContainerShape targetContainer = context.getTargetContainer();
+        Object targetBO = getBusinessObjectForPictogramElement(targetContainer);
+        if (newBinding != null) {
+            if (targetBO instanceof Service) {
+                if (newBinding instanceof SOAPBindingType) {
+                    ((Service) targetBO).getBindingGroup().add(SOAPPackage.eINSTANCE.getDocumentRoot_BindingSoap(),
+                            newBinding);
+                }
+            } else if (targetBO instanceof Reference) {
+                if (newBinding instanceof SOAPBindingType) {
+                    ((Reference) targetBO).getBindingGroup().add(SOAPPackage.eINSTANCE.getDocumentRoot_BindingSoap(),
+                            newBinding);
+                }
+            }
+
+        }
 
         // do the add
         addGraphicalRepresentation(context, newBinding);
 
-		// activate direct editing after object creation
-		getFeatureProvider().getDirectEditingInfo().setActive(true);
+        // activate direct editing after object creation
+        getFeatureProvider().getDirectEditingInfo().setActive(true);
 
-		// return newly created business object(s)
-        return new Object[] { newBinding };
-	}
+        // return newly created business object(s)
+        return new Object[] {newBinding };
+    }
 
-	@Override
-	public String getCreateImageId() {
-		return ImageProvider.IMG_16_CHAIN;
-	}
+    @Override
+    public String getCreateImageId() {
+        return ImageProvider.IMG_16_CHAIN;
+    }
 
 }

@@ -28,59 +28,67 @@ import org.eclipse.graphiti.util.IColorConstant;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentReference;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramAddReferenceLinkFeature extends AbstractAddFeature {
 
-	public SCADiagramAddReferenceLinkFeature(IFeatureProvider fp) {
-		super(fp);
-	}
+    /**
+     * @param fp the feature provider
+     */
+    public SCADiagramAddReferenceLinkFeature(IFeatureProvider fp) {
+        super(fp);
+    }
 
-	@Override
-	public boolean canAdd(IAddContext context) {
-		if (context instanceof IAddConnectionContext) {
-			if (context.getNewObject() instanceof Reference) {
-				return true;
-			}
-			if (context.getNewObject() instanceof ComponentReference) {
-				return true;
-			}
-		}
-		return false;
-	}
+    @Override
+    public boolean canAdd(IAddContext context) {
+        if (context instanceof IAddConnectionContext) {
+            if (context.getNewObject() instanceof Reference) {
+                return true;
+            }
+            if (context.getNewObject() instanceof ComponentReference) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public PictogramElement add(IAddContext context) {
-		IAddConnectionContext addConnContext = (IAddConnectionContext) context;
-		ComponentReference addedComponentReference = null;
-		Reference addedReference = null;
-		if (context.getNewObject() instanceof ComponentReference) 
-			addedComponentReference = (ComponentReference) context.getNewObject();
-		if (context.getNewObject() instanceof Reference)
-			addedReference = (Reference) context.getNewObject();
+    @Override
+    public PictogramElement add(IAddContext context) {
+        IAddConnectionContext addConnContext = (IAddConnectionContext) context;
+        ComponentReference addedComponentReference = null;
+        Reference addedReference = null;
+        if (context.getNewObject() instanceof ComponentReference) {
+            addedComponentReference = (ComponentReference) context.getNewObject();
+        } else if (context.getNewObject() instanceof Reference) {
+            addedReference = (Reference) context.getNewObject();
+        }
 
-		IPeCreateService peCreateService = Graphiti.getPeCreateService();
-		
-	       // CONNECTION WITH POLYLINE
-        Connection connection = peCreateService
-            .createFreeFormConnection(getDiagram());
+        IPeCreateService peCreateService = Graphiti.getPeCreateService();
+
+        // CONNECTION WITH POLYLINE
+        Connection connection = peCreateService.createFreeFormConnection(getDiagram());
         connection.setStart(addConnContext.getSourceAnchor());
         connection.setEnd(addConnContext.getTargetAnchor());
- 
+
         IGaService gaService = Graphiti.getGaService();
         Polyline polyline = gaService.createPolyline(connection);
         polyline.setLineWidth(2);
         polyline.setLineStyle(LineStyle.DASH);
         polyline.setForeground(manageColor(IColorConstant.BLACK));
- 
+
         // create link and wire it
-        if (addedReference != null)
-        	link(connection, addedReference);
-        if (addedComponentReference != null) {
-        	AnchorContainer container = connection.getEnd().getParent();
-        	Object startObject = getFeatureProvider().getBusinessObjectForPictogramElement(container);
-        	link(connection, startObject);
+        if (addedReference != null) {
+            link(connection, addedReference);
         }
- 
-		return connection;
-	}
+        if (addedComponentReference != null) {
+            AnchorContainer container = connection.getEnd().getParent();
+            Object startObject = getFeatureProvider().getBusinessObjectForPictogramElement(container);
+            link(connection, startObject);
+        }
+
+        return connection;
+    }
 
 }

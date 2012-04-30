@@ -27,60 +27,66 @@ import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.jboss.tools.sca.diagram.StyleUtil;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramLayoutCompositeReferenceFeature extends AbstractLayoutFeature {
 
-	private static final int MIN_HEIGHT = StyleUtil.COMPOSITE_REFERENCE_HEIGHT;
-	private static final int MIN_WIDTH = StyleUtil.COMPOSITE_REFERENCE_WIDTH;
-	
-	public SCADiagramLayoutCompositeReferenceFeature(IFeatureProvider fp) {
-		super(fp);
-	}
+    private static final int MIN_HEIGHT = StyleUtil.COMPOSITE_REFERENCE_HEIGHT;
+    private static final int MIN_WIDTH = StyleUtil.COMPOSITE_REFERENCE_WIDTH;
 
-	@Override
-	public boolean canLayout(ILayoutContext context) {
-		// return true, if pictogram element is linked to an EClass
-		PictogramElement pe = context.getPictogramElement();
-		if (!(pe instanceof ContainerShape))
-			return false;
-		EList<EObject> businessObjects = pe.getLink().getBusinessObjects();
-		return businessObjects.size() == 1 
-				&& businessObjects.get(0) instanceof Reference;
-	}
+    /**
+     * @param fp feature provider
+     */
+    public SCADiagramLayoutCompositeReferenceFeature(IFeatureProvider fp) {
+        super(fp);
+    }
 
-	@Override
-	public boolean layout(ILayoutContext context) {
-		boolean anythingChanged = false;
+    @Override
+    public boolean canLayout(ILayoutContext context) {
+        // return true, if pictogram element is linked to an EClass
+        PictogramElement pe = context.getPictogramElement();
+        if (!(pe instanceof ContainerShape)) {
+            return false;
+        }
+        EList<EObject> businessObjects = pe.getLink().getBusinessObjects();
+        return businessObjects.size() == 1 && businessObjects.get(0) instanceof Reference;
+    }
 
-		ContainerShape containerShape =
-				(ContainerShape) context.getPictogramElement();
-		GraphicsAlgorithm containerGa = containerShape.getGraphicsAlgorithm();
-		int containerWidth = containerGa.getWidth();
-		int containerHeight = containerGa.getHeight();
+    @Override
+    public boolean layout(ILayoutContext context) {
+        boolean anythingChanged = false;
 
-		// height
-		if (containerGa.getHeight() < MIN_HEIGHT) {
-			containerGa.setHeight(MIN_HEIGHT);
-			anythingChanged = true;
-		}
+        ContainerShape containerShape = (ContainerShape) context.getPictogramElement();
+        GraphicsAlgorithm containerGa = containerShape.getGraphicsAlgorithm();
+        int containerWidth = containerGa.getWidth();
+        int containerHeight = containerGa.getHeight();
 
-		// width
-		if (containerGa.getWidth() < MIN_WIDTH) {
-			containerGa.setWidth(MIN_WIDTH);
-			anythingChanged = true;
-		}
+        // height
+        if (containerGa.getHeight() < MIN_HEIGHT) {
+            containerGa.setHeight(MIN_HEIGHT);
+            anythingChanged = true;
+        }
 
-		IGaService gaService = Graphiti.getGaService();
-		for (GraphicsAlgorithm ga : containerGa.getGraphicsAlgorithmChildren()) {
-			if (ga instanceof Text) {
-				Text text = (Text) ga;
-				text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
-				text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
-				gaService.setLocationAndSize(text, 5, 0, containerWidth - 15, containerHeight /2 );
-				anythingChanged = true;
-			}
-		}
+        // width
+        if (containerGa.getWidth() < MIN_WIDTH) {
+            containerGa.setWidth(MIN_WIDTH);
+            anythingChanged = true;
+        }
 
-		return anythingChanged;
-	}
+        IGaService gaService = Graphiti.getGaService();
+        for (GraphicsAlgorithm ga : containerGa.getGraphicsAlgorithmChildren()) {
+            if (ga instanceof Text) {
+                Text text = (Text) ga;
+                text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+                text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
+                gaService.setLocationAndSize(text, 5, 0, containerWidth - 15, containerHeight / 2);
+                anythingChanged = true;
+            }
+        }
+
+        return anythingChanged;
+    }
 
 }

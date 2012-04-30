@@ -30,90 +30,92 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.jboss.tools.sca.diagram.StyleUtil;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramAddCompositeReferenceFeature extends AbstractAddShapeFeature {
 
-	public SCADiagramAddCompositeReferenceFeature( IFeatureProvider fp ) {
-		super(fp);
-	}
+    /**
+     * @param fp feature provider
+     */
+    public SCADiagramAddCompositeReferenceFeature(IFeatureProvider fp) {
+        super(fp);
+    }
 
-	@Override
-	public boolean canAdd(IAddContext context) {
-		if (context.getNewObject() instanceof Reference) {
-			ContainerShape targetContainer = context.getTargetContainer();
-			// check if user wants to add to a diagram
-			if (getBusinessObjectForPictogramElement(targetContainer) instanceof Composite) {
-				return true;
-			}
-		}
-		return false;
-	}
+    @Override
+    public boolean canAdd(IAddContext context) {
+        if (context.getNewObject() instanceof Reference) {
+            ContainerShape targetContainer = context.getTargetContainer();
+            // check if user wants to add to a diagram
+            if (getBusinessObjectForPictogramElement(targetContainer) instanceof Composite) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public PictogramElement add(IAddContext context) {
-		Reference addedReference = null;
-		if (context.getNewObject() instanceof Reference) {
-			addedReference = (Reference) context.getNewObject();
-		}
-		ContainerShape targetContainerShape = null;
-		if (context.getTargetContainer() instanceof ContainerShape) 
-			targetContainerShape = (ContainerShape) context.getTargetContainer();
+    @Override
+    public PictogramElement add(IAddContext context) {
+        Reference addedReference = null;
+        if (context.getNewObject() instanceof Reference) {
+            addedReference = (Reference) context.getNewObject();
+        }
+        ContainerShape targetContainerShape = null;
+        if (context.getTargetContainer() instanceof ContainerShape) {
+            targetContainerShape = (ContainerShape) context.getTargetContainer();
+        }
 
-		// CONTAINER SHAPE WITH ROUNDED RECTANGLE
-		IPeCreateService peCreateService = Graphiti.getPeCreateService();
-		IGaService gaService = Graphiti.getGaService();
-		
-		ContainerShape containerShape = peCreateService.createContainerShape(targetContainerShape, true);
+        // CONTAINER SHAPE WITH ROUNDED RECTANGLE
+        IPeCreateService peCreateService = Graphiti.getPeCreateService();
+        IGaService gaService = Graphiti.getGaService();
 
-	    // check whether the context has a size (e.g. from a create feature)
+        ContainerShape containerShape = peCreateService.createContainerShape(targetContainerShape, true);
+
+        // check whether the context has a size (e.g. from a create feature)
         // otherwise define a default size for the shape
         int width = context.getWidth() <= 0 ? StyleUtil.COMPOSITE_REFERENCE_WIDTH : context.getWidth();
         int height = context.getHeight() <= 0 ? StyleUtil.COMPOSITE_REFERENCE_HEIGHT : context.getHeight();
- 
+
         Rectangle invisibleRectangle = gaService.createInvisibleRectangle(containerShape);
-        gaService.setLocationAndSize(invisibleRectangle,
-                context.getX() , context.getY(), width , height);
+        gaService.setLocationAndSize(invisibleRectangle, context.getX(), context.getY(), width, height);
 
         Polygon p = null;
         // create service
-		{
-			// arrow through points: top-middle, bottom-right, bottom-left
-			p = gaService.createPolygon(invisibleRectangle, StyleUtil.LARGE_RIGHT_ARROW);
-            p.setStyle(StyleUtil
-                    .getStyleForCompositeReference(getDiagram()));
-	        p.setParentGraphicsAlgorithm(invisibleRectangle);
 
-			gaService.setLocationAndSize(p,
-					0, 0, width, height);
+        // arrow through points: top-middle, bottom-right, bottom-left
+        p = gaService.createPolygon(invisibleRectangle, StyleUtil.LARGE_RIGHT_ARROW);
+        p.setStyle(StyleUtil.getStyleForCompositeReference(getDiagram()));
+        p.setParentGraphicsAlgorithm(invisibleRectangle);
 
-			Graphiti.getPeService().setPropertyValue(p, "sca-type", "composite-reference");
+        gaService.setLocationAndSize(p, 0, 0, width, height);
 
-			// create link and wire it
-			link(containerShape, addedReference);
+        Graphiti.getPeService().setPropertyValue(p, "sca-type", "composite-reference");
 
-			ChopboxAnchor anchor = 
-					peCreateService.createChopboxAnchor(containerShape);
-			anchor.setActive(true);
-			link(anchor, addedReference);
-		}
-		// SHAPE WITH TEXT
-		{
-			// create and set text graphics algorithm
-			Text text = gaService.createDefaultText(getDiagram(), p,
-					addedReference.getName());
-			Font font = gaService.manageFont(getDiagram(), text.getFont().getName(), text.getFont().getSize(), false, true);
-			text.setFont(font);
+        // create link and wire it
+        link(containerShape, addedReference);
 
-			text.setForeground(manageColor(StyleUtil.BLACK));
-			int left = p.getPoints().get(5).getX();
-			int right = p.getPoints().get(1).getX();
-			text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
-			text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
-			gaService.setLocationAndSize(text, left + 10, 0, right - left - 10, height );
+        ChopboxAnchor anchor = peCreateService.createChopboxAnchor(containerShape);
+        anchor.setActive(true);
+        link(anchor, addedReference);
 
-		}
+        // SHAPE WITH TEXT
 
-		return containerShape;
+        // create and set text graphics algorithm
+        Text text = gaService.createDefaultText(getDiagram(), p, addedReference.getName());
+        Font font = gaService.manageFont(getDiagram(), text.getFont().getName(), text.getFont().getSize(), false,
+                true);
+        text.setFont(font);
 
-	}
+        text.setForeground(manageColor(StyleUtil.BLACK));
+        int left = p.getPoints().get(5).getX();
+        int right = p.getPoints().get(1).getX();
+        text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+        text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
+        gaService.setLocationAndSize(text, left + 10, 0, right - left - 10, height);
+
+        return containerShape;
+
+    }
 
 }

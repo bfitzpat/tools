@@ -22,68 +22,78 @@ import org.jboss.tools.sca.diagram.internal.wizards.IRefreshablePage;
 import org.jboss.tools.sca.diagram.shared.WSDLURISelectionComposite;
 import org.jboss.tools.switchyard.model.soap.SOAPBindingType;
 
-public class SCADiagramAddBindingSOAPPage extends BaseWizardPage  implements IRefreshablePage {
+/**
+ * @author bfitzpat
+ *
+ */
+public class SCADiagramAddBindingSOAPPage extends BaseWizardPage implements IRefreshablePage {
 
-	private SCADiagramAddBindingStartPage startPage = null;
-	private WSDLURISelectionComposite uriComposite = null;
+    private SCADiagramAddBindingStartPage _startPage = null;
+    private WSDLURISelectionComposite _uriComposite = null;
 
-	public SCADiagramAddBindingSOAPPage ( SCADiagramAddBindingStartPage start, String pageName) {
-		this(pageName);
-		this.startPage = start;
-	}
-	
-	protected SCADiagramAddBindingSOAPPage(String pageName) {
-		super(pageName);
-		setTitle("Specify SOAP Binding Details");
-		setDescription("Specify pertinent details for your SOAP Binding.");
-	}
+    /**
+     * @param start Start page reference
+     * @param pageName String for name
+     */
+    public SCADiagramAddBindingSOAPPage(SCADiagramAddBindingStartPage start, String pageName) {
+        this(pageName);
+        this._startPage = start;
+    }
 
-	@Override
-	public void createControl(Composite parent) {
-		uriComposite = new WSDLURISelectionComposite();
-		if (startPage != null && startPage.getBinding() != null && startPage.getBinding() instanceof SOAPBindingType) {
-			uriComposite.setcBinding((SOAPBindingType) startPage.getBinding());
-		}
-		uriComposite.addChangeListener(new ChangeListener(){
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				setErrorMessage(uriComposite.getErrorMessage());
-				setPageComplete(uriComposite.getErrorMessage() == null);
-			}
-		});
-		uriComposite.createContents(parent, SWT.NONE);
-		
-        setControl(uriComposite.getcPanel());
+    protected SCADiagramAddBindingSOAPPage(String pageName) {
+        super(pageName);
+        setTitle("Specify SOAP Binding Details");
+        setDescription("Specify pertinent details for your SOAP Binding.");
+    }
 
-		setErrorMessage(null);
-	}
+    @Override
+    public void createControl(Composite parent) {
+        _uriComposite = new WSDLURISelectionComposite();
+        if (_startPage != null && _startPage.getBinding() != null && _startPage.getBinding() instanceof SOAPBindingType) {
+            _uriComposite.setcBinding((SOAPBindingType) _startPage.getBinding());
+        }
+        _uriComposite.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent arg0) {
+                setErrorMessage(_uriComposite.getErrorMessage());
+                setPageComplete(_uriComposite.getErrorMessage() == null);
+            }
+        });
+        _uriComposite.createContents(parent, SWT.NONE);
 
-	public String getBindingURI() {
-		return this.uriComposite.getWSDLURI();
-	}
-	
-	public String getBindingPort() {
-		return  this.uriComposite.getsBindingPort();
-	}
+        setControl(_uriComposite.getcPanel());
 
-	@Override
-	public boolean getSkippable() {
-		if (this.startPage != null && this.startPage.getBinding() != null) {
-			if (startPage.getBinding() instanceof SOAPBindingType) {
-				return false;
-			} else {
-				return true;
-			}
-		}
-		return super.getSkippable();
-	}
+        setErrorMessage(null);
+    }
 
-	@Override
-	public void refresh() {
-		if (startPage != null && startPage.getBinding() instanceof SOAPBindingType) {
-			if (uriComposite != null && uriComposite.getcPanel() != null) {
-				uriComposite.setcBinding((SOAPBindingType) startPage.getBinding());
-			}
-		}
-	}
+    /**
+     * @return String for URI
+     */
+    public String getBindingURI() {
+        return this._uriComposite.getWSDLURI();
+    }
+
+    /**
+     * @return String for port #
+     */
+    public String getBindingPort() {
+        return this._uriComposite.getsBindingPort();
+    }
+
+    @Override
+    public boolean getSkippable() {
+        if (this._startPage != null && this._startPage.getBinding() != null && _startPage.getBinding() instanceof SOAPBindingType) {
+           return false;
+        }
+        return super.getSkippable();
+    }
+
+    @Override
+    public void refresh() {
+        if (_startPage != null && _startPage.getBinding() instanceof SOAPBindingType) {
+            if (_uriComposite != null && _uriComposite.getcPanel() != null) {
+                _uriComposite.setcBinding((SOAPBindingType) _startPage.getBinding());
+            }
+        }
+    }
 }

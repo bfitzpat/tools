@@ -25,40 +25,47 @@ import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.graphiti.services.IPeCreateService;
 import org.eclipse.graphiti.util.IColorConstant;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramAddComponentServiceLinkFeature extends AbstractAddFeature {
 
-	public SCADiagramAddComponentServiceLinkFeature(IFeatureProvider fp) {
-		super(fp);
-	}
+    /**
+     * @param fp the feature provider
+     */
+    public SCADiagramAddComponentServiceLinkFeature(IFeatureProvider fp) {
+        super(fp);
+    }
 
-	@Override
-	public boolean canAdd(IAddContext context) {
-		if (context instanceof IAddConnectionContext) {
-			IAddConnectionContext addConnContext = (IAddConnectionContext) context;
-			if (addConnContext.getSourceAnchor() != null && addConnContext.getTargetAnchor() != null)
-				return true;
-		}
-		return false;
-	}
+    @Override
+    public boolean canAdd(IAddContext context) {
+        if (context instanceof IAddConnectionContext) {
+            IAddConnectionContext addConnContext = (IAddConnectionContext) context;
+            if (addConnContext.getSourceAnchor() != null && addConnContext.getTargetAnchor() != null) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public PictogramElement add(IAddContext context) {
-		IAddConnectionContext addConnContext = (IAddConnectionContext) context;
-		IPeCreateService peCreateService = Graphiti.getPeCreateService();
-		
-	       // CONNECTION WITH POLYLINE
-        Connection connection = peCreateService
-            .createFreeFormConnection(getDiagram());
+    @Override
+    public PictogramElement add(IAddContext context) {
+        IAddConnectionContext addConnContext = (IAddConnectionContext) context;
+        IPeCreateService peCreateService = Graphiti.getPeCreateService();
+
+        // CONNECTION WITH POLYLINE
+        Connection connection = peCreateService.createFreeFormConnection(getDiagram());
         connection.setStart(addConnContext.getSourceAnchor());
         connection.setEnd(addConnContext.getTargetAnchor());
- 
+
         IGaService gaService = Graphiti.getGaService();
         Polyline polyline = gaService.createPolyline(connection);
         polyline.setLineWidth(2);
         polyline.setLineStyle(LineStyle.DOT);
         polyline.setForeground(manageColor(IColorConstant.BLACK));
- 
-		return connection;
-	}
+
+        return connection;
+    }
 
 }

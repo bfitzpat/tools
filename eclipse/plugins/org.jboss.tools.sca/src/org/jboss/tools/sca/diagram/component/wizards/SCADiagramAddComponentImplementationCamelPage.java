@@ -36,159 +36,170 @@ import org.jboss.tools.switchyard.model.spring.RouteDefinition;
 import org.jboss.tools.switchyard.model.spring.SpringFactory;
 import org.jboss.tools.switchyard.model.spring.ToDefinition;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramAddComponentImplementationCamelPage extends BaseWizardPage implements IRefreshablePage {
 
-	private Text mCamelRouteToText;
-	private String sCamelRouteTo = null;
-	private IWizardPage startPage = null;
+    private Text _camelRouteToText;
+    private String _camelRouteTo = null;
+    private IWizardPage _startPage = null;
 
-	public SCADiagramAddComponentImplementationCamelPage ( IWizardPage start, String pageName) {
-		this(pageName);
-		this.startPage = start;
-		
-	}
-	
-	protected SCADiagramAddComponentImplementationCamelPage(String pageName) {
-		super(pageName);
-		setTitle("Specify Camel Implementation Details");
-		setDescription("Specify the details for the Camel route.");
-	}
+    /**
+     * @param start Start page
+     * @param pageName Page name
+     */
+    public SCADiagramAddComponentImplementationCamelPage(IWizardPage start, String pageName) {
+        this(pageName);
+        this._startPage = start;
 
-	@Override
-	public void createControl(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout gl = new GridLayout();
-		gl.numColumns = 3;
-		composite.setLayout(gl);
-		// Component service name
-		new Label(composite, SWT.NONE).setText("To:");
-		mCamelRouteToText = new Text(composite, SWT.BORDER);
-		mCamelRouteToText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				handleModify();
-			}
-		});
-		mCamelRouteToText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
+    }
+
+    protected SCADiagramAddComponentImplementationCamelPage(String pageName) {
+        super(pageName);
+        setTitle("Specify Camel Implementation Details");
+        setDescription("Specify the details for the Camel route.");
+    }
+
+    @Override
+    public void createControl(Composite parent) {
+        Composite composite = new Composite(parent, SWT.NONE);
+        GridLayout gl = new GridLayout();
+        gl.numColumns = 3;
+        composite.setLayout(gl);
+        // Component service name
+        new Label(composite, SWT.NONE).setText("To:");
+        _camelRouteToText = new Text(composite, SWT.BORDER);
+        _camelRouteToText.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                handleModify();
+            }
+        });
+        _camelRouteToText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
         setControl(composite);
 
-		validate();
-		setErrorMessage(null);
-	}
+        validate();
+        setErrorMessage(null);
+    }
 
-	public String getCamelRouteString() {
-		return this.sCamelRouteTo;
-	}
-	
-	private Implementation getImplementationFromStartPage() {
-		if (startPage != null) {
-			if (startPage instanceof SCADiagramAddComponentStartPage) {
-				SCADiagramAddComponentStartPage componentStart = 
-						(SCADiagramAddComponentStartPage) startPage;
-				return componentStart.getImplementation();
-			} else if (startPage instanceof SCADiagramAddImplementationStartPage) {
-				SCADiagramAddImplementationStartPage implementationStart = 
-						(SCADiagramAddImplementationStartPage) startPage;
-				return implementationStart.getImplementation();
-			}
-		}
-		return null;
-	}
-	
-	private void handleModify() {
-		sCamelRouteTo = mCamelRouteToText.getText().trim();
-		validate();
-		if (startPage != null) {
-			Diagram diagram = null;
-			if (getWizard() instanceof SCADiagramAddImplementationWizard) {
-				diagram = ((SCADiagramAddImplementationWizard) getWizard()).getDiagram();
-			} else if (getWizard() instanceof SCADiagramAddComponentWizard) {
-				diagram = ((SCADiagramAddComponentWizard) getWizard()).getDiagram();
-			}
-			if (diagram != null) {
-				ModelHandler mh;
-				try {
-					mh = ModelHandlerLocator.getModelHandler(diagram.eResource());
-					Implementation impl = getImplementationFromStartPage();
-					if (impl instanceof CamelImplementationType) {
-						CamelImplementationType camelImpl = (CamelImplementationType) impl;
-						RouteDefinition defn = camelImpl.getRoute();
-						boolean alreadyExists = false;
-						if (defn != null) {
-							EList<ToDefinition> toDefs = defn.getTo();
-							for (ToDefinition toDefinition : toDefs) {
-								if (toDefinition.getUri().contentEquals(sCamelRouteTo)) {
-									alreadyExists = true;
-									break;
-								}
-							}
-						}
-						EList<ToDefinition> toDefs = null;
-						if (!alreadyExists) {
-							defn = mh.createRouteDefinition(camelImpl);
-							toDefs = defn.getTo();
-						} else {
-							toDefs = defn.getTo();
-						}
-						if (defn != null && toDefs != null) {
-							ToDefinition todef = SpringFactory.eINSTANCE.createToDefinition();
-							todef.setUri(sCamelRouteTo);
-							toDefs.add(todef);
-						}
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+    /**
+     * @return String for camel route
+     */
+    public String getCamelRouteString() {
+        return this._camelRouteTo;
+    }
 
-	private void validate() {
-		String errorMessage = null;
-		String cpName = mCamelRouteToText.getText();
+    private Implementation getImplementationFromStartPage() {
+        if (_startPage != null) {
+            if (_startPage instanceof SCADiagramAddComponentStartPage) {
+                SCADiagramAddComponentStartPage componentStart = (SCADiagramAddComponentStartPage) _startPage;
+                return componentStart.getImplementation();
+            } else if (_startPage instanceof SCADiagramAddImplementationStartPage) {
+                SCADiagramAddImplementationStartPage implementationStart = (SCADiagramAddImplementationStartPage) _startPage;
+                return implementationStart.getImplementation();
+            }
+        }
+        return null;
+    }
 
-		if (cpName == null || cpName.trim().length() == 0) {
-			errorMessage = "No URI specified";
-		}
-		else if (cpName.trim().length() < cpName.length() ) {
-			errorMessage = "No spaces allowed in To URI";
-		} else {
-			try {
-				URI.create(cpName);
-			} catch (IllegalArgumentException e) {
-				errorMessage = "Invalid URI for To";
-			}
-		}
-		setErrorMessage(errorMessage);
-		setPageComplete(errorMessage == null);
-	}
-	
-	@Override
-	public boolean getSkippable() {
-		if (startPage != null) {
-			Implementation impl = getImplementationFromStartPage();
-			if (impl instanceof CamelImplementationType) {
-				return false;
-			} else {
-				return true;
-			}
-		}
-		return super.getSkippable();
-	}
+    private void handleModify() {
+        _camelRouteTo = _camelRouteToText.getText().trim();
+        validate();
+        if (_startPage != null) {
+            Diagram diagram = null;
+            if (getWizard() instanceof SCADiagramAddImplementationWizard) {
+                diagram = ((SCADiagramAddImplementationWizard) getWizard()).getDiagram();
+            } else if (getWizard() instanceof SCADiagramAddComponentWizard) {
+                diagram = ((SCADiagramAddComponentWizard) getWizard()).getDiagram();
+            }
+            if (diagram != null) {
+                ModelHandler mh;
+                try {
+                    mh = ModelHandlerLocator.getModelHandler(diagram.eResource());
+                    Implementation impl = getImplementationFromStartPage();
+                    if (impl instanceof CamelImplementationType) {
+                        CamelImplementationType camelImpl = (CamelImplementationType) impl;
+                        RouteDefinition defn = camelImpl.getRoute();
+                        boolean alreadyExists = false;
+                        if (defn != null) {
+                            EList<ToDefinition> toDefs = defn.getTo();
+                            for (ToDefinition toDefinition : toDefs) {
+                                if (toDefinition.getUri().contentEquals(_camelRouteTo)) {
+                                    alreadyExists = true;
+                                    break;
+                                }
+                            }
+                        }
+                        EList<ToDefinition> toDefs = null;
+                        if (!alreadyExists) {
+                            defn = mh.createRouteDefinition(camelImpl);
+                            toDefs = defn.getTo();
+                        } else {
+                            toDefs = defn.getTo();
+                        }
+                        if (defn != null && toDefs != null) {
+                            ToDefinition todef = SpringFactory.eINSTANCE.createToDefinition();
+                            todef.setUri(_camelRouteTo);
+                            toDefs.add(todef);
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
-	@Override
-	public void refresh() {
-		if (startPage != null) {
-			Implementation impl = getImplementationFromStartPage();
-			if (impl instanceof CamelImplementationType) {
-				CamelImplementationType camelImpl = (CamelImplementationType) impl;
-				if (camelImpl.getRoute() != null) {
-					RouteDefinition defn = camelImpl.getRoute();
-					if (!defn.getTo().isEmpty()) {
-						mCamelRouteToText.setText(defn.getTo().get(0).getUri());
-					}
-				}
-			}
-		}
-	}
+    private void validate() {
+        String errorMessage = null;
+        String cpName = _camelRouteToText.getText();
+
+        if (cpName == null || cpName.trim().length() == 0) {
+            errorMessage = "No URI specified";
+        } else if (cpName.trim().length() < cpName.length()) {
+            errorMessage = "No spaces allowed in To URI";
+        } else {
+            try {
+                URI.create(cpName);
+            } catch (IllegalArgumentException e) {
+                errorMessage = "Invalid URI for To";
+            }
+        }
+        setErrorMessage(errorMessage);
+        setPageComplete(errorMessage == null);
+    }
+
+    @Override
+    public boolean getSkippable() {
+        if (_startPage != null) {
+            Implementation impl = getImplementationFromStartPage();
+            if (impl != null) {
+                return true;
+            }
+//            if (impl instanceof CamelImplementationType) {
+//                return false;
+//            } else {
+//                return true;
+//            }
+        }
+        return super.getSkippable();
+    }
+
+    @Override
+    public void refresh() {
+        if (_startPage != null) {
+            Implementation impl = getImplementationFromStartPage();
+            if (impl instanceof CamelImplementationType) {
+                CamelImplementationType camelImpl = (CamelImplementationType) impl;
+                if (camelImpl.getRoute() != null) {
+                    RouteDefinition defn = camelImpl.getRoute();
+                    if (!defn.getTo().isEmpty()) {
+                        _camelRouteToText.setText(defn.getTo().get(0).getUri());
+                    }
+                }
+            }
+        }
+    }
 }

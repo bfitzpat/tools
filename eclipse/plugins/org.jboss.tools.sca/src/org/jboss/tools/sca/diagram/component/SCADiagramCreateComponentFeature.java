@@ -33,77 +33,88 @@ import org.jboss.tools.sca.diagram.component.wizards.SCADiagramAddComponentWizar
 import org.jboss.tools.switchyard.model.camel.CamelImplementationType;
 import org.jboss.tools.switchyard.model.camel.CamelPackage;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramCreateComponentFeature extends AbstractCreateFeature {
 
+    /**
+     * @param fp feature provider
+     */
     public SCADiagramCreateComponentFeature(IFeatureProvider fp) {
-    	super (fp, "Component", "Create component");
+        super(fp, "Component", "Create component");
     }
-    
-	@Override
-	public boolean canCreate(ICreateContext context) {
-		ContainerShape targetContainer = context.getTargetContainer();
-		// check if user wants to add to a diagram
-		if (targetContainer instanceof Composite) {
-			return true;
-		} 
-		if (getBusinessObjectForPictogramElement(targetContainer) instanceof Composite) {
-			return true;
-		}
-		return false;
-	}
 
-	@Override
-	public Object[] create(ICreateContext context) {
-		
-		Object o = getBusinessObjectForPictogramElement(context.getTargetContainer());
-		Composite composite = (Composite) o;
-		Component newComponent = null;
-		String newComponentName = null;
-		Implementation newImplementation = null;
-		SCADiagramAddComponentWizard wizard = new SCADiagramAddComponentWizard();
-		wizard.setDiagram(getDiagram());
-		wizard.setComponent(null);
-		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		WizardDialog wizDialog = new WizardDialog(shell, wizard);
-		int rtn_code = wizDialog.open();
-		if (rtn_code == Window.OK) {
-			newComponentName = wizard.getComponentName();
-			newImplementation = wizard.getImplementation();
-		} else {
-			return EMPTY;
-		}
-//        // ask user for component name
-//        String newComponentName = ExampleUtil.askString(TITLE, USER_QUESTION, "");
-//        if (newComponentName == null || newComponentName.trim().length() == 0) {
-//            return EMPTY;
-//        }
+    @Override
+    public boolean canCreate(ICreateContext context) {
+        ContainerShape targetContainer = context.getTargetContainer();
+        // check if user wants to add to a diagram
+        if (targetContainer instanceof Composite) {
+            return true;
+        }
+        if (getBusinessObjectForPictogramElement(targetContainer) instanceof Composite) {
+            return true;
+        }
+        return false;
+    }
 
-		try {
-			ModelHandler mh = ModelHandlerLocator.getModelHandler(getDiagram().eResource());
-			newComponent = mh.createComponent(composite);
-			newComponent.setName(newComponentName);
-			if (newImplementation != null) {
-				// do something with it
-				if (newImplementation instanceof CamelImplementationType) 
-					newComponent.getImplementationGroup().set(CamelPackage.eINSTANCE.getDocumentRoot_ImplementationCamel(), newImplementation);
-			}
-		} catch (IOException e) {
-			Activator.logError(e);
-		}
+    @Override
+    public Object[] create(ICreateContext context) {
+
+        Object o = getBusinessObjectForPictogramElement(context.getTargetContainer());
+        Composite composite = (Composite) o;
+        Component newComponent = null;
+        String newComponentName = null;
+        Implementation newImplementation = null;
+        SCADiagramAddComponentWizard wizard = new SCADiagramAddComponentWizard();
+        wizard.setDiagram(getDiagram());
+        wizard.setComponent(null);
+        Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+        WizardDialog wizDialog = new WizardDialog(shell, wizard);
+        int rtn_code = wizDialog.open();
+        if (rtn_code == Window.OK) {
+            newComponentName = wizard.getComponentName();
+            newImplementation = wizard.getImplementation();
+        } else {
+            return EMPTY;
+        }
+        // // ask user for component name
+        // String newComponentName = ExampleUtil.askString(TITLE, USER_QUESTION,
+        // "");
+        // if (newComponentName == null || newComponentName.trim().length() ==
+        // 0) {
+        // return EMPTY;
+        // }
+
+        try {
+            ModelHandler mh = ModelHandlerLocator.getModelHandler(getDiagram().eResource());
+            newComponent = mh.createComponent(composite);
+            newComponent.setName(newComponentName);
+            if (newImplementation != null) {
+                // do something with it
+                if (newImplementation instanceof CamelImplementationType) {
+                    newComponent.getImplementationGroup().set(
+                            CamelPackage.eINSTANCE.getDocumentRoot_ImplementationCamel(), newImplementation);
+                }
+            }
+        } catch (IOException e) {
+            Activator.logError(e);
+        }
 
         // do the add
         addGraphicalRepresentation(context, newComponent);
 
-		// activate direct editing after object creation
-		getFeatureProvider().getDirectEditingInfo().setActive(true);
+        // activate direct editing after object creation
+        getFeatureProvider().getDirectEditingInfo().setActive(true);
 
-		// return newly created business object(s)
-        return new Object[] { newComponent };
-	}
+        // return newly created business object(s)
+        return new Object[] {newComponent };
+    }
 
-	@Override
-	public String getCreateImageId() {
-		return ImageProvider.IMG_16_COMPONENT;
-	}
+    @Override
+    public String getCreateImageId() {
+        return ImageProvider.IMG_16_COMPONENT;
+    }
 
 }

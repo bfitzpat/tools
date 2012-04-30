@@ -34,154 +34,154 @@ import org.eclipse.soa.sca.sca1_1.model.sca.ComponentService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
 import org.jboss.tools.sca.diagram.StyleUtil;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramAddComponentFeature extends AbstractAddShapeFeature {
 
-	public SCADiagramAddComponentFeature( IFeatureProvider fp ) {
-		super(fp);
-	}
+    /**
+     * @param fp the feature provider
+     */
+    public SCADiagramAddComponentFeature(IFeatureProvider fp) {
+        super(fp);
+    }
 
-	@Override
-	public boolean canAdd(IAddContext context) {
-		// check if user wants to add a EClass
-		if (context.getNewObject() instanceof Component) {
-			ContainerShape targetContainer = context.getTargetContainer();
-			// check if user wants to add to a diagram
-			if (targetContainer instanceof Composite) {
-				return true;
-			} 
-			if (getBusinessObjectForPictogramElement(targetContainer) instanceof Composite) {
-				return true;
-			}
-		}
-		return false;
-	}
+    @Override
+    public boolean canAdd(IAddContext context) {
+        // check if user wants to add a EClass
+        if (context.getNewObject() instanceof Component) {
+            ContainerShape targetContainer = context.getTargetContainer();
+            // check if user wants to add to a diagram
+            if (targetContainer instanceof Composite) {
+                return true;
+            }
+            if (getBusinessObjectForPictogramElement(targetContainer) instanceof Composite) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public PictogramElement add(IAddContext context) {
-		Component addedComponent = (Component) context.getNewObject();
-		ContainerShape targetContainer = context.getTargetContainer();
+    @Override
+    public PictogramElement add(IAddContext context) {
+        Component addedComponent = (Component) context.getNewObject();
+        ContainerShape targetContainer = context.getTargetContainer();
 
-		IGaService gaService = Graphiti.getGaService();
+        IGaService gaService = Graphiti.getGaService();
 
-		// CONTAINER SHAPE WITH ROUNDED RECTANGLE
-		IPeCreateService peCreateService = Graphiti.getPeCreateService();
-		ContainerShape containerShape =
-				peCreateService.createContainerShape(targetContainer, true);
-		
-		int edge = StyleUtil.COMPONENT_EDGE;
-		
-	    // check whether the context has a size (e.g. from a create feature)
+        // CONTAINER SHAPE WITH ROUNDED RECTANGLE
+        IPeCreateService peCreateService = Graphiti.getPeCreateService();
+        ContainerShape containerShape = peCreateService.createContainerShape(targetContainer, true);
+
+        int edge = StyleUtil.COMPONENT_EDGE;
+
+        // check whether the context has a size (e.g. from a create feature)
         // otherwise define a default size for the shape
         int width = context.getWidth() <= 0 ? StyleUtil.COMPONENT_WIDTH + edge : context.getWidth();
         int height = context.getHeight() <= 0 ? StyleUtil.COMPONENT_HEIGHT + edge : context.getHeight();
- 
+
         Rectangle invisibleRectangle = gaService.createInvisibleRectangle(containerShape);
-        gaService.setLocationAndSize(invisibleRectangle,
-                context.getX(), context.getY(), width + StyleUtil.COMPONENT_INVISIBLE_RECT_RIGHT,
-                height);
-        
-		// define a default size for the shape
-		RoundedRectangle roundedRectangle;
-		{
-			// create and set graphics algorithm
-			roundedRectangle =
-					gaService.createRoundedRectangle(invisibleRectangle, 6, 0);
-            roundedRectangle.setStyle(StyleUtil
-                    .getStyleForComponent(getDiagram()));
-	        roundedRectangle.setParentGraphicsAlgorithm(invisibleRectangle);
+        gaService.setLocationAndSize(invisibleRectangle, context.getX(), context.getY(), width
+                + StyleUtil.COMPONENT_INVISIBLE_RECT_RIGHT, height);
 
-			gaService.setLocationAndSize(roundedRectangle,
-					5, 0, width, height);
+        // define a default size for the shape
+        RoundedRectangle roundedRectangle;
 
-			// if added Class has no resource we add it to the resource 
-			// of the diagram
+        // create and set graphics algorithm
+        roundedRectangle = gaService.createRoundedRectangle(invisibleRectangle, 6, 0);
+        roundedRectangle.setStyle(StyleUtil.getStyleForComponent(getDiagram()));
+        roundedRectangle.setParentGraphicsAlgorithm(invisibleRectangle);
 
-			// in a real scenario the business model would have its own resource
-//			if (addedComponent.eResource() == null) {
-//				getDiagram().eResource().getContents().add(addedComponent);
-//			}
+        gaService.setLocationAndSize(roundedRectangle, 5, 0, width, height);
 
-			// create link and wire it
-			link(containerShape, addedComponent);
-			Graphiti.getPeService().setPropertyValue(roundedRectangle, "sca-type", "component");
-		}
-		// SHAPE WITH TEXT
-		{
-			// create and set text graphics algorithm
-			Text text = gaService.createDefaultText(getDiagram(), roundedRectangle,
-					addedComponent.getName());
-			text.setForeground(manageColor(StyleUtil.BLACK));
-			text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
-			text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
-			Font font = text.getFont();
-			font = gaService.manageFont(getDiagram(), font.getName(), font.getSize(), false, true);
-			text.setFont(font);
-//			text.getFont().setBold(true);
-			gaService.setLocationAndSize(text, StyleUtil.COMPONENT_EDGE + 10, 0, 
-					width - (StyleUtil.COMPONENT_EDGE * 3) - (StyleUtil.COMPONENT_INVISIBLE_RECT_RIGHT * 2), height );
-//			gaService.setLocationAndSize(text, 5, 5, width, 20);
-		}
+        // if added Class has no resource we add it to the resource
+        // of the diagram
 
-		if (addedComponent.getService().size() > 0) {
-			EList<ComponentService> services = addedComponent.getService();
-			for (ComponentService componentService : services) {
-				// create a box relative anchor at middle-left
-				final BoxRelativeAnchor boxAnchorLeft = peCreateService.createBoxRelativeAnchor(containerShape);
-				boxAnchorLeft.setRelativeWidth(0.0);
-				boxAnchorLeft.setRelativeHeight(0.38); // Use golden section
-				// anchor references visible rectangle instead of invisible rectangle
-				boxAnchorLeft.setReferencedGraphicsAlgorithm(roundedRectangle);
-				// assign a graphics algorithm for the box relative anchor
-		        Polygon pbox = gaService.createPolygon(boxAnchorLeft, StyleUtil.SMALL_RIGHT_ARROW);
-		        pbox.setBackground(manageColor(StyleUtil.GREEN));
-		        pbox.setForeground(manageColor(StyleUtil.BRIGHT_ORANGE));
-		        pbox.setLineVisible(false);
-		        pbox.setFilled(true);
+        // in a real scenario the business model would have its own resource
+        // if (addedComponent.eResource() == null) {
+        // getDiagram().eResource().getContents().add(addedComponent);
+        // }
 
-		        // anchor is located on the left border of the visible rectangle
-				// and touches the border of the invisible rectangle
-				gaService.setLocationAndSize(pbox, -6, 0, 
-						StyleUtil.SMALL_RIGHT_ARROW_WIDTH, StyleUtil.SMALL_RIGHT_ARROW_HEIGHT);
-				
-				link(boxAnchorLeft, componentService);
-			}
-		}
-		
-		if (addedComponent.getReference().size() > 0) {
-			
-			EList<ComponentReference> references = addedComponent.getReference();
-			for (ComponentReference componentReference : references) {
-				
-				// create a box relative anchor at middle-right
-				final BoxRelativeAnchor boxAnchorRight = peCreateService.createBoxRelativeAnchor(containerShape);
-				boxAnchorRight.setRelativeWidth(1.0);
-				boxAnchorRight.setRelativeHeight(0.38); // Use golden section
-				
-				// anchor references visible rectangle instead of invisible rectangle
-				boxAnchorRight.setReferencedGraphicsAlgorithm(roundedRectangle);
-				
-				// assign a graphics algorithm for the box relative anchor
-		        Polygon pbox2 = gaService.createPolygon(boxAnchorRight, StyleUtil.SMALL_RIGHT_ARROW);
-		        pbox2.setBackground(manageColor(StyleUtil.ORANGE));
-		        pbox2.setForeground(manageColor(StyleUtil.BRIGHT_ORANGE));
-		        pbox2.setLineVisible(false);
-		        pbox2.setFilled(true);
-		        
-				// anchor is located on the right border of the visible rectangle
-				// and touches the border of the invisible rectangle
-				final int w2 = StyleUtil.COMPONENT_INVISIBLE_RECT_RIGHT;
-				gaService.setLocationAndSize(pbox2, -w2, -w2, 
-						StyleUtil.SMALL_RIGHT_ARROW_WIDTH, StyleUtil.SMALL_RIGHT_ARROW_HEIGHT);
-				
-				link (boxAnchorRight, componentReference);
-			}
-		}
+        // create link and wire it
+        link(containerShape, addedComponent);
+        Graphiti.getPeService().setPropertyValue(roundedRectangle, "sca-type", "component");
 
-		// call the layout feature
-		layoutPictogramElement(containerShape);
+        // SHAPE WITH TEXT
+        // create and set text graphics algorithm
+        Text text = gaService.createDefaultText(getDiagram(), roundedRectangle, addedComponent.getName());
+        text.setForeground(manageColor(StyleUtil.BLACK));
+        text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+        text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
+        Font font = text.getFont();
+        font = gaService.manageFont(getDiagram(), font.getName(), font.getSize(), false, true);
+        text.setFont(font);
+        gaService.setLocationAndSize(text, StyleUtil.COMPONENT_EDGE + 10, 0, width - (StyleUtil.COMPONENT_EDGE * 3)
+                - (StyleUtil.COMPONENT_INVISIBLE_RECT_RIGHT * 2), height);
 
-		return containerShape;
+        if (addedComponent.getService().size() > 0) {
+            EList<ComponentService> services = addedComponent.getService();
+            for (ComponentService componentService : services) {
+                // create a box relative anchor at middle-left
+                final BoxRelativeAnchor boxAnchorLeft = peCreateService.createBoxRelativeAnchor(containerShape);
+                boxAnchorLeft.setRelativeWidth(0.0);
+                boxAnchorLeft.setRelativeHeight(0.38); // Use golden section
+                // anchor references visible rectangle instead of invisible
+                // rectangle
+                boxAnchorLeft.setReferencedGraphicsAlgorithm(roundedRectangle);
+                // assign a graphics algorithm for the box relative anchor
+                Polygon pbox = gaService.createPolygon(boxAnchorLeft, StyleUtil.SMALL_RIGHT_ARROW);
+                pbox.setBackground(manageColor(StyleUtil.GREEN));
+                pbox.setForeground(manageColor(StyleUtil.BRIGHT_ORANGE));
+                pbox.setLineVisible(false);
+                pbox.setFilled(true);
 
-	}
+                // anchor is located on the left border of the visible rectangle
+                // and touches the border of the invisible rectangle
+                gaService.setLocationAndSize(pbox, -6, 0, StyleUtil.SMALL_RIGHT_ARROW_WIDTH,
+                        StyleUtil.SMALL_RIGHT_ARROW_HEIGHT);
+
+                link(boxAnchorLeft, componentService);
+            }
+        }
+
+        if (addedComponent.getReference().size() > 0) {
+
+            EList<ComponentReference> references = addedComponent.getReference();
+            for (ComponentReference componentReference : references) {
+
+                // create a box relative anchor at middle-right
+                final BoxRelativeAnchor boxAnchorRight = peCreateService.createBoxRelativeAnchor(containerShape);
+                boxAnchorRight.setRelativeWidth(1.0);
+                boxAnchorRight.setRelativeHeight(0.38); // Use golden section
+
+                // anchor references visible rectangle instead of invisible
+                // rectangle
+                boxAnchorRight.setReferencedGraphicsAlgorithm(roundedRectangle);
+
+                // assign a graphics algorithm for the box relative anchor
+                Polygon pbox2 = gaService.createPolygon(boxAnchorRight, StyleUtil.SMALL_RIGHT_ARROW);
+                pbox2.setBackground(manageColor(StyleUtil.ORANGE));
+                pbox2.setForeground(manageColor(StyleUtil.BRIGHT_ORANGE));
+                pbox2.setLineVisible(false);
+                pbox2.setFilled(true);
+
+                // anchor is located on the right border of the visible
+                // rectangle
+                // and touches the border of the invisible rectangle
+                final int w2 = StyleUtil.COMPONENT_INVISIBLE_RECT_RIGHT;
+                gaService.setLocationAndSize(pbox2, -w2, -w2, StyleUtil.SMALL_RIGHT_ARROW_WIDTH,
+                        StyleUtil.SMALL_RIGHT_ARROW_HEIGHT);
+
+                link(boxAnchorRight, componentReference);
+            }
+        }
+
+        // call the layout feature
+        layoutPictogramElement(containerShape);
+
+        return containerShape;
+
+    }
 
 }

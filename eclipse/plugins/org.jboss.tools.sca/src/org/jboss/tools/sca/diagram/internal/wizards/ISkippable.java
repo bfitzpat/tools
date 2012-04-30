@@ -18,20 +18,20 @@ package org.jboss.tools.sca.diagram.internal.wizards;
  */
 public interface ISkippable {
 
-	/**
-	 * Returns the visibility status of the page.
-	 * 
-	 * @return True if a page should be skipped in a sequence of a wizard
-	 *         dialog.
-	 */
-	public boolean getSkippable();
+    /**
+     * Returns the visibility status of the page.
+     * 
+     * @return True if a page should be skipped in a sequence of a wizard
+     *         dialog.
+     */
+    public boolean getSkippable();
 
-	/**
-	 * Marks the wizard page as hidden or visible depending on a parameter
-	 * value.
-	 * 
-	 * @param b A value that specifies whether the page should be skipped ina a
-	 *        sequence of a wizard dialog.
-	 */
-	public void setSkippable(boolean b);
+    /**
+     * Marks the wizard page as hidden or visible depending on a parameter
+     * value.
+     * 
+     * @param b A value that specifies whether the page should be skipped ina a
+     *            sequence of a wizard dialog.
+     */
+    public void setSkippable(boolean b);
 }

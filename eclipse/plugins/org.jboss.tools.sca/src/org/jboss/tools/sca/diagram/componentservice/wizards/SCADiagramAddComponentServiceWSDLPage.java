@@ -22,65 +22,80 @@ import org.jboss.tools.sca.diagram.internal.wizards.BaseWizardPage;
 import org.jboss.tools.sca.diagram.internal.wizards.IRefreshablePage;
 import org.jboss.tools.sca.diagram.shared.WSDLURISelectionComposite;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramAddComponentServiceWSDLPage extends BaseWizardPage implements IRefreshablePage {
 
-	private SCADiagramAddComponentServiceStartPage startPage = null;
-	private WSDLURISelectionComposite uriComposite = null;
+    private SCADiagramAddComponentServiceStartPage _startPage = null;
+    private WSDLURISelectionComposite _uriComposite = null;
 
-	public SCADiagramAddComponentServiceWSDLPage ( SCADiagramAddComponentServiceStartPage start, String pageName) {
-		this(pageName);
-		this.startPage = start;
-	}
-	
-	protected SCADiagramAddComponentServiceWSDLPage(String pageName) {
-		super(pageName);
-		setTitle("Specify WSDL Path");
-		setDescription("Specify the URI for the WSDL.");
-	}
+    /**
+     * @param start start page
+     * @param pageName page name
+     */
+    public SCADiagramAddComponentServiceWSDLPage(SCADiagramAddComponentServiceStartPage start, String pageName) {
+        this(pageName);
+        this._startPage = start;
+    }
 
-	@Override
-	public void createControl(Composite parent) {
-		uriComposite = new WSDLURISelectionComposite();
-		if (startPage != null && startPage.getInterface() != null) {
-			uriComposite.setInterface(startPage.getInterface());
-		}
-		uriComposite.addChangeListener(new ChangeListener(){
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				setErrorMessage(uriComposite.getErrorMessage());
-				setPageComplete(uriComposite.getErrorMessage() == null);
-			}
-		});
-		uriComposite.createContents(parent, SWT.NONE);
-		
-        setControl(uriComposite.getcPanel());
+    protected SCADiagramAddComponentServiceWSDLPage(String pageName) {
+        super(pageName);
+        setTitle("Specify WSDL Path");
+        setDescription("Specify the URI for the WSDL.");
+    }
 
-		setErrorMessage(null);
-	}
+    @Override
+    public void createControl(Composite parent) {
+        _uriComposite = new WSDLURISelectionComposite();
+        if (_startPage != null && _startPage.getInterface() != null) {
+            _uriComposite.setInterface(_startPage.getInterface());
+        }
+        _uriComposite.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent arg0) {
+                setErrorMessage(_uriComposite.getErrorMessage());
+                setPageComplete(_uriComposite.getErrorMessage() == null);
+            }
+        });
+        _uriComposite.createContents(parent, SWT.NONE);
 
-	public String getWSDLURI() {
-		return this.uriComposite.getWSDLURI();
-	}
-	
-	@Override
-	public boolean getSkippable() {
-		if (this.startPage != null && this.startPage.getInterface() != null) {
-			if (startPage.getInterface() instanceof WSDLPortType) {
-				return false;
-			} else {
-				return true;
-			}
-		}
-		return super.getSkippable();
-	}
+        setControl(_uriComposite.getcPanel());
 
-	@Override
-	public void refresh() {
-		if (startPage != null && startPage.getInterface() instanceof WSDLPortType) {
-			if (uriComposite != null && uriComposite.getcPanel() != null) {
-				uriComposite.setInterface(startPage.getInterface());
-			}
-		}
-	}
+        setErrorMessage(null);
+    }
+
+    /**
+     * @return string uri
+     */
+    public String getWSDLURI() {
+        return this._uriComposite.getWSDLURI();
+    }
+
+    @Override
+    public boolean getSkippable() {
+        if (this._startPage != null && this._startPage.getInterface() != null) {
+            if (_startPage.getInterface() instanceof WSDLPortType) {
+                return false;
+            }
+            
+//            if (_startPage.getInterface() instanceof WSDLPortType) {
+//                return false;
+//            } else {
+//                return true;
+//            }
+        }
+        return super.getSkippable();
+    }
+
+    @Override
+    public void refresh() {
+        if (_startPage != null && _startPage.getInterface() instanceof WSDLPortType) {
+            if (_uriComposite != null && _uriComposite.getcPanel() != null) {
+                _uriComposite.setInterface(_startPage.getInterface());
+            }
+        }
+    }
 
 }

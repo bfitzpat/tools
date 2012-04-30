@@ -20,32 +20,39 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.Implementation;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramAddImplementationFeature extends AbstractAddShapeFeature {
 
-	public SCADiagramAddImplementationFeature( IFeatureProvider fp ) {
-		super(fp);
-	}
+    /**
+     * @param fp the feature provider
+     */
+    public SCADiagramAddImplementationFeature(IFeatureProvider fp) {
+        super(fp);
+    }
 
-	@Override
-	public boolean canAdd(IAddContext context) {
-		// check if user wants to add a component service
-		if (context.getNewObject() instanceof Implementation) {
-			ContainerShape targetContainer = context.getTargetContainer();
-			// check if user wants to add to a component
-			if (getBusinessObjectForPictogramElement(targetContainer) instanceof Component) {
-				return true;
-			}
-		}
-		return false;
-	}
+    @Override
+    public boolean canAdd(IAddContext context) {
+        // check if user wants to add a component service
+        if (context.getNewObject() instanceof Implementation) {
+            ContainerShape targetContainer = context.getTargetContainer();
+            // check if user wants to add to a component
+            if (getBusinessObjectForPictogramElement(targetContainer) instanceof Component) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public PictogramElement add(IAddContext context) {
-		ContainerShape targetContainer = context.getTargetContainer();
-		
-		getDiagramEditor().refresh();
+    @Override
+    public PictogramElement add(IAddContext context) {
+        ContainerShape targetContainer = context.getTargetContainer();
 
-		return targetContainer;
-	}
-	
+        getDiagramEditor().refresh();
+
+        return targetContainer;
+    }
+
 }

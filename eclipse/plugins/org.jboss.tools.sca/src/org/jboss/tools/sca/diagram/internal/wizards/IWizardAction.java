@@ -17,17 +17,15 @@ package org.jboss.tools.sca.diagram.internal.wizards;
  */
 public interface IWizardAction {
 
-	/**
-	 * Called just before switching the page.
-	 * 
-	 * @return boolean
-	 */
-	public boolean onWizardNext();
+    /**
+     * Called just before switching the page.
+     * 
+     * @return boolean
+     */
+    public boolean onWizardNext();
 
-	/**
-	 * Called before showing this page.
-	 * 
-	 * @return boolean
-	 */
-	public void onSetActive();
+    /**
+     * Called before showing this page.
+     */
+    public void onSetActive();
 }

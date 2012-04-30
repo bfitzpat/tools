@@ -12,8 +12,15 @@
  ******************************************************************************/
 package org.jboss.tools.sca.diagram.internal.wizards;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public interface IRefreshablePage {
-	
-	public void refresh();
+
+    /**
+     * Refresh the page.
+     */
+    public void refresh();
 
 }

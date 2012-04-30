@@ -15,24 +15,28 @@ package org.jboss.tools.sca.diagram;
 import org.eclipse.graphiti.dt.AbstractDiagramTypeProvider;
 import org.eclipse.graphiti.tb.IToolBehaviorProvider;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramTypeProvider extends AbstractDiagramTypeProvider {
-	
-	private IToolBehaviorProvider[] toolBehaviorProviders;
-	
-	public SCADiagramTypeProvider() {
-		super();
-		setFeatureProvider(new SCADiagramFeatureProvider(this));
-	}
+
+    private IToolBehaviorProvider[] _toolBehaviorProviders;
+
+    /**
+     * Constructor.
+     */
+    public SCADiagramTypeProvider() {
+        super();
+        setFeatureProvider(new SCADiagramFeatureProvider(this));
+    }
 
     @Override
     public IToolBehaviorProvider[] getAvailableToolBehaviorProviders() {
-        if (toolBehaviorProviders == null) {
-            toolBehaviorProviders =
-                new IToolBehaviorProvider[] { new SCADiagramToolBehaviorProvider(
-                    this) };
+        if (_toolBehaviorProviders == null) {
+            _toolBehaviorProviders = new IToolBehaviorProvider[] {new SCADiagramToolBehaviorProvider(this) };
         }
-        return toolBehaviorProviders;
+        return _toolBehaviorProviders;
     }
-
 
 }

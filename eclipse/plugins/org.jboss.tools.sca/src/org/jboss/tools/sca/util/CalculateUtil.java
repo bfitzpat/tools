@@ -17,32 +17,53 @@ import org.eclipse.graphiti.mm.algorithms.styles.Font;
 import org.eclipse.graphiti.ui.services.GraphitiUi;
 import org.eclipse.ui.PlatformUI;
 
-public class CalculateUtil {
-	private static class CalculateRunnable implements Runnable {
-		private final String text;
-		private final Font font;
-		private IDimension dimension;
+/**
+ * @author bfitzpat
+ *
+ */
+public final class CalculateUtil {
+    
+    private CalculateUtil(){
+        // empty
+    }
+    
+    private static class CalculateRunnable implements Runnable {
+        private final String _text;
+        private final Font _font;
+        private IDimension _dimension;
 
-		public CalculateRunnable(String text, Font font) {
-			this.text = text;
-			this.font = font;
-		}
+        /**
+         * @param text string for actual text
+         * @param font font for text
+         */
+        public CalculateRunnable(String text, Font font) {
+            this._text = text;
+            this._font = font;
+        }
 
-		@Override
-		public void run() {
-			dimension = GraphitiUi.getUiLayoutService().calculateTextSize(text, font);
-		}
+        @Override
+        public void run() {
+            _dimension = GraphitiUi.getUiLayoutService().calculateTextSize(_text, _font);
+        }
 
-		public IDimension getDimension() {
-			return dimension;
-		}
-	}
+        /**
+         * @return
+         */
+        public IDimension getDimension() {
+            return _dimension;
+        }
+    }
 
-	public static IDimension calculateTextSize(String text, Font font) {
-		CalculateRunnable runnable = new CalculateRunnable(text, font);
+    /**
+     * @param text string of text
+     * @param font font for text
+     * @return dimensions for text
+     */
+    public static IDimension calculateTextSize(String text, Font font) {
+        CalculateRunnable runnable = new CalculateRunnable(text, font);
 
-		PlatformUI.getWorkbench().getDisplay().syncExec(runnable);
+        PlatformUI.getWorkbench().getDisplay().syncExec(runnable);
 
-		return runnable.getDimension();
-	}
+        return runnable.getDimension();
+    }
 }

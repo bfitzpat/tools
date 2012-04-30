@@ -25,26 +25,33 @@ import org.jboss.tools.sca.core.ModelHandler;
 import org.jboss.tools.sca.core.ModelHandlerLocator;
 import org.jboss.tools.sca.util.ExampleUtil;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramCreateCompositeReferenceFeature extends AbstractCreateFeature {
 
-	private static final String TITLE = "Create Composite Reference";
+    private static final String TITLE = "Create Composite Reference";
     private static final String USER_QUESTION = "Enter new composite reference name";
 
+    /**
+     * @param fp feature provider
+     */
     public SCADiagramCreateCompositeReferenceFeature(IFeatureProvider fp) {
-    	super (fp, "Composite Reference", "Create Composite Reference");
+        super(fp, "Composite Reference", "Create Composite Reference");
     }
-    
-	@Override
-	public boolean canCreate(ICreateContext context) {
-		if (getBusinessObjectForPictogramElement(context.getTargetContainer()) instanceof Composite) {
-			return true;
-		}
-		return false;
-	}
 
-	@Override
-	public Object[] create(ICreateContext context) {
-		// ask user for EClass name
+    @Override
+    public boolean canCreate(ICreateContext context) {
+        if (getBusinessObjectForPictogramElement(context.getTargetContainer()) instanceof Composite) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Object[] create(ICreateContext context) {
+        // ask user for EClass name
         String newRefName = ExampleUtil.askString(TITLE, USER_QUESTION, "");
         if (newRefName == null || newRefName.trim().length() == 0) {
             return EMPTY;
@@ -52,25 +59,25 @@ public class SCADiagramCreateCompositeReferenceFeature extends AbstractCreateFea
 
         Reference newReference = null;
 
-		try {
-			ModelHandler mh = ModelHandlerLocator.getModelHandler(getDiagram().eResource());
-			Object o = getBusinessObjectForPictogramElement(context.getTargetContainer());
-			newReference = mh.createCompositeReference((Composite)o);
-			newReference.setName(newRefName);
-		} catch (IOException e) {
-			Activator.logError(e);
-		}
+        try {
+            ModelHandler mh = ModelHandlerLocator.getModelHandler(getDiagram().eResource());
+            Object o = getBusinessObjectForPictogramElement(context.getTargetContainer());
+            newReference = mh.createCompositeReference((Composite) o);
+            newReference.setName(newRefName);
+        } catch (IOException e) {
+            Activator.logError(e);
+        }
 
         // do the add
         addGraphicalRepresentation(context, newReference);
 
         // return newly created business object(s)
-        return new Object[] { newReference };
-	}
+        return new Object[] {newReference };
+    }
 
-	@Override
-	public String getCreateImageId() {
-		return ImageProvider.IMG_16_SERVICE;
-	}
+    @Override
+    public String getCreateImageId() {
+        return ImageProvider.IMG_16_SERVICE;
+    }
 
 }

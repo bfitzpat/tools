@@ -27,57 +27,66 @@ import org.jboss.tools.sca.diagram.component.wizards.SCADiagramAddImplementation
 import org.jboss.tools.switchyard.model.camel.CamelImplementationType;
 import org.jboss.tools.switchyard.model.camel.CamelPackage;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramCreateImplementationFeature extends AbstractCreateFeature {
 
+    /**
+     * @param fp the feature provider
+     */
     public SCADiagramCreateImplementationFeature(IFeatureProvider fp) {
-    	super (fp, "Implementation", "Create implementation");
+        super(fp, "Implementation", "Create implementation");
     }
-    
-	@Override
-	public boolean canCreate(ICreateContext context) {
-		ContainerShape targetContainer = context.getTargetContainer();
-		// check if user wants to add to a component
-		if (targetContainer instanceof Component ||
-				getBusinessObjectForPictogramElement(targetContainer) instanceof Component) {
-			return true;
-		} 
-		return false;
-	}
 
-	@Override
-	public Object[] create(ICreateContext context) {
-		
-		Object o = getBusinessObjectForPictogramElement(context.getTargetContainer());
-		Component component = (Component) o;
+    @Override
+    public boolean canCreate(ICreateContext context) {
+        ContainerShape targetContainer = context.getTargetContainer();
+        // check if user wants to add to a component
+        if (targetContainer instanceof Component
+                || getBusinessObjectForPictogramElement(targetContainer) instanceof Component) {
+            return true;
+        }
+        return false;
+    }
 
-		Implementation newImplementation = null;
-		SCADiagramAddImplementationWizard wizard = new SCADiagramAddImplementationWizard();
-		wizard.setDiagram(getDiagram());
-		wizard.setComponent(component);
-		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		WizardDialog wizDialog = new WizardDialog(shell, wizard);
-		int rtn_code = wizDialog.open();
-		if (rtn_code == Window.OK) {
-			newImplementation = wizard.getImplementation();
-		} else {
-			return EMPTY;
-		}
+    @Override
+    public Object[] create(ICreateContext context) {
 
-		if (newImplementation != null) {
-			// do something with it
-			if (newImplementation instanceof CamelImplementationType) 
-				component.getImplementationGroup().add(CamelPackage.eINSTANCE.getDocumentRoot_ImplementationCamel(), newImplementation);
-		}
-		
-		getDiagramEditor().refresh(context.getTargetContainer());
+        Object o = getBusinessObjectForPictogramElement(context.getTargetContainer());
+        Component component = (Component) o;
 
-		// return newly created business object(s)
-        return new Object[] { newImplementation };
-	}
+        Implementation newImplementation = null;
+        SCADiagramAddImplementationWizard wizard = new SCADiagramAddImplementationWizard();
+        wizard.setDiagram(getDiagram());
+        wizard.setComponent(component);
+        Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+        WizardDialog wizDialog = new WizardDialog(shell, wizard);
+        int rtn_code = wizDialog.open();
+        if (rtn_code == Window.OK) {
+            newImplementation = wizard.getImplementation();
+        } else {
+            return EMPTY;
+        }
 
-	@Override
-	public String getCreateImageId() {
-		return ImageProvider.IMG_16_IMPLEMENTATION_TYPE;
-	}
+        if (newImplementation != null) {
+            // do something with it
+            if (newImplementation instanceof CamelImplementationType) {
+                component.getImplementationGroup().add(CamelPackage.eINSTANCE.getDocumentRoot_ImplementationCamel(),
+                        newImplementation);
+            }
+        }
+
+        getDiagramEditor().refresh(context.getTargetContainer());
+
+        // return newly created business object(s)
+        return new Object[] {newImplementation };
+    }
+
+    @Override
+    public String getCreateImageId() {
+        return ImageProvider.IMG_16_IMPLEMENTATION_TYPE;
+    }
 
 }

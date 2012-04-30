@@ -27,66 +27,71 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
 
+/**
+ * @author bfitzpat
+ * 
+ */
 public class SCADiagramLayoutCompositeFeature extends AbstractLayoutFeature {
 
-	private static final int MIN_HEIGHT = 150;
-	private static final int MIN_WIDTH = 150;
-	
-	public SCADiagramLayoutCompositeFeature(IFeatureProvider fp) {
-		super(fp);
-	}
+    private static final int MIN_HEIGHT = 150;
+    private static final int MIN_WIDTH = 150;
 
-	@Override
-	public boolean canLayout(ILayoutContext context) {
-		// return true, if pictogram element is linked to an EClass
-		PictogramElement pe = context.getPictogramElement();
-		if (!(pe instanceof ContainerShape))
-			return false;
-		EList<EObject> businessObjects = pe.getLink().getBusinessObjects();
-		return businessObjects.size() == 1 
-				&& businessObjects.get(0) instanceof Composite;
-	}
+    /**
+     * @param fp the feature provider
+     */
+    public SCADiagramLayoutCompositeFeature(IFeatureProvider fp) {
+        super(fp);
+    }
 
-	@Override
-	public boolean layout(ILayoutContext context) {
-		boolean anythingChanged = false;
+    @Override
+    public boolean canLayout(ILayoutContext context) {
+        // return true, if pictogram element is linked to an EClass
+        PictogramElement pe = context.getPictogramElement();
+        if (!(pe instanceof ContainerShape)) {
+            return false;
+        }
+        EList<EObject> businessObjects = pe.getLink().getBusinessObjects();
+        return businessObjects.size() == 1 && businessObjects.get(0) instanceof Composite;
+    }
 
-		ContainerShape containerShape =
-				(ContainerShape) context.getPictogramElement();
-		GraphicsAlgorithm containerGa = containerShape.getGraphicsAlgorithm();
-		int containerWidth = containerGa.getWidth();
-		int containerHeight = containerGa.getHeight();
+    @Override
+    public boolean layout(ILayoutContext context) {
+        boolean anythingChanged = false;
 
-		// height
-		if (containerGa.getHeight() < MIN_HEIGHT) {
-			containerGa.setHeight(MIN_HEIGHT);
-			anythingChanged = true;
-		}
+        ContainerShape containerShape = (ContainerShape) context.getPictogramElement();
+        GraphicsAlgorithm containerGa = containerShape.getGraphicsAlgorithm();
+        int containerWidth = containerGa.getWidth();
+        int containerHeight = containerGa.getHeight();
 
-		// width
-		if (containerGa.getWidth() < MIN_WIDTH) {
-			containerGa.setWidth(MIN_WIDTH);
-			anythingChanged = true;
-		}
+        // height
+        if (containerGa.getHeight() < MIN_HEIGHT) {
+            containerGa.setHeight(MIN_HEIGHT);
+            anythingChanged = true;
+        }
 
-		IGaService gaService = Graphiti.getGaService();
-		for (GraphicsAlgorithm ga : containerGa.getGraphicsAlgorithmChildren()) {
-			IDimension size = 
-					gaService.calculateSize(ga);
-			if (containerWidth != size.getWidth()) {
-				if (ga instanceof Rectangle) {
-                	Rectangle rt = (Rectangle) ga;
-                	rt.setHeight(containerHeight);
-                	rt.setWidth(containerWidth);
-                } else if (ga instanceof RoundedRectangle ) {
-					RoundedRectangle rt = (RoundedRectangle) ga;
-                	rt.setHeight(containerHeight - 40);
-                	rt.setWidth(containerWidth - 40);
+        // width
+        if (containerGa.getWidth() < MIN_WIDTH) {
+            containerGa.setWidth(MIN_WIDTH);
+            anythingChanged = true;
+        }
+
+        IGaService gaService = Graphiti.getGaService();
+        for (GraphicsAlgorithm ga : containerGa.getGraphicsAlgorithmChildren()) {
+            IDimension size = gaService.calculateSize(ga);
+            if (containerWidth != size.getWidth()) {
+                if (ga instanceof Rectangle) {
+                    Rectangle rt = (Rectangle) ga;
+                    rt.setHeight(containerHeight);
+                    rt.setWidth(containerWidth);
+                } else if (ga instanceof RoundedRectangle) {
+                    RoundedRectangle rt = (RoundedRectangle) ga;
+                    rt.setHeight(containerHeight - 40);
+                    rt.setWidth(containerWidth - 40);
                 }
-			}
-		}
+            }
+        }
 
-		return anythingChanged;
-	}
+        return anythingChanged;
+    }
 
 }

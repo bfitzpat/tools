@@ -21,66 +21,72 @@ import org.eclipse.jface.wizard.WizardPage;
  * 
  * @author shongxum
  */
-abstract public class BaseWizardPage extends WizardPage implements
-		IWizardAction, ISkippable {
+abstract public class BaseWizardPage extends WizardPage implements IWizardAction, ISkippable {
 
-	private boolean _skippable = false;
-	private boolean _needMediation = false;
+    private boolean _skippable = false;
+    private boolean _needMediation = false;
 
-	/**
-	 * Default constructor.
-	 */
-	public BaseWizardPage(String name) {
-		super(name);
-	}
+    /**
+     * Default constructor.
+     * @param name page name
+     */
+    public BaseWizardPage(String name) {
+        super(name);
+    }
 
-	/**
-	 * @param pageName
-	 * @param title
-	 * @param titleImage
-	 */
-	public BaseWizardPage(String pageName, String title,
-							ImageDescriptor titleImage) {
-		super(pageName, title, titleImage);
-	}
+    /**
+     * @param pageName page name
+     * @param title page title
+     * @param titleImage page image
+     */
+    public BaseWizardPage(String pageName, String title, ImageDescriptor titleImage) {
+        super(pageName, title, titleImage);
+    }
 
-	/**
-	 * @see ISkippable#getSkippable()
-	 */
-	public boolean getSkippable() {
-		return _skippable;
-	}
+    /* (non-Javadoc)
+     * @see org.jboss.tools.sca.diagram.internal.wizards.ISkippable#getSkippable()
+     */
+    @Override
+    public boolean getSkippable() {
+        return _skippable;
+    }
 
-	/**
-	 * @see ISkippable#setSkippable(boolean)
-	 */
-	public void setSkippable(boolean b) {
-		_skippable = b;
-	}
+    /* (non-Javadoc)
+     * @see org.jboss.tools.sca.diagram.internal.wizards.ISkippable#setSkippable(boolean)
+     */
+    @Override
+    public void setSkippable(boolean b) {
+        _skippable = b;
+    }
 
-	public void setNeedMediation(boolean needMediation) {
-		_needMediation = needMediation;
-	}
+    /**
+     * @param needMediation flag
+     */
+    public void setNeedMediation(boolean needMediation) {
+        _needMediation = needMediation;
+    }
 
-	/**
-	 * @see IWizardAction#onWizardNext()
-	 */
-	public boolean onWizardNext() {
-		if (!_needMediation)
-			return true;
+    /* (non-Javadoc)
+     * @see org.jboss.tools.sca.diagram.internal.wizards.IWizardAction#onWizardNext()
+     */
+    @Override
+    public boolean onWizardNext() {
+        if (!_needMediation) {
+            return true;
+        }
 
-		IWizard wiz = getWizard();
-		if (wiz instanceof IMediator) {
-			((IMediator) wiz).mediatePage(this);
-		}
-		return true;
-	}
+        IWizard wiz = getWizard();
+        if (wiz instanceof IMediator) {
+            ((IMediator) wiz).mediatePage(this);
+        }
+        return true;
+    }
 
-	/**
-	 * @see com.sybase.wst.eclipse.internal.ui.wizards.IWizardAction#onSetActive()
-	 */
-	public void onSetActive() {
-		// Empty
-	}
+    /**
+     * @see com.sybase.wst.eclipse.internal.ui.wizards.IWizardAction#onSetActive()
+     */
+    public void onSetActive() {
+        // Empty
+    }
 
 }

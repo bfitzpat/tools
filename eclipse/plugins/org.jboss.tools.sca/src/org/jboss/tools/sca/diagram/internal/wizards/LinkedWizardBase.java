@@ -18,24 +18,24 @@ import org.eclipse.jface.wizard.IWizardPage;
  * wizard's addPages() method, e.g.
  * 
  * <pre>
- *  	public void addPages() {
- * 		super.addPages();
- * 		
- * 		// Add this wizard's pages.
- * 		...
- * 		
- * 		// Create the next wizard
- * 		MyNextWizard mnw = new MyNextWizard();
- * 		
- * 		// Initialize the wizard
- * 		mnw.init();
- * 		
- * 		// Create the wizards pages
- * 		mnw.addPages();
- * 		
- * 		// Link the wizard into the chain
- * 		setNext(mnw);
- * 	}
+ *  public void addPages() {
+ *      super.addPages();
+ *  
+ *      // Add this wizard's pages.
+ *      ...
+ *       
+ *      // Create the next wizard
+ *      MyNextWizard mnw = new MyNextWizard();
+ *      
+ *      // Initialize the wizard
+ *      mnw.init();
+ *      
+ *      // Create the wizards pages
+ *      mnw.addPages();
+ *     
+ *      // Link the wizard into the chain
+ *      setNext(mnw);
+ *  }
  * </pre>
  * 
  * The linked wizard's starting page is automatically returned by getNextPage()
@@ -43,107 +43,157 @@ import org.eclipse.jface.wizard.IWizardPage;
  * 
  * @author rcernich
  */
-public abstract class LinkedWizardBase extends BaseWizard implements
-		ILinkedWizard {
+public abstract class LinkedWizardBase extends BaseWizard implements ILinkedWizard {
 
-	ILinkedWizard mPrevious = null;
-	ILinkedWizard mNext = null;
-	protected boolean mFinished = false;
+    private ILinkedWizard _previous = null;
+    private ILinkedWizard _next = null;
+    private boolean _finished = false;
 
-	/**
-	 * Default constructor.
-	 */
-	public LinkedWizardBase() {
-		super();
-	}
+    /**
+     * Default constructor.
+     */
+    public LinkedWizardBase() {
+        super();
+    }
 
-	public void setPrevious(ILinkedWizard previous) {
-		mPrevious = previous;
-		if (mPrevious != null
-				&& (getWindowTitle() == null || getWindowTitle().length() == 0)) {
-			setWindowTitle(mPrevious.getWindowTitle());
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.jboss.tools.sca.diagram.internal.wizards.ILinkedWizard#setPrevious
+     * (org.jboss.tools.sca.diagram.internal.wizards.ILinkedWizard)
+     */
+    @Override
+    public void setPrevious(ILinkedWizard previous) {
+        _previous = previous;
+        if (_previous != null && (getWindowTitle() == null || getWindowTitle().length() == 0)) {
+            setWindowTitle(_previous.getWindowTitle());
+        }
+    }
 
-	public ILinkedWizard getPrevious() {
-		return mPrevious;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.jboss.tools.sca.diagram.internal.wizards.ILinkedWizard#getPrevious()
+     */
+    @Override
+    public ILinkedWizard getPrevious() {
+        return _previous;
+    }
 
-	public void setNext(ILinkedWizard next) {
-		mNext = next;
-		if (next != null)
-			mNext.setPrevious(this);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.jboss.tools.sca.diagram.internal.wizards.ILinkedWizard#setNext(org
+     * .jboss.tools.sca.diagram.internal.wizards.ILinkedWizard)
+     */
+    @Override
+    public void setNext(ILinkedWizard next) {
+        _next = next;
+        if (next != null) {
+            _next.setPrevious(this);
+        }
+    }
 
-	public ILinkedWizard getNext() {
-		return mNext;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jboss.tools.sca.diagram.internal.wizards.ILinkedWizard#getNext()
+     */
+    @Override
+    public ILinkedWizard getNext() {
+        return _next;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#canFinish()
-	 */
-	public boolean canFinish() {
-		boolean canFinish = super.canFinish();
-		if (canFinish && getNext() != null) {
-			canFinish = canFinish && getNext().canFinish();
-		}
-		return canFinish;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.wizard.IWizard#canFinish()
+     */
+    @Override
+    public boolean canFinish() {
+        boolean canFinish = super.canFinish();
+        if (canFinish && getNext() != null) {
+            canFinish = canFinish && getNext().canFinish();
+        }
+        return canFinish;
+    }
 
-	public boolean isFinished() {
-		return mFinished;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.jboss.tools.sca.diagram.internal.wizards.ILinkedWizard#isFinished()
+     */
+    @Override
+    public boolean isFinished() {
+        return _finished;
+    }
 
-	/**
-	 * @see org.eclipse.jface.wizard.IWizard#dispose()
-	 */
-	public void dispose() {
-		super.dispose();
-		mPrevious = null;
-	}
+    /**
+     * @see org.eclipse.jface.wizard.IWizard#dispose()
+     */
+    public void dispose() {
+        super.dispose();
+        _previous = null;
+    }
 
-	/**
-	 * @see org.eclipse.jface.wizard.IWizard#performFinish()
-	 */
-	public boolean performFinish() {
-		boolean noFailures = true;
-		if (!mFinished) {
-			// Get the last unfinished wizard
-			LinkedWizardBase lastWiz = this;
-			if (getNext() != null && !getNext().isFinished()) {
-				lastWiz = (LinkedWizardBase) getNext();
-				while (lastWiz.getNext() != null
-						&& !lastWiz.getNext().isFinished()) {
-					lastWiz = (LinkedWizardBase) lastWiz.getNext();
-				}
-			}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.wizard.Wizard#performFinish()
+     */
+    @Override
+    public boolean performFinish() {
+        boolean noFailures = true;
+        if (!_finished) {
+            // Get the last unfinished wizard
+            LinkedWizardBase lastWiz = this;
+            if (getNext() != null && !getNext().isFinished()) {
+                lastWiz = (LinkedWizardBase) getNext();
+                while (lastWiz.getNext() != null && !lastWiz.getNext().isFinished()) {
+                    lastWiz = (LinkedWizardBase) lastWiz.getNext();
+                }
+            }
 
-			// finish the wizards from last to first
-			do {
-				lastWiz.mFinished = lastWiz.doFinish();
-				noFailures = noFailures && lastWiz.isFinished();
-				lastWiz = (LinkedWizardBase) lastWiz.getPrevious();
-			}
-			while (noFailures && lastWiz != null && !lastWiz.isFinished());
-		}
-		return mFinished && noFailures;
-	}
+            // finish the wizards from last to first
+            do {
+                lastWiz._finished = lastWiz.doFinish();
+                noFailures = noFailures && lastWiz.isFinished();
+                lastWiz = (LinkedWizardBase) lastWiz.getPrevious();
+            } while (noFailures && lastWiz != null && !lastWiz.isFinished());
+        }
+        return _finished && noFailures;
+    }
 
-	public abstract boolean doFinish();
+    /**
+     * @return flag
+     */
+    public abstract boolean doFinish();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#getNextPage(org.eclipse.jface.wizard.IWizardPage)
-	 */
-	public IWizardPage getNextPage(IWizardPage page) {
-		IWizardPage nextPage = super.getNextPage(page);
-		if (getNext() != null) {
-			nextPage = getNext().getStartingPage();
-		}
-		return nextPage;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.jboss.tools.sca.diagram.internal.wizards.BaseWizard#getNextPage(org
+     * .eclipse.jface.wizard.IWizardPage)
+     */
+    @Override
+    public IWizardPage getNextPage(IWizardPage page) {
+        IWizardPage nextPage = super.getNextPage(page);
+        if (getNext() != null) {
+            nextPage = getNext().getStartingPage();
+        }
+        return nextPage;
+    }
+
+    /**
+     * @param finished flag
+     */
+    public void setFinished(boolean finished) {
+        this._finished = finished;
+    }
 
 }

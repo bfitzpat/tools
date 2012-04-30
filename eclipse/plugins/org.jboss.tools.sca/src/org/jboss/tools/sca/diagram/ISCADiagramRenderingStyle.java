@@ -14,11 +14,27 @@ package org.jboss.tools.sca.diagram;
 
 import org.eclipse.graphiti.util.IPredefinedRenderingStyle;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public interface ISCADiagramRenderingStyle extends IPredefinedRenderingStyle {
-	
-	public static final String COMPOSITE_ID = "sca-composite";
-	public static final String COMPONENT_ID = "sca-component";
-	public static final String SERVICE_ID = "sca-service";
-	public static final String REFERENCE_ID = "sca-reference";
+
+    /**
+     * Composite gradient ID.
+     */
+    public static final String COMPOSITE_ID = "sca-composite";
+    /**
+     * Component gradient ID.
+     */
+    public static final String COMPONENT_ID = "sca-component";
+    /**
+     * Service gradient ID.
+     */
+    public static final String SERVICE_ID = "sca-service";
+    /**
+     * Reference gradient ID.
+     */
+    public static final String REFERENCE_ID = "sca-reference";
 
 }

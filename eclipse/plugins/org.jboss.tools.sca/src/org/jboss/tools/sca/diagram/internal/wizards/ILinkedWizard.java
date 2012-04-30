@@ -20,36 +20,36 @@ import org.eclipse.jface.wizard.IWizard;
  */
 public interface ILinkedWizard extends IWizard {
 
-	/**
-	 * Sets the wizard that precedes this wizard in the chain. Clients should
-	 * not need to invoke this method directly (it is invoked automatically on
-	 * the wizard passed to setNext()).
-	 * 
-	 * @param previous
-	 */
-	public void setPrevious(ILinkedWizard previous);
+    /**
+     * Sets the wizard that precedes this wizard in the chain. Clients should
+     * not need to invoke this method directly (it is invoked automatically on
+     * the wizard passed to setNext()).
+     * 
+     * @param previous earlier wizard
+     */
+    public void setPrevious(ILinkedWizard previous);
 
-	/**
-	 * @return the wizard that precedes this wizard in the chain
-	 */
-	public ILinkedWizard getPrevious();
+    /**
+     * @return the wizard that precedes this wizard in the chain
+     */
+    public ILinkedWizard getPrevious();
 
-	/**
-	 * Sets the wizard that follows this wizard. Sets next's previous wizard to
-	 * this.
-	 * 
-	 * @param next the next wizard in the chain.
-	 */
-	public void setNext(ILinkedWizard next);
+    /**
+     * Sets the wizard that follows this wizard. Sets next's previous wizard to
+     * this.
+     * 
+     * @param next the next wizard in the chain.
+     */
+    public void setNext(ILinkedWizard next);
 
-	/**
-	 * @return the next wizard in the chain
-	 */
-	public ILinkedWizard getNext();
+    /**
+     * @return the next wizard in the chain
+     */
+    public ILinkedWizard getNext();
 
-	/**
-	 * @return true if this wizard has successfully completed its
-	 *         performFinish() work.
-	 */
-	public boolean isFinished();
+    /**
+     * @return true if this wizard has successfully completed its
+     *         performFinish() work.
+     */
+    public boolean isFinished();
 }

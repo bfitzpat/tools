@@ -25,152 +25,167 @@ import org.eclipse.soa.sca.sca1_1.model.sca.ComponentService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.jboss.tools.sca.ImageProvider;
 
-public class SCADiagramCreateReferenceLinkFeature extends
-AbstractCreateConnectionFeature {
+/**
+ * @author bfitzpat
+ *
+ */
+public class SCADiagramCreateReferenceLinkFeature extends AbstractCreateConnectionFeature {
 
-	public SCADiagramCreateReferenceLinkFeature(IFeatureProvider fp) {
-		super(fp, "Reference (dashed)", "Create Reference");
-	}
+    /**
+     * @param fp the feature provider
+     */
+    public SCADiagramCreateReferenceLinkFeature(IFeatureProvider fp) {
+        super(fp, "Reference (dashed)", "Create Reference");
+    }
 
-	@Override
-	public boolean canCreate(ICreateConnectionContext context) {
-		if (context.getSourceAnchor() != null && context.getTargetAnchor() != null) {
-			
-			Object source = getObjectForAnchor(context.getSourceAnchor());
-			Object target = getObjectForAnchor(context.getTargetAnchor());
-			if (source != null && target != null) {
-				if (source instanceof Component && target instanceof Reference) {
-					Object src = 
-							getFeatureProvider().getBusinessObjectForPictogramElement(
-									context.getSourceAnchor().getLink().getPictogramElement());
-					if (src != null && src instanceof ComponentReference) {
-						return true;
-					}
-				} else 	if (source instanceof Component && target instanceof Component) {
-					Object src = 
-							getFeatureProvider().getBusinessObjectForPictogramElement(
-									context.getSourceAnchor().getLink().getPictogramElement());
-					Object tgt = 
-							getFeatureProvider().getBusinessObjectForPictogramElement(
-									context.getTargetAnchor().getLink().getPictogramElement());
-					if (src != null && src instanceof ComponentService && 
-							tgt != null && tgt instanceof ComponentReference) {
-						return true;
-					}
-				}
+    @Override
+    public boolean canCreate(ICreateConnectionContext context) {
+        if (context.getSourceAnchor() != null && context.getTargetAnchor() != null) {
 
-			}
-		}
-		return false;
-	}
+            Object source = getObjectForAnchor(context.getSourceAnchor());
+            Object target = getObjectForAnchor(context.getTargetAnchor());
+            if (source != null && target != null) {
+                if (source instanceof Component && target instanceof Reference) {
+                    Object src = getFeatureProvider().getBusinessObjectForPictogramElement(
+                            context.getSourceAnchor().getLink().getPictogramElement());
+                    if (src != null && src instanceof ComponentReference) {
+                        return true;
+                    }
+                } else if (source instanceof Component && target instanceof Component) {
+                    Object src = getFeatureProvider().getBusinessObjectForPictogramElement(
+                            context.getSourceAnchor().getLink().getPictogramElement());
+                    Object tgt = getFeatureProvider().getBusinessObjectForPictogramElement(
+                            context.getTargetAnchor().getLink().getPictogramElement());
+                    if (src != null && src instanceof ComponentService && tgt != null
+                            && tgt instanceof ComponentReference) {
+                        return true;
+                    }
+                }
 
-	public boolean canStartConnection(ICreateConnectionContext context) {
-		// return true if start anchor is a component/component reference
-		if (getObjectForAnchor(context.getSourceAnchor()) != null) {
-			Object source = getObjectForAnchor(context.getSourceAnchor());
-			if (source != null) {
-				if (source instanceof Component) {
-					Object src = 
-							getFeatureProvider().getBusinessObjectForPictogramElement(
-									context.getSourceAnchor().getLink().getPictogramElement());
-					if (src != null && src instanceof ComponentReference) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
+            }
+        }
+        return false;
+    }
 
-	public Connection create(ICreateConnectionContext context) {
-		Connection newConnection = null;
+    /* (non-Javadoc)
+     * @see org.eclipse.graphiti.func.ICreateConnection#canStartConnection(org.eclipse.graphiti.features.context.ICreateConnectionContext)
+     */
+    @Override
+    public boolean canStartConnection(ICreateConnectionContext context) {
+        // return true if start anchor is a component/component reference
+        if (getObjectForAnchor(context.getSourceAnchor()) != null) {
+            Object source = getObjectForAnchor(context.getSourceAnchor());
+            if (source != null) {
+                if (source instanceof Component) {
+                    Object src = getFeatureProvider().getBusinessObjectForPictogramElement(
+                            context.getSourceAnchor().getLink().getPictogramElement());
+                    if (src != null && src instanceof ComponentReference) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
-		Object source = getObjectForAnchor(context.getSourceAnchor());
-		Object target = getObjectForAnchor(context.getTargetAnchor());
-		
-		if (source instanceof Component && target instanceof Reference) {
-			// get EClasses which should be connected
-			Component src = (Component) getObjectForAnchor(context.getSourceAnchor());
-			Reference tgt = (Reference) getObjectForAnchor(context.getTargetAnchor());
-	
-			if (source != null && target != null) {
-				// create new business object 
-				ComponentReference eReference = createComponentReference(src, tgt);
-	
-				// add connection for business object
-				AddConnectionContext addContext =
-						new AddConnectionContext(context.getSourceAnchor(), context
-								.getTargetAnchor());
-				addContext.setNewObject(eReference);
-				newConnection =
-						(Connection) getFeatureProvider().addIfPossible(addContext);
-			}
-		} else 	if (source instanceof Component && target instanceof Component) {
-			Component src = (Component) getObjectForAnchor(context.getSourceAnchor());
-			Component tgt = (Component) getObjectForAnchor(context.getTargetAnchor());
+    /* (non-Javadoc)
+     * @see org.eclipse.graphiti.func.ICreateConnection#create(org.eclipse.graphiti.features.context.ICreateConnectionContext)
+     */
+    @Override
+    public Connection create(ICreateConnectionContext context) {
+        Connection newConnection = null;
 
-			// create new business object 
-			ComponentReference eReference = createComponentReference(src, tgt);
+        Object source = getObjectForAnchor(context.getSourceAnchor());
+        Object target = getObjectForAnchor(context.getTargetAnchor());
 
-			// add connection for business object
-			AddConnectionContext addContext =
-					new AddConnectionContext(context.getSourceAnchor(), context
-							.getTargetAnchor());
-			addContext.setNewObject(eReference);
-			newConnection =
-					(Connection) getFeatureProvider().addIfPossible(addContext);
-		}
+        if (source instanceof Component && target instanceof Reference) {
+            // get EClasses which should be connected
+            Component src = (Component) getObjectForAnchor(context.getSourceAnchor());
+            Reference tgt = (Reference) getObjectForAnchor(context.getTargetAnchor());
 
-		return newConnection;
-	}
+            if (source != null && target != null) {
+                // create new business object
+                ComponentReference eReference = createComponentReference(src, tgt);
 
-	/**
-	 * Returns the object belonging to the anchor, or null if not available.
-	 */
-	private Object getObjectForAnchor(Anchor anchor) {
-		if (anchor != null) {
-			Object object =
-					getBusinessObjectForPictogramElement(anchor.getParent());
-			if (object instanceof Component || object instanceof Reference) {
-				return object;
-			}
-		}
-		return null;
-	}
+                // add connection for business object
+                AddConnectionContext addContext = new AddConnectionContext(context.getSourceAnchor(),
+                        context.getTargetAnchor());
+                addContext.setNewObject(eReference);
+                newConnection = (Connection) getFeatureProvider().addIfPossible(addContext);
+            }
+        } else if (source instanceof Component && target instanceof Component) {
+            Component src = (Component) getObjectForAnchor(context.getSourceAnchor());
+            Component tgt = (Component) getObjectForAnchor(context.getTargetAnchor());
 
-	/**
-	 * Creates a connection between a component reference and a reference
-	 */
-	private ComponentReference createComponentReference (Component source, Reference target) {
-		EList<ComponentReference> references = source.getReference();
-		ComponentReference eRef = null;
-		for (ComponentReference componentReference : references) {
-			eRef = componentReference;
-			break;
-		}
-		target.getPromote().add(eRef);
-		return eRef;
-	}
+            // create new business object
+            ComponentReference eReference = createComponentReference(src, tgt);
 
-	private ComponentReference createComponentReference (Component source, Component target) {
-		EList<ComponentService> services = source.getService();
-		ComponentService eSvc = null;
-		for (ComponentService componentService : services) {
-			eSvc = componentService;
-			break;
-		}
-		EList<ComponentReference> references = target.getReference();
-		ComponentReference eRef = null;
-		for (ComponentReference componentReference : references) {
-			eRef = componentReference;
-			break;
-		}
-		eRef.setName(eSvc.getName());
-		return eRef;
-	}
+            // add connection for business object
+            AddConnectionContext addContext = new AddConnectionContext(context.getSourceAnchor(),
+                    context.getTargetAnchor());
+            addContext.setNewObject(eReference);
+            newConnection = (Connection) getFeatureProvider().addIfPossible(addContext);
+        }
 
-	@Override
-	public String getCreateImageId() {
-		return ImageProvider.IMG_16_CONNECTION;
-	}
+        return newConnection;
+    }
+
+    /*
+     * Returns the object belonging to the anchor, or null if not available.
+     * @param anchor the anchor to check
+     * @return the linked object
+     */
+    private Object getObjectForAnchor(Anchor anchor) {
+        if (anchor != null) {
+            Object object = getBusinessObjectForPictogramElement(anchor.getParent());
+            if (object instanceof Component || object instanceof Reference) {
+                return object;
+            }
+        }
+        return null;
+    }
+
+    /*
+     * Creates a connection between a component reference and a reference
+     * @param source Component
+     * @param target Reference
+     * @return ComponentReference
+     */
+    private ComponentReference createComponentReference(Component source, Reference target) {
+        EList<ComponentReference> references = source.getReference();
+        ComponentReference eRef = null;
+        for (ComponentReference componentReference : references) {
+            eRef = componentReference;
+            break;
+        }
+        target.getPromote().add(eRef);
+        return eRef;
+    }
+
+    /*
+     * @param source Component
+     * @param target Component
+     * @return ComponentReference
+     */
+    private ComponentReference createComponentReference(Component source, Component target) {
+        EList<ComponentService> services = source.getService();
+        ComponentService eSvc = null;
+        for (ComponentService componentService : services) {
+            eSvc = componentService;
+            break;
+        }
+        EList<ComponentReference> references = target.getReference();
+        ComponentReference eRef = null;
+        for (ComponentReference componentReference : references) {
+            eRef = componentReference;
+            break;
+        }
+        eRef.setName(eSvc.getName());
+        return eRef;
+    }
+
+    @Override
+    public String getCreateImageId() {
+        return ImageProvider.IMG_16_CONNECTION;
+    }
 }

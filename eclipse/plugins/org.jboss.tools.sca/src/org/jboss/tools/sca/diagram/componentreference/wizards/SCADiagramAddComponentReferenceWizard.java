@@ -18,63 +18,78 @@ import org.eclipse.soa.sca.sca1_1.model.sca.JavaInterface;
 import org.eclipse.soa.sca.sca1_1.model.sca.WSDLPortType;
 import org.jboss.tools.sca.diagram.internal.wizards.BaseWizard;
 
+/**
+ * @author bfitzpat
+ * 
+ */
 public class SCADiagramAddComponentReferenceWizard extends BaseWizard {
 
-	private SCADiagramAddComponentReferenceStartPage startPage = null;
-	private SCADiagramAddComponentReferenceJavaPage javaPage = null;
-	private SCADiagramAddComponentReferenceWSDLPage wsdlPage = null;
-	
-	public SCADiagramAddComponentReferenceWizard() {
-		super();
-		initPages();
-		setWindowTitle("New Component Reference");
-	}
-	
-	private void initPages() {
-		startPage = new SCADiagramAddComponentReferenceStartPage("start");
-		javaPage = new SCADiagramAddComponentReferenceJavaPage(startPage, "java");
-		wsdlPage = new SCADiagramAddComponentReferenceWSDLPage(startPage, "wsdl");
-	}
-	
-	@Override
-	public boolean performFinish() {
-		if (startPage != null && startPage.getComponentReferenceName() != null) {
-			return true;
-		}
-		return false;
-	}
+    private SCADiagramAddComponentReferenceStartPage _startPage = null;
+    private SCADiagramAddComponentReferenceJavaPage _javaPage = null;
+    private SCADiagramAddComponentReferenceWSDLPage _wsdlPage = null;
 
-	@Override
-	public void addPages() {
-		addPage(startPage);
-		addPage(javaPage);
-		addPage(wsdlPage);
-	}
+    /**
+     * Constructor.
+     */
+    public SCADiagramAddComponentReferenceWizard() {
+        super();
+        initPages();
+        setWindowTitle("New Component Reference");
+    }
 
-	public String getComponentReferenceName() {
-		if (startPage != null) 
-			return startPage.getComponentReferenceName();
-		return null;
-	}
+    private void initPages() {
+        _startPage = new SCADiagramAddComponentReferenceStartPage("start");
+        _javaPage = new SCADiagramAddComponentReferenceJavaPage(_startPage, "java");
+        _wsdlPage = new SCADiagramAddComponentReferenceWSDLPage(_startPage, "wsdl");
+    }
 
-	public Interface getInterface() {
-		if (startPage != null) 
-			return startPage.getInterface();
-		return null;
-	}
+    @Override
+    public boolean performFinish() {
+        if (_startPage != null && _startPage.getComponentReferenceName() != null) {
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public IWizardPage getNextPage(IWizardPage page) {
-		if (page.equals(startPage)) {
-			Interface interfaceToTest = startPage.getInterface();
-			if (interfaceToTest instanceof JavaInterface) {
-				javaPage.refresh();
-				return javaPage;
-			} else if (interfaceToTest instanceof WSDLPortType) {
-				wsdlPage.refresh();
-				return wsdlPage;
-			}
-		}
-		return super.getNextPage(page);
-	}
+    @Override
+    public void addPages() {
+        addPage(_startPage);
+        addPage(_javaPage);
+        addPage(_wsdlPage);
+    }
+
+    /**
+     * @return component reference name
+     */
+    public String getComponentReferenceName() {
+        if (_startPage != null) {
+            return _startPage.getComponentReferenceName();
+        }
+        return null;
+    }
+
+    /**
+     * @return interface
+     */
+    public Interface getInterface() {
+        if (_startPage != null) {
+            return _startPage.getInterface();
+        }
+        return null;
+    }
+
+    @Override
+    public IWizardPage getNextPage(IWizardPage page) {
+        if (page.equals(_startPage)) {
+            Interface interfaceToTest = _startPage.getInterface();
+            if (interfaceToTest instanceof JavaInterface) {
+                _javaPage.refresh();
+                return _javaPage;
+            } else if (interfaceToTest instanceof WSDLPortType) {
+                _wsdlPage.refresh();
+                return _wsdlPage;
+            }
+        }
+        return super.getNextPage(page);
+    }
 }

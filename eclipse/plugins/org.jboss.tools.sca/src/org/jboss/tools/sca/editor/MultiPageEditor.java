@@ -31,130 +31,161 @@ import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
 
+/**
+ * @author bfitzpat
+ * 
+ */
 public class MultiPageEditor extends FormEditor implements IResourceChangeListener {
 
-	/** The text editor used in page 0. */
-	private DiagramEditor editor;
-	private TextEditor editor2;
+    /** The text editor used in page 0. */
+    private DiagramEditor _diagramEditor;
+    private TextEditor _textEditor;
 
-	/**
-	 * Creates a multi-page editor example.
-	 */
-	public MultiPageEditor() {
-		super();
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
-	}
-	/**
-	 * Creates page 0 of the multi-page editor,
-	 * which contains a text editor.
-	 */
-	void createPage0() {
-		try {
-			editor = new SwitchyardSCAEditor();
-			int index = addPage(editor, getEditorInput());
-			setPageText(index, editor.getTitle());
-		} catch (PartInitException e) {
-			ErrorDialog.openError(
-				getSite().getShell(),
-				"Error creating nested text editor",
-				null,
-				e.getStatus());
-		}
-	}
-	/**
-	 * Creates page 1 of the multi-page editor,
-	 * which allows you to change the font used in page 2.
-	 */
-	void createPage1() {
+    /**
+     * Creates a multi-page editor example.
+     */
+    public MultiPageEditor() {
+        super();
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
+    }
 
-		try {
-			editor2 = new TextEditor();
-			int index = addPage(editor2, getEditorInput());
-			setPageText(index, editor2.getTitle());
-		} catch (PartInitException e) {
-			ErrorDialog.openError(getSite().getShell(), "Error creating nested text editor", null, e.getStatus());
-		}
-	}
+    /**
+     * Creates page 0 of the multi-page editor, which contains a text editor.
+     */
+    void createPage0() {
+        try {
+            _diagramEditor = new SwitchyardSCAEditor();
+            int index = addPage(_diagramEditor, getEditorInput());
+            setPageText(index, _diagramEditor.getTitle());
+        } catch (PartInitException e) {
+            ErrorDialog.openError(getSite().getShell(), "Error creating nested text editor", null, e.getStatus());
+        }
+    }
 
-	/**
-	 * Creates the pages of the multi-page editor.
-	 */
-	protected void addPages() {
-		createPage0();
-		createPage1();
-	}
-	/**
-	 * The <code>MultiPageEditorPart</code> implementation of this 
-	 * <code>IWorkbenchPart</code> method disposes all nested editors.
-	 * Subclasses may extend.
-	 */
-	public void dispose() {
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
-		super.dispose();
-	}
-	/**
-	 * Saves the multi-page editor's document.
-	 */
-	public void doSave(IProgressMonitor monitor) {
-		getActiveEditor().doSave(monitor);
-	}
-	/**
-	 * Saves the multi-page editor's document as another file.
-	 * Also updates the text for page 0's tab, and updates this multi-page editor's input
-	 * to correspond to the nested editor's.
-	 */
-	public void doSaveAs() {
-		IEditorPart editor = getEditor(0);
-		editor.doSaveAs();
-		setPageText(0, editor.getTitle());
-		setInput(editor.getEditorInput());
-	}
-	/* (non-Javadoc)
-	 * Method declared on IEditorPart
-	 */
-	public void gotoMarker(IMarker marker) {
-		setActivePage(0);
-		IDE.gotoMarker(getEditor(0), marker);
-	}
-	/**
-	 * The <code>MultiPageEditorExample</code> implementation of this method
-	 * checks that the input is an instance of <code>IFileEditorInput</code>.
-	 */
-	public void init(IEditorSite site, IEditorInput editorInput)
-		throws PartInitException {
-		if (!(editorInput instanceof IFileEditorInput))
-			throw new PartInitException("Invalid Input: Must be IFileEditorInput");
-		super.init(site, editorInput);
-	}
-	/* (non-Javadoc)
-	 * Method declared on IEditorPart.
-	 */
-	public boolean isSaveAsAllowed() {
-		return true;
-	}
-	/**
-	 * Calculates the contents of page 2 when the it is activated.
-	 */
-	protected void pageChange(int newPageIndex) {
-		super.pageChange(newPageIndex);
-	}
-	/**
-	 * Closes all project files on project close.
-	 */
-	public void resourceChanged(final IResourceChangeEvent event){
-		if(event.getType() == IResourceChangeEvent.PRE_CLOSE){
-			Display.getDefault().asyncExec(new Runnable(){
-				public void run(){
-					IWorkbenchPage[] pages = getSite().getWorkbenchWindow().getPages();
-					for (int i = 0; i<pages.length; i++){
-						if(((FileEditorInput)editor.getEditorInput()).getFile().getProject().equals(event.getResource())){
-							IEditorPart editorPart = pages[i].findEditor(editor.getEditorInput());
-							pages[i].closeEditor(editorPart,true);
-						}
-					}
-				}            
-			});
-		}
-	}
+    /**
+     * Creates page 1 of the multi-page editor, which allows you to change the
+     * font used in page 2.
+     */
+    void createPage1() {
+
+        try {
+            _textEditor = new TextEditor();
+            int index = addPage(_textEditor, getEditorInput());
+            setPageText(index, _textEditor.getTitle());
+        } catch (PartInitException e) {
+            ErrorDialog.openError(getSite().getShell(), "Error creating nested text editor", null, e.getStatus());
+        }
+    }
+
+    /**
+     * Creates the pages of the multi-page editor.
+     */
+    @Override
+    protected void addPages() {
+        createPage0();
+        createPage1();
+    }
+
+    /**
+     * The <code>MultiPageEditorPart</code> implementation of this
+     * <code>IWorkbenchPart</code> method disposes all nested editors.
+     * Subclasses may extend.
+     */
+    @Override
+    public void dispose() {
+        ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+        super.dispose();
+    }
+
+    /*
+     * (non-Javadoc) Saves the multi-page editor's document.
+     * 
+     * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.
+     * IProgressMonitor)
+     */
+    @Override
+    public void doSave(IProgressMonitor monitor) {
+        getActiveEditor().doSave(monitor);
+    }
+
+    /**
+     * Saves the multi-page editor's document as another file. Also updates the
+     * text for page 0's tab, and updates this multi-page editor's input to
+     * correspond to the nested editor's.
+     */
+    @Override
+    public void doSaveAs() {
+        IEditorPart editor = getEditor(0);
+        editor.doSaveAs();
+        setPageText(0, editor.getTitle());
+        setInput(editor.getEditorInput());
+    }
+
+    /**
+     * Method declared on IEditorPart.
+     * 
+     * @param marker Marker to look for
+     */
+    public void gotoMarker(IMarker marker) {
+        setActivePage(0);
+        IDE.gotoMarker(getEditor(0), marker);
+    }
+
+    /*
+     * (non-Javadoc) The <code>MultiPageEditorExample</code> implementation of
+     * this method checks that the input is an instance of
+     * <code>IFileEditorInput</code>.
+     * 
+     * @see
+     * org.eclipse.ui.forms.editor.FormEditor#init(org.eclipse.ui.IEditorSite,
+     * org.eclipse.ui.IEditorInput)
+     */
+    @Override
+    public void init(IEditorSite site, IEditorInput editorInput) throws PartInitException {
+        if (!(editorInput instanceof IFileEditorInput)) {
+            throw new PartInitException("Invalid Input: Must be IFileEditorInput");
+        }
+        super.init(site, editorInput);
+    }
+
+    /*
+     * (non-Javadoc) Method declared on IEditorPart.
+     */
+    @Override
+    public boolean isSaveAsAllowed() {
+        return true;
+    }
+
+    /**
+     * Calculates the contents of page 2 when the it is activated.
+     */
+    protected void pageChange(int newPageIndex) {
+        super.pageChange(newPageIndex);
+    }
+
+    /*
+     * (non-Javadoc) Closes all project files on project close.
+     * 
+     * @see
+     * org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org
+     * .eclipse.core.resources.IResourceChangeEvent)
+     */
+    @Override
+    public void resourceChanged(final IResourceChangeEvent event) {
+        if (event.getType() == IResourceChangeEvent.PRE_CLOSE) {
+            Display.getDefault().asyncExec(new Runnable() {
+                public void run() {
+                    IWorkbenchPage[] pages = getSite().getWorkbenchWindow().getPages();
+                    for (int i = 0; i < pages.length; i++) {
+                        if (((FileEditorInput) _diagramEditor.getEditorInput()).getFile().getProject()
+                                .equals(event.getResource())) {
+                            IEditorPart editorPart = pages[i].findEditor(_diagramEditor.getEditorInput());
+                            pages[i].closeEditor(editorPart, true);
+                        }
+                    }
+                }
+            });
+        }
+    }
 
 }

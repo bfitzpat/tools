@@ -24,90 +24,95 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramUpdateCompositeFeature extends AbstractUpdateFeature {
 
-	public SCADiagramUpdateCompositeFeature(IFeatureProvider fp) {
-		super(fp);
-	}
+    /**
+     * @param fp the feature provider
+     */
+    public SCADiagramUpdateCompositeFeature(IFeatureProvider fp) {
+        super(fp);
+    }
 
-	@Override
-	public boolean canUpdate(IUpdateContext context) {
-		// return true, if linked business object is a Composite
-		Object bo =
-				getBusinessObjectForPictogramElement(context.getPictogramElement());
-		return (bo instanceof Composite);
-	}
+    @Override
+    public boolean canUpdate(IUpdateContext context) {
+        // return true, if linked business object is a Composite
+        Object bo = getBusinessObjectForPictogramElement(context.getPictogramElement());
+        return (bo instanceof Composite);
+    }
 
-	private Text findText (GraphicsAlgorithm root) {
-		for (GraphicsAlgorithm ga : root.getGraphicsAlgorithmChildren()) {
-			if (ga instanceof Text) {
-				Text text = (Text) ga;
-				return text;
-			}
-			if (ga.getGraphicsAlgorithmChildren().size() > 0) {
-				return findText(ga);
-			}
-		}
-		return null;
-	}
-	
-	@Override
-	public IReason updateNeeded(IUpdateContext context) {
-		// retrieve name from pictogram model
-		String pictogramName = null;
-		PictogramElement pictogramElement = context.getPictogramElement();
-		if (pictogramElement instanceof ContainerShape) {
-			ContainerShape cs = (ContainerShape) pictogramElement;
-			Text foundText = findText(cs.getGraphicsAlgorithm());
-			if (foundText != null) {
-				pictogramName = foundText.getValue();
-			}
-		}
+    private Text findText(GraphicsAlgorithm root) {
+        for (GraphicsAlgorithm ga : root.getGraphicsAlgorithmChildren()) {
+            if (ga instanceof Text) {
+                Text text = (Text) ga;
+                return text;
+            }
+            if (ga.getGraphicsAlgorithmChildren().size() > 0) {
+                return findText(ga);
+            }
+        }
+        return null;
+    }
 
-		// retrieve name from business model
-		String businessName = null;
-		Object bo = getBusinessObjectForPictogramElement(pictogramElement);
-		if (bo instanceof Composite) {
-			Composite eClass = (Composite) bo;
-			businessName = eClass.getName();
+    @Override
+    public IReason updateNeeded(IUpdateContext context) {
+        // retrieve name from pictogram model
+        String pictogramName = null;
+        PictogramElement pictogramElement = context.getPictogramElement();
+        if (pictogramElement instanceof ContainerShape) {
+            ContainerShape cs = (ContainerShape) pictogramElement;
+            Text foundText = findText(cs.getGraphicsAlgorithm());
+            if (foundText != null) {
+                pictogramName = foundText.getValue();
+            }
+        }
 
-			// update needed, if names are different
-			boolean updateNameNeeded =
-					((pictogramName == null && businessName != null) || 
-							(pictogramName != null && !pictogramName.contentEquals(businessName)));
-			if (updateNameNeeded) {
-				return Reason.createTrueReason("Composite name is out of date");
-			} else {
-				return Reason.createFalseReason();
-			}
-		}
+        // retrieve name from business model
+        String businessName = null;
+        Object bo = getBusinessObjectForPictogramElement(pictogramElement);
+        if (bo instanceof Composite) {
+            Composite eClass = (Composite) bo;
+            businessName = eClass.getName();
 
-		return Reason.createFalseReason();
-	}
+            // update needed, if names are different
+            boolean updateNameNeeded = ((pictogramName == null && businessName != null) || (pictogramName != null && !pictogramName
+                    .contentEquals(businessName)));
+            if (updateNameNeeded) {
+                return Reason.createTrueReason("Composite name is out of date");
+            } else {
+                return Reason.createFalseReason();
+            }
+        }
 
-	@Override
-	public boolean update(IUpdateContext context) {
-		// retrieve name from business model
-		String businessName = null;
-		PictogramElement pictogramElement = context.getPictogramElement();
-		Object bo = getBusinessObjectForPictogramElement(pictogramElement);
-		if (bo instanceof Composite) {
-			Composite eClass = (Composite) bo;
-			businessName = eClass.getName();
-		}
+        return Reason.createFalseReason();
+    }
 
-		// Set name in pictogram model
-		if (pictogramElement instanceof ContainerShape) {
-			ContainerShape cs = (ContainerShape) pictogramElement;
-			for (Shape shape : cs.getChildren()) {
-				if (shape.getGraphicsAlgorithm() instanceof Text) {
-					Text text = (Text) shape.getGraphicsAlgorithm();
-					text.setValue(businessName);
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+    @Override
+    public boolean update(IUpdateContext context) {
+        // retrieve name from business model
+        String businessName = null;
+        PictogramElement pictogramElement = context.getPictogramElement();
+        Object bo = getBusinessObjectForPictogramElement(pictogramElement);
+        if (bo instanceof Composite) {
+            Composite eClass = (Composite) bo;
+            businessName = eClass.getName();
+        }
+
+        // Set name in pictogram model
+        if (pictogramElement instanceof ContainerShape) {
+            ContainerShape cs = (ContainerShape) pictogramElement;
+            for (Shape shape : cs.getChildren()) {
+                if (shape.getGraphicsAlgorithm() instanceof Text) {
+                    Text text = (Text) shape.getGraphicsAlgorithm();
+                    text.setValue(businessName);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }

@@ -29,105 +29,94 @@ import org.eclipse.graphiti.services.IPeCreateService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
 import org.jboss.tools.sca.diagram.StyleUtil;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramAddCompositeFeature extends AbstractAddShapeFeature {
 
-	public SCADiagramAddCompositeFeature( IFeatureProvider fp ) {
-		super(fp);
-	}
+    /**
+     * @param fp the feature provider
+     */
+    public SCADiagramAddCompositeFeature(IFeatureProvider fp) {
+        super(fp);
+    }
 
-	@Override
-	public boolean canAdd(IAddContext context) {
-		// check if user wants to add a composite
-		if (context.getNewObject() instanceof Composite) {
-			// check if user wants to add to a diagram
-			if (context.getTargetContainer() instanceof Diagram) {
-				return true;
-			}
-		}
-		return false;
-	}
+    @Override
+    public boolean canAdd(IAddContext context) {
+        // check if user wants to add a composite
+        if (context.getNewObject() instanceof Composite) {
+            // check if user wants to add to a diagram
+            if (context.getTargetContainer() instanceof Diagram) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public PictogramElement add(IAddContext context) {
-		Composite addedComposite = (Composite) context.getNewObject();
-		Diagram targetDiagram = (Diagram) context.getTargetContainer();
+    @Override
+    public PictogramElement add(IAddContext context) {
+        Composite addedComposite = (Composite) context.getNewObject();
+        Diagram targetDiagram = (Diagram) context.getTargetContainer();
 
-		// CONTAINER SHAPE WITH ROUNDED RECTANGLE
-		IPeCreateService peCreateService = Graphiti.getPeCreateService();
-		ContainerShape containerShape =
-				peCreateService.createContainerShape(targetDiagram, true);
-		Graphiti.getPeService().setPropertyValue(containerShape, "sca-type", "composite");
+        // CONTAINER SHAPE WITH ROUNDED RECTANGLE
+        IPeCreateService peCreateService = Graphiti.getPeCreateService();
+        ContainerShape containerShape = peCreateService.createContainerShape(targetDiagram, true);
+        Graphiti.getPeService().setPropertyValue(containerShape, "sca-type", "composite");
 
-		// define a default size for the shape
-		IGaService gaService = Graphiti.getGaService();
-		int edge = StyleUtil.COMPOSITE_EDGE;
-		
-	    // check whether the context has a size (e.g. from a create feature)
+        // define a default size for the shape
+        IGaService gaService = Graphiti.getGaService();
+        int edge = StyleUtil.COMPOSITE_EDGE;
+
+        // check whether the context has a size (e.g. from a create feature)
         // otherwise define a default size for the shape
         int width = context.getWidth() <= 0 ? StyleUtil.COMPOSITE_WIDTH + edge : context.getWidth();
         int height = context.getHeight() <= 0 ? StyleUtil.COMPOSITE_HEIGHT + edge : context.getHeight();
- 
+
         Rectangle invisibleRectangle = gaService.createInvisibleRectangle(containerShape);
-        gaService.setLocationAndSize(invisibleRectangle,
-                context.getX(), context.getY(), width + StyleUtil.COMPOSITE_INVISIBLE_RECT_RIGHT,
-                height + StyleUtil.COMPOSITE_INVISIBLE_RECT_RIGHT);
+        gaService.setLocationAndSize(invisibleRectangle, context.getX(), context.getY(), width
+                + StyleUtil.COMPOSITE_INVISIBLE_RECT_RIGHT, height + StyleUtil.COMPOSITE_INVISIBLE_RECT_RIGHT);
 
-        RoundedRectangle roundedRectangle = null;        
-        {
-			// create and set graphics algorithm
-			roundedRectangle =
-					gaService.createRoundedRectangle(invisibleRectangle, 6, 0);
-            roundedRectangle.setStyle(StyleUtil
-                    .getStyleForComposite(getDiagram()));
-			roundedRectangle.setLineWidth(2);
+        RoundedRectangle roundedRectangle = null;
 
-			gaService.setLocationAndSize(roundedRectangle,
-					StyleUtil.COMPOSITE_INVISIBLE_RECT_RIGHT/2, 
-					StyleUtil.COMPOSITE_INVISIBLE_RECT_RIGHT/2, 
-					width - edge, height - edge);
+        // create and set graphics algorithm
+        roundedRectangle = gaService.createRoundedRectangle(invisibleRectangle, 6, 0);
+        roundedRectangle.setStyle(StyleUtil.getStyleForComposite(getDiagram()));
+        roundedRectangle.setLineWidth(2);
 
-			// if added Class has no resource we add it to the resource 
-			// of the diagram
+        gaService.setLocationAndSize(roundedRectangle, StyleUtil.COMPOSITE_INVISIBLE_RECT_RIGHT / 2,
+                StyleUtil.COMPOSITE_INVISIBLE_RECT_RIGHT / 2, width - edge, height - edge);
 
-			// in a real scenario the business model would have its own resource
-//			if (addedClass.eResource() == null) {
-//				getDiagram().eResource().getContents().add(addedClass);
-//			}
+        // if added Class has no resource we add it to the resource
+        // of the diagram
 
-			Graphiti.getPeService().setPropertyValue(roundedRectangle, "sca-type", "composite");
+        // in a real scenario the business model would have its own resource
+        // if (addedClass.eResource() == null) {
+        // getDiagram().eResource().getContents().add(addedClass);
+        // }
 
-			// create link and wire it
-			link(containerShape, addedComposite);
-		}
+        Graphiti.getPeService().setPropertyValue(roundedRectangle, "sca-type", "composite");
 
-		// SHAPE WITH TEXT
-		{
-			// create and set text graphics algorithm
-			Text text = gaService.createDefaultText(getDiagram(), roundedRectangle,
-					addedComposite.getName());
-			text.setForeground(manageColor(StyleUtil.BLACK));
-			text.setHorizontalAlignment(Orientation.ALIGNMENT_LEFT);
-			text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
-			Font font = gaService.manageFont(getDiagram(), text.getFont().getName(), text.getFont().getSize(), false, true);
-			text.setFont(font);
-			gaService.setLocationAndSize(text, edge + 2, edge + 2, width, font.getSize() * 2);
+        // create link and wire it
+        link(containerShape, addedComposite);
 
-		}
+        // SHAPE WITH TEXT
 
-//        Image compositeImage = gaService.createImage(invisibleRectangle, ImageProvider.IMG_16_CHAIN);
-//        compositeImage.setWidth(64);
-//        compositeImage.setStretchH(true);
-//		gaService.setLocationAndSize(compositeImage,
-//				0, 
-//				0, 
-//				64,64);
-        
-		// call the layout feature
-		layoutPictogramElement(containerShape);
+        // create and set text graphics algorithm
+        Text text = gaService.createDefaultText(getDiagram(), roundedRectangle, addedComposite.getName());
+        text.setForeground(manageColor(StyleUtil.BLACK));
+        text.setHorizontalAlignment(Orientation.ALIGNMENT_LEFT);
+        text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
+        Font font = gaService.manageFont(getDiagram(), text.getFont().getName(), text.getFont().getSize(), false,
+                true);
+        text.setFont(font);
+        gaService.setLocationAndSize(text, edge + 2, edge + 2, width, font.getSize() * 2);
 
- 
-		return containerShape;
+        // call the layout feature
+        layoutPictogramElement(containerShape);
 
-	}
+        return containerShape;
+
+    }
 
 }

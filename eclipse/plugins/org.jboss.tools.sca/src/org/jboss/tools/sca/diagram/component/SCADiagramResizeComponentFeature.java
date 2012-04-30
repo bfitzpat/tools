@@ -25,61 +25,66 @@ import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
 import org.jboss.tools.sca.diagram.StyleUtil;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramResizeComponentFeature extends DefaultResizeShapeFeature {
 
-	public SCADiagramResizeComponentFeature(IFeatureProvider fp) {
-		super(fp);
-	}
+    /**
+     * @param fp feature provider
+     */
+    public SCADiagramResizeComponentFeature(IFeatureProvider fp) {
+        super(fp);
+    }
 
-	@Override
-	public void resizeShape(IResizeShapeContext context) {
-		Shape shape = context.getShape();
-		int x = context.getX();
-		int y = context.getY();
-		int width = context.getWidth();
-		int height = context.getHeight();
+    @Override
+    public void resizeShape(IResizeShapeContext context) {
+        Shape shape = context.getShape();
+        int x = context.getX();
+        int y = context.getY();
+        int width = context.getWidth();
+        int height = context.getHeight();
 
-		GraphicsAlgorithm shapeGa = shape.getGraphicsAlgorithm();
-		if (shapeGa != null) {
-			Graphiti.getGaService().setLocationAndSize(shapeGa, x, y, width, height);
-			if (!shapeGa.getGraphicsAlgorithmChildren().isEmpty()) {
-				EList<GraphicsAlgorithm> children = shapeGa.getGraphicsAlgorithmChildren();
-				for (GraphicsAlgorithm graphicsAlgorithm : children) {
-					if (graphicsAlgorithm instanceof RoundedRectangle) {
-						RoundedRectangle rrect = (RoundedRectangle) graphicsAlgorithm;
-						Graphiti.getGaService().setLocationAndSize(rrect, 
-								StyleUtil.COMPONENT_EDGE, 
-								0, 
-								width - (StyleUtil.COMPONENT_EDGE * 2), 
-								height);
-					}
-				}
-			}
-		}
+        GraphicsAlgorithm shapeGa = shape.getGraphicsAlgorithm();
+        if (shapeGa != null) {
+            Graphiti.getGaService().setLocationAndSize(shapeGa, x, y, width, height);
+            if (!shapeGa.getGraphicsAlgorithmChildren().isEmpty()) {
+                EList<GraphicsAlgorithm> children = shapeGa.getGraphicsAlgorithmChildren();
+                for (GraphicsAlgorithm graphicsAlgorithm : children) {
+                    if (graphicsAlgorithm instanceof RoundedRectangle) {
+                        RoundedRectangle rrect = (RoundedRectangle) graphicsAlgorithm;
+                        Graphiti.getGaService().setLocationAndSize(rrect, StyleUtil.COMPONENT_EDGE, 0,
+                                width - (StyleUtil.COMPONENT_EDGE * 2), height);
+                    }
+                }
+            }
+        }
 
-		GraphicsAlgorithm textGa = findChildGA(shapeGa, Text.class);
-		if (textGa != null) {
-			IGaService gaService = Graphiti.getGaService();
-			Text text = (Text) textGa;
-			text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
-			text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
-			gaService.setLocationAndSize(text, StyleUtil.COMPONENT_EDGE + 10, 0, 
-					width - (StyleUtil.COMPONENT_EDGE * 3) - (StyleUtil.COMPONENT_INVISIBLE_RECT_RIGHT * 2), height );
-		}
-	}
-	
-	private GraphicsAlgorithm findChildGA ( GraphicsAlgorithm parent, Class<?> gaSearchType ) {
-		EList<GraphicsAlgorithm> childGAs = parent.getGraphicsAlgorithmChildren();
-		for (GraphicsAlgorithm graphicsAlgorithm : childGAs) {
-			if (graphicsAlgorithm.getClass().getCanonicalName().contentEquals(gaSearchType.getCanonicalName())) {
-				return graphicsAlgorithm;
-			} else if (graphicsAlgorithm.getClass() != gaSearchType && gaSearchType.isAssignableFrom(graphicsAlgorithm.getClass())) {
-				return graphicsAlgorithm;
-			}
-			if (graphicsAlgorithm.getGraphicsAlgorithmChildren().size() > 0) {
-				return findChildGA(graphicsAlgorithm, gaSearchType);
-			}
-		}
-		return null;
-	}
+        GraphicsAlgorithm textGa = findChildGA(shapeGa, Text.class);
+        if (textGa != null) {
+            IGaService gaService = Graphiti.getGaService();
+            Text text = (Text) textGa;
+            text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+            text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
+            gaService.setLocationAndSize(text, StyleUtil.COMPONENT_EDGE + 10, 0, width - (StyleUtil.COMPONENT_EDGE * 3)
+                    - (StyleUtil.COMPONENT_INVISIBLE_RECT_RIGHT * 2), height);
+        }
+    }
+
+    private GraphicsAlgorithm findChildGA(GraphicsAlgorithm parent, Class<?> gaSearchType) {
+        EList<GraphicsAlgorithm> childGAs = parent.getGraphicsAlgorithmChildren();
+        for (GraphicsAlgorithm graphicsAlgorithm : childGAs) {
+            if (graphicsAlgorithm.getClass().getCanonicalName().contentEquals(gaSearchType.getCanonicalName())) {
+                return graphicsAlgorithm;
+            } else if (graphicsAlgorithm.getClass() != gaSearchType
+                    && gaSearchType.isAssignableFrom(graphicsAlgorithm.getClass())) {
+                return graphicsAlgorithm;
+            }
+            if (graphicsAlgorithm.getGraphicsAlgorithmChildren().size() > 0) {
+                return findChildGA(graphicsAlgorithm, gaSearchType);
+            }
+        }
+        return null;
+    }
 }

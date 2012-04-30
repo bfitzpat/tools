@@ -23,80 +23,91 @@ import org.eclipse.soa.sca.sca1_1.model.sca.ComponentService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.jboss.tools.sca.ImageProvider;
 
-public class SCADiagramCreateComponentServiceLinkFeature extends
-AbstractCreateConnectionFeature {
+/**
+ * @author bfitzpat
+ *
+ */
+public class SCADiagramCreateComponentServiceLinkFeature extends AbstractCreateConnectionFeature {
 
-	public SCADiagramCreateComponentServiceLinkFeature(IFeatureProvider fp) {
-		super(fp, "Component Service reference (dotted)", "Create Component Service reference");
-	}
+    /**
+     * @param fp the feature provider
+     */
+    public SCADiagramCreateComponentServiceLinkFeature(IFeatureProvider fp) {
+        super(fp, "Component Service reference (dotted)", "Create Component Service reference");
+    }
 
-	@Override
-	public boolean canCreate(ICreateConnectionContext context) {
-		if (context.getSourceAnchor() != null && context.getTargetAnchor() != null) {
-			
-			Object source = getAnchorObject(context.getSourceAnchor());
-			Object target = getAnchorObject(context.getTargetAnchor());
-			if (source != null && target != null) {
-				if (source instanceof Service && target instanceof Component) {
-					return true;
-				}
-				if (source instanceof Component && target instanceof Service) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+    @Override
+    public boolean canCreate(ICreateConnectionContext context) {
+        if (context.getSourceAnchor() != null && context.getTargetAnchor() != null) {
 
-	public boolean canStartConnection(ICreateConnectionContext context) {
-		// return true if start anchor belongs to a service or component
-		if (getAnchorObject(context.getSourceAnchor()) != null) {
-			return true;
-		}
-		return true;
+            Object source = getAnchorObject(context.getSourceAnchor());
+            Object target = getAnchorObject(context.getTargetAnchor());
+            if (source != null && target != null) {
+                if (source instanceof Service && target instanceof Component) {
+                    return true;
+                }
+                if (source instanceof Component && target instanceof Service) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	}
+    /* (non-Javadoc)
+     * @see org.eclipse.graphiti.func.ICreateConnection#canStartConnection(org.eclipse.graphiti.features.context.ICreateConnectionContext)
+     */
+    @Override
+    public boolean canStartConnection(ICreateConnectionContext context) {
+        // return true if start anchor belongs to a service or component
+        if (getAnchorObject(context.getSourceAnchor()) != null) {
+            return true;
+        }
+        return true;
 
-	public Connection create(ICreateConnectionContext context) {
-		Connection newConnection = null;
+    }
 
-		Object source = getAnchorObject(context.getSourceAnchor());
-		Object target = getAnchorObject(context.getTargetAnchor());
-		
-		if (source != null && target != null) {
-			// add connection for business object
-			AddConnectionContext addContext =
-					new AddConnectionContext(context.getSourceAnchor(), context
-							.getTargetAnchor());
-			
-			Anchor sourceAnchor = context.getSourceAnchor();
-			
-			ComponentService cs = 
-					(ComponentService) getFeatureProvider().getBusinessObjectForPictogramElement(
-							sourceAnchor.getLink().getPictogramElement());
-			Service service = (Service) target;
-			cs.setName(service.getName());
-			addContext.setNewObject(cs);
-			newConnection = (Connection) getFeatureProvider().addIfPossible(addContext);
-		}
+    /* (non-Javadoc)
+     * @see org.eclipse.graphiti.func.ICreateConnection#create(org.eclipse.graphiti.features.context.ICreateConnectionContext)
+     */
+    @Override
+    public Connection create(ICreateConnectionContext context) {
+        Connection newConnection = null;
 
-		return newConnection;
-	}
+        Object source = getAnchorObject(context.getSourceAnchor());
+        Object target = getAnchorObject(context.getTargetAnchor());
 
-	private Object getAnchorObject(Anchor anchor) {
-		if (anchor != null) {
-			Object object =
-					getBusinessObjectForPictogramElement(anchor.getParent());
-			if (object instanceof Service || object instanceof Component) {
-				return object;
-			}
-		}
-		return null;
-	}
+        if (source != null && target != null) {
+            // add connection for business object
+            AddConnectionContext addContext = new AddConnectionContext(context.getSourceAnchor(),
+                    context.getTargetAnchor());
 
-	@Override
-	public String getCreateImageId() {
-		return ImageProvider.IMG_16_CONNECTION;
-	}
+            Anchor sourceAnchor = context.getSourceAnchor();
+
+            ComponentService cs = (ComponentService) getFeatureProvider().getBusinessObjectForPictogramElement(
+                    sourceAnchor.getLink().getPictogramElement());
+            Service service = (Service) target;
+            cs.setName(service.getName());
+            addContext.setNewObject(cs);
+            newConnection = (Connection) getFeatureProvider().addIfPossible(addContext);
+        }
+
+        return newConnection;
+    }
+
+    private Object getAnchorObject(Anchor anchor) {
+        if (anchor != null) {
+            Object object = getBusinessObjectForPictogramElement(anchor.getParent());
+            if (object instanceof Service || object instanceof Component) {
+                return object;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String getCreateImageId() {
+        return ImageProvider.IMG_16_CONNECTION;
+    }
 
 }

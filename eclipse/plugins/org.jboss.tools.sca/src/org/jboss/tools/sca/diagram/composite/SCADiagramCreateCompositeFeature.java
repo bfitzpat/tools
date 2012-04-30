@@ -25,22 +25,29 @@ import org.jboss.tools.sca.core.ModelHandler;
 import org.jboss.tools.sca.core.ModelHandlerLocator;
 import org.jboss.tools.sca.util.ExampleUtil;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramCreateCompositeFeature extends AbstractCreateFeature {
 
-	private static final String TITLE = "Create composite";
+    private static final String TITLE = "Create composite";
     private static final String USER_QUESTION = "Enter new composite name";
 
+    /**
+     * @param fp the feature provider
+     */
     public SCADiagramCreateCompositeFeature(IFeatureProvider fp) {
-    	super (fp, "Composite", "Create composite");
+        super(fp, "Composite", "Create composite");
     }
-    
-	@Override
-	public boolean canCreate(ICreateContext context) {
-		return context.getTargetContainer() instanceof Diagram;
-	}
 
-	@Override
-	public Object[] create(ICreateContext context) {
+    @Override
+    public boolean canCreate(ICreateContext context) {
+        return context.getTargetContainer() instanceof Diagram;
+    }
+
+    @Override
+    public Object[] create(ICreateContext context) {
         // ask user for EClass name
         String newCompositeName = ExampleUtil.askString(TITLE, USER_QUESTION, "");
         if (newCompositeName == null || newCompositeName.trim().length() == 0) {
@@ -49,24 +56,24 @@ public class SCADiagramCreateCompositeFeature extends AbstractCreateFeature {
 
         Composite newComposite = null;
 
-		try {
-			ModelHandler mh = ModelHandlerLocator.getModelHandler(getDiagram().eResource());
-			newComposite = mh.createComposite();
-			newComposite.setName(newCompositeName);
-		} catch (IOException e) {
-			Activator.logError(e);
-		}
+        try {
+            ModelHandler mh = ModelHandlerLocator.getModelHandler(getDiagram().eResource());
+            newComposite = mh.createComposite();
+            newComposite.setName(newCompositeName);
+        } catch (IOException e) {
+            Activator.logError(e);
+        }
 
         // do the add
         addGraphicalRepresentation(context, newComposite);
 
         // return newly created business object(s)
-        return new Object[] { newComposite };
-	}
+        return new Object[] {newComposite };
+    }
 
-	@Override
-	public String getCreateImageId() {
-		return ImageProvider.IMG_16_COMPOSITE;
-	}
+    @Override
+    public String getCreateImageId() {
+        return ImageProvider.IMG_16_COMPOSITE;
+    }
 
 }

@@ -32,187 +32,223 @@ import org.jboss.tools.switchyard.model.soap.SOAPBindingType;
 import org.jboss.tools.switchyard.model.switchyard.ContextMapperType;
 import org.jboss.tools.switchyard.model.switchyard.SwitchyardFactory;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class WSDLURISelectionComposite {
 
-	// change listeners
-	private ListenerList changeListeners;
+    // change listeners
+    private ListenerList _changeListeners;
 
-	private Composite cPanel;
-	private Text mWSDLInterfaceURIText;
-	private String sWSDLURI = null;
-	private Interface cInterface = null;
-	private SOAPBindingType cBinding = null;
-	private String errorMessage = null;
-	private Text mWSDLPortText;
-	private Label mPortLabel;
-	private String sBindingPort = null;
+    private Composite _panel;
+    private Text _mWSDLInterfaceURIText;
+    private String _sWSDLURI = null;
+    private Interface _interface = null;
+    private SOAPBindingType _binding = null;
+    private String _errorMessage = null;
+    private Text _mWSDLPortText;
+    private Label _portLabel;
+    private String _bindingPort = null;
 
-	public WSDLURISelectionComposite() {
-		// empty
-	}
-	
-	public void createContents(Composite parent, int style) {
-		
-		// TODO: Add support for choosing an existing WSDL in the project (relative path)
-		// TODO: Add support for importing a WSDL from the file system (into the project, ends up being relative path)
-		// TODO: Add support for creating a new WSDL in the project (ends up being relative path)
-		
-		cPanel = new Composite(parent, style);
-		GridLayout gl = new GridLayout();
-		gl.numColumns = 3;
-		cPanel.setLayout(gl);
-		//  name
-		new Label(cPanel, SWT.NONE).setText("WSDL URI:");
-		mWSDLInterfaceURIText = new Text(cPanel, SWT.BORDER);
-		if (cInterface != null && cInterface instanceof WSDLPortType) {
-			mWSDLInterfaceURIText.setText(((WSDLPortType)cInterface).getInterface());
-		}
-		mWSDLInterfaceURIText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				handleModify();
-				fireChangedEvent(mWSDLInterfaceURIText);
-			}
-		});
-		GridData uriGD = new GridData(GridData.FILL_HORIZONTAL);
-		uriGD.horizontalSpan = 2;
-		mWSDLInterfaceURIText.setLayoutData(uriGD);
-	
-		mPortLabel = new Label(cPanel, SWT.NONE);
-		mPortLabel.setText("Port:");
-		mWSDLPortText = new Text(cPanel, SWT.BORDER);
-		mWSDLPortText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				sBindingPort = mWSDLPortText.getText().trim();
-				handleModify();
-				fireChangedEvent(mWSDLPortText);
-			}
-		});
-	
-		GridData portGD = new GridData(GridData.FILL_HORIZONTAL);
-		portGD.horizontalSpan = 2;
-		mWSDLPortText.setLayoutData(portGD);
-		
-		setVisibilityOfPortControls(this.cBinding != null);
-	}
-	
-	private void setVisibilityOfPortControls ( boolean flag ) {
-		mPortLabel.setVisible(flag);
-		mWSDLPortText.setVisible(flag);
-	}
+    /**
+     * Constructor.
+     */
+    public WSDLURISelectionComposite() {
+        // empty
+    }
 
-	private void handleModify() {
-		sWSDLURI = mWSDLInterfaceURIText.getText().trim();
-		if (cInterface != null && cInterface instanceof WSDLPortType) {
-			((WSDLPortType)cInterface).setInterface(sWSDLURI);
-		}
-		if (cBinding != null) {
-			cBinding.setWsdl(sWSDLURI);
-			if (sBindingPort != null && sBindingPort.trim().length() > 0) {
-				try {
-					Integer.parseInt(sBindingPort);
-					cBinding.setSocketAddr(sBindingPort);
-				} catch (NumberFormatException nfe) {
-					cBinding.setSocketAddr(null);
-				}
-			}
-			ContextMapperType contextMapper = SwitchyardFactory.eINSTANCE.createContextMapperType();
-			cBinding.setContextMapper(contextMapper);
-		}
-		validate();
-	}
+    /**
+     * @param parent composite parent
+     * @param style any style bits
+     */
+    public void createContents(Composite parent, int style) {
 
-	private void validate() {
-		this.errorMessage = null;
-		String uriString = mWSDLInterfaceURIText.getText();
+        // TODO: Add support for choosing an existing WSDL in the project
+        // (relative path)
+        // TODO: Add support for importing a WSDL from the file system (into the
+        // project, ends up being relative path)
+        // TODO: Add support for creating a new WSDL in the project (ends up
+        // being relative path)
 
-		if (uriString == null || uriString.trim().length() == 0) {
-			errorMessage = "No uri specified";
-		}
-		else if (uriString.trim().length() < uriString.length() ) {
-			errorMessage = "No spaces allowed in uri";
-		} else {
-			try {
-				URI.create(uriString);
-			} catch (IllegalArgumentException e) {
-				errorMessage = "Invalid URI";
-			}
-		}
+        _panel = new Composite(parent, style);
+        GridLayout gl = new GridLayout();
+        gl.numColumns = 3;
+        _panel.setLayout(gl);
+        // name
+        new Label(_panel, SWT.NONE).setText("WSDL URI:");
+        _mWSDLInterfaceURIText = new Text(_panel, SWT.BORDER);
+        if (_interface != null && _interface instanceof WSDLPortType) {
+            _mWSDLInterfaceURIText.setText(((WSDLPortType) _interface).getInterface());
+        }
+        _mWSDLInterfaceURIText.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                handleModify();
+                fireChangedEvent(_mWSDLInterfaceURIText);
+            }
+        });
+        GridData uriGD = new GridData(GridData.FILL_HORIZONTAL);
+        uriGD.horizontalSpan = 2;
+        _mWSDLInterfaceURIText.setLayoutData(uriGD);
 
-		String portString = sBindingPort;
-		if (portString != null && portString.trim().length() > 0) {
-			try {
-				Integer.parseInt(sBindingPort);
-			} catch (NumberFormatException nfe) {
-				errorMessage = "Port must be a valid integer";
-			}
-		}
-	}
+        _portLabel = new Label(_panel, SWT.NONE);
+        _portLabel.setText("Port:");
+        _mWSDLPortText = new Text(_panel, SWT.BORDER);
+        _mWSDLPortText.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                _bindingPort = _mWSDLPortText.getText().trim();
+                handleModify();
+                fireChangedEvent(_mWSDLPortText);
+            }
+        });
 
-	public String getWSDLURI() {
-		return this.sWSDLURI;
-	}
+        GridData portGD = new GridData(GridData.FILL_HORIZONTAL);
+        portGD.horizontalSpan = 2;
+        _mWSDLPortText.setLayoutData(portGD);
 
-	public Interface getInterface() {
-		return cInterface;
-	}
+        setVisibilityOfPortControls(this._binding != null);
+    }
 
-	public void setInterface(Interface cInterface) {
-		this.cInterface = cInterface;
-		if (mWSDLInterfaceURIText != null && !mWSDLInterfaceURIText.isDisposed())
-			mWSDLInterfaceURIText.setText(((WSDLPortType)this.cInterface).getInterface());		
-	}
+    private void setVisibilityOfPortControls(boolean flag) {
+        _portLabel.setVisible(flag);
+        _mWSDLPortText.setVisible(flag);
+    }
 
-	public String getErrorMessage() {
-		return errorMessage;
-	}
+    private void handleModify() {
+        _sWSDLURI = _mWSDLInterfaceURIText.getText().trim();
+        if (_interface != null && _interface instanceof WSDLPortType) {
+            ((WSDLPortType) _interface).setInterface(_sWSDLURI);
+        }
+        if (_binding != null) {
+            _binding.setWsdl(_sWSDLURI);
+            if (_bindingPort != null && _bindingPort.trim().length() > 0) {
+                try {
+                    Integer.parseInt(_bindingPort);
+                    _binding.setSocketAddr(_bindingPort);
+                } catch (NumberFormatException nfe) {
+                    _binding.setSocketAddr(null);
+                }
+            }
+            ContextMapperType contextMapper = SwitchyardFactory.eINSTANCE.createContextMapperType();
+            _binding.setContextMapper(contextMapper);
+        }
+        validate();
+    }
 
-	/**
-	 * If we changed, fire a changed event.
-	 * 
-	 * @param source
-	 */
-	private void fireChangedEvent(Object source) {
-		ChangeEvent e = new ChangeEvent(source);
-		// inform any listeners of the resize event
-		Object[] listeners = this.changeListeners.getListeners();
-		for (int i = 0; i < listeners.length; ++i) {
-			((ChangeListener) listeners[i]).stateChanged(e);
-		}
-	}
+    private void validate() {
+        this._errorMessage = null;
+        String uriString = _mWSDLInterfaceURIText.getText();
 
-	/**
-	 * Add a change listener
-	 * 
-	 * @param listener
-	 */
-	public void addChangeListener(ChangeListener listener) {
-		if (this.changeListeners == null) {
-			this.changeListeners = new ListenerList();
-		}
-		this.changeListeners.add(listener);
-	}
+        if (uriString == null || uriString.trim().length() == 0) {
+            _errorMessage = "No uri specified";
+        } else if (uriString.trim().length() < uriString.length()) {
+            _errorMessage = "No spaces allowed in uri";
+        } else {
+            try {
+                URI.create(uriString);
+            } catch (IllegalArgumentException e) {
+                _errorMessage = "Invalid URI";
+            }
+        }
 
-	/**
-	 * Remove a change listener.
-	 * 
-	 * @param listener
-	 */
-	public void removeChangeListener(ChangeListener listener) {
-		this.changeListeners.remove(listener);
-	}
+        String portString = _bindingPort;
+        if (portString != null && portString.trim().length() > 0) {
+            try {
+                Integer.parseInt(_bindingPort);
+            } catch (NumberFormatException nfe) {
+                _errorMessage = "Port must be a valid integer";
+            }
+        }
+    }
 
-	public Composite getcPanel() {
-		return cPanel;
-	}
+    /**
+     * @return wsdl URI string
+     */
+    public String getWSDLURI() {
+        return this._sWSDLURI;
+    }
 
-	public void setcBinding( SOAPBindingType switchYardBindingType) {
-		this.cBinding = switchYardBindingType;
-		if (mWSDLInterfaceURIText != null && !mWSDLInterfaceURIText.isDisposed())
-			mWSDLInterfaceURIText.setText(cBinding.getWsdl());		
-		setVisibilityOfPortControls(this.cBinding != null);
-	}
+    /**
+     * @return interface
+     */
+    public Interface getInterface() {
+        return _interface;
+    }
 
-	public String getsBindingPort() {
-		return sBindingPort;
-	}
+    /**
+     * @param cInterface interface
+     */
+    public void setInterface(Interface cInterface) {
+        this._interface = cInterface;
+        if (_mWSDLInterfaceURIText != null && !_mWSDLInterfaceURIText.isDisposed()) {
+            _mWSDLInterfaceURIText.setText(((WSDLPortType) this._interface).getInterface());
+        }
+    }
+
+    /**
+     * @return string error message
+     */
+    public String getErrorMessage() {
+        return _errorMessage;
+    }
+
+    /**
+     * If we changed, fire a changed event.
+     * 
+     * @param source
+     */
+    private void fireChangedEvent(Object source) {
+        ChangeEvent e = new ChangeEvent(source);
+        // inform any listeners of the resize event
+        Object[] listeners = this._changeListeners.getListeners();
+        for (int i = 0; i < listeners.length; ++i) {
+            ((ChangeListener) listeners[i]).stateChanged(e);
+        }
+    }
+
+    /**
+     * Add a change listener.
+     * 
+     * @param listener new listener
+     */
+    public void addChangeListener(ChangeListener listener) {
+        if (this._changeListeners == null) {
+            this._changeListeners = new ListenerList();
+        }
+        this._changeListeners.add(listener);
+    }
+
+    /**
+     * Remove a change listener.
+     * 
+     * @param listener to remove
+     */
+    public void removeChangeListener(ChangeListener listener) {
+        this._changeListeners.remove(listener);
+    }
+
+    /**
+     * @return panel
+     */
+    public Composite getcPanel() {
+        return _panel;
+    }
+
+    /**
+     * @param switchYardBindingType binding
+     */
+    public void setcBinding(SOAPBindingType switchYardBindingType) {
+        this._binding = switchYardBindingType;
+        if (_mWSDLInterfaceURIText != null && !_mWSDLInterfaceURIText.isDisposed()) {
+            _mWSDLInterfaceURIText.setText(_binding.getWsdl());
+        }
+        setVisibilityOfPortControls(this._binding != null);
+    }
+
+    /**
+     * @return string port
+     */
+    public String getsBindingPort() {
+        return _bindingPort;
+    }
 }

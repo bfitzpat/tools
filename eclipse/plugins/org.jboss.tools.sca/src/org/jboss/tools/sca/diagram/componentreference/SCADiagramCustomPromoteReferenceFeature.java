@@ -37,147 +37,160 @@ import org.jboss.tools.sca.core.ModelHandlerLocator;
 import org.jboss.tools.sca.diagram.StyleUtil;
 import org.jboss.tools.sca.diagram.di.DIImport;
 
-public class SCADiagramCustomPromoteReferenceFeature extends
-		AbstractCustomFeature {
+/**
+ * @author bfitzpat
+ * 
+ */
+public class SCADiagramCustomPromoteReferenceFeature extends AbstractCustomFeature {
 
-	private boolean hasDoneChanges = false;
+    private boolean _hasDoneChanges = false;
 
+    /**
+     * @param fp the feature provider
+     */
     public SCADiagramCustomPromoteReferenceFeature(IFeatureProvider fp) {
-		super(fp);
-	}
+        super(fp);
+    }
 
     @Override
-	public void execute(ICustomContext context) {
+    public void execute(ICustomContext context) {
         PictogramElement[] pes = context.getPictogramElements();
         if (pes != null && pes.length == 1) {
             Object bo = getBusinessObjectForPictogramElement(pes[0]);
             if (bo instanceof Component) {
-            	Component component = (Component) bo;
-            	if (!component.getReference().isEmpty()) {
-            		ComponentReference cref = component.getReference().get(0);
-            		Shape[] shapes = 
-            				DIImport.findShapesWithName(getFeatureProvider(), getDiagram(), cref.getName());
-            		if (shapes != null && shapes.length > 0) {
-	            		for (int i = 0; i < shapes.length; i++) {
-							Object testObj = getFeatureProvider().getBusinessObjectForPictogramElement(shapes[i]);
-							if (testObj instanceof Reference) {
-								Reference reference = (Reference) testObj;
-								reference.getPromote().add(cref);
-								this.hasDoneChanges = true;
-							}
-						}
-						getDiagramEditor().refresh();
-            		} else {
-            			try {
-//            				ContainerShape componentShape = (ContainerShape) pes[0];
-            				Composite composite = (Composite) component.eContainer();
-							ModelHandler handler = ModelHandlerLocator.getModelHandler(getDiagram().eResource());
-							Reference newReference = handler.createCompositeReference(composite);
-							newReference.setName(cref.getName());
-							newReference.getPromote().add(cref);
-							newReference.setMultiplicity(Multiplicity._01);
-							
-							ContainerShape cshape = 
-									(ContainerShape) getFeatureProvider().
-										getPictogramElementForBusinessObject(composite);
-							
-							AddContext addRefContext = new AddContext();
-							addRefContext.setNewObject(newReference);
-							addRefContext.setTargetContainer(cshape);
-							addRefContext.setX(cshape.getGraphicsAlgorithm().getX() + cshape.getGraphicsAlgorithm().getWidth() - StyleUtil.LARGE_RIGHT_ARROW_WIDTH);
-							addRefContext.setY(pes[0].getGraphicsAlgorithm().getY());
+                Component component = (Component) bo;
+                if (!component.getReference().isEmpty()) {
+                    ComponentReference cref = component.getReference().get(0);
+                    Shape[] shapes = DIImport.findShapesWithName(getFeatureProvider(), getDiagram(), cref.getName());
+                    if (shapes != null && shapes.length > 0) {
+                        for (int i = 0; i < shapes.length; i++) {
+                            Object testObj = getFeatureProvider().getBusinessObjectForPictogramElement(shapes[i]);
+                            if (testObj instanceof Reference) {
+                                Reference reference = (Reference) testObj;
+                                reference.getPromote().add(cref);
+                                this._hasDoneChanges = true;
+                            }
+                        }
+                        getDiagramEditor().refresh();
+                    } else {
+                        try {
+                            // ContainerShape componentShape = (ContainerShape)
+                            // pes[0];
+                            Composite composite = (Composite) component.eContainer();
+                            ModelHandler handler = ModelHandlerLocator.getModelHandler(getDiagram().eResource());
+                            Reference newReference = handler.createCompositeReference(composite);
+                            newReference.setName(cref.getName());
+                            newReference.getPromote().add(cref);
+                            newReference.setMultiplicity(Multiplicity._01);
 
-							IAddFeature addRefFeature = getFeatureProvider().getAddFeature(addRefContext);
-							if (addRefFeature.canAdd(addRefContext)) {
-								Shape referenceShape = (Shape) addRefFeature.add(addRefContext);
-								getDiagramEditor().refresh(referenceShape);
+                            ContainerShape cshape = (ContainerShape) getFeatureProvider()
+                                    .getPictogramElementForBusinessObject(composite);
 
-								String referencedShapeName = cref.getName();
-								Anchor targetAnchor = null;
-								Anchor sourceAnchor = null;
-								Anchor[] anchors = DIImport.findAnchorsWithName(getFeatureProvider(), getDiagram(), referencedShapeName);
-								for (Anchor anchor : anchors) {
-									Object anchorObj = getFeatureProvider().getBusinessObjectForPictogramElement(anchor);
-									if (anchorObj instanceof ComponentReference) {
-										ComponentReference cref2 = (ComponentReference) anchorObj;
-										if (cref2.getName().contentEquals(referencedShapeName)) {
-											targetAnchor = anchor;
-										}
-									}
-									if (anchorObj instanceof Reference) {
-										Reference reference = (Reference) anchorObj;
-										if (reference.getName().contentEquals(referencedShapeName)) {
-											sourceAnchor = anchor;
-										}
-									}
-								}
-								if (sourceAnchor != null && targetAnchor != null) {
-									if (sourceAnchor.getParent() != targetAnchor.getParent()) {
-										// 	now define the connection between the componentreference and the new reference shape
-										AddConnectionContext addReferenceContext = new AddConnectionContext(sourceAnchor, targetAnchor);
-										ArrayList<String> targetRef = new ArrayList<String>();
-										targetRef.add(referencedShapeName);
-										addReferenceContext.setNewObject(cref);
-										addReferenceContext.setTargetContainer(cshape);
-						
-										IAddFeature addConnectionFeature = getFeatureProvider().getAddFeature(addReferenceContext);
-										if (addConnectionFeature != null && addConnectionFeature.canAdd(addReferenceContext)) {
-											addConnectionFeature.add(addReferenceContext);
-										}
-									}
-								}
-								
-							}
-							
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-            			
-            		}
-            	}
+                            AddContext addRefContext = new AddContext();
+                            addRefContext.setNewObject(newReference);
+                            addRefContext.setTargetContainer(cshape);
+                            addRefContext.setX(cshape.getGraphicsAlgorithm().getX()
+                                    + cshape.getGraphicsAlgorithm().getWidth() - StyleUtil.LARGE_RIGHT_ARROW_WIDTH);
+                            addRefContext.setY(pes[0].getGraphicsAlgorithm().getY());
+
+                            IAddFeature addRefFeature = getFeatureProvider().getAddFeature(addRefContext);
+                            if (addRefFeature.canAdd(addRefContext)) {
+                                Shape referenceShape = (Shape) addRefFeature.add(addRefContext);
+                                getDiagramEditor().refresh(referenceShape);
+
+                                String referencedShapeName = cref.getName();
+                                Anchor targetAnchor = null;
+                                Anchor sourceAnchor = null;
+                                Anchor[] anchors = DIImport.findAnchorsWithName(getFeatureProvider(), getDiagram(),
+                                        referencedShapeName);
+                                for (Anchor anchor : anchors) {
+                                    Object anchorObj = getFeatureProvider()
+                                            .getBusinessObjectForPictogramElement(anchor);
+                                    if (anchorObj instanceof ComponentReference) {
+                                        ComponentReference cref2 = (ComponentReference) anchorObj;
+                                        if (cref2.getName().contentEquals(referencedShapeName)) {
+                                            targetAnchor = anchor;
+                                        }
+                                    }
+                                    if (anchorObj instanceof Reference) {
+                                        Reference reference = (Reference) anchorObj;
+                                        if (reference.getName().contentEquals(referencedShapeName)) {
+                                            sourceAnchor = anchor;
+                                        }
+                                    }
+                                }
+                                if (sourceAnchor != null && targetAnchor != null) {
+                                    if (sourceAnchor.getParent() != targetAnchor.getParent()) {
+                                        // now define the connection between the
+                                        // componentreference and the new
+                                        // reference shape
+                                        AddConnectionContext addReferenceContext = new AddConnectionContext(
+                                                sourceAnchor, targetAnchor);
+                                        ArrayList<String> targetRef = new ArrayList<String>();
+                                        targetRef.add(referencedShapeName);
+                                        addReferenceContext.setNewObject(cref);
+                                        addReferenceContext.setTargetContainer(cshape);
+
+                                        IAddFeature addConnectionFeature = getFeatureProvider().getAddFeature(
+                                                addReferenceContext);
+                                        if (addConnectionFeature != null
+                                                && addConnectionFeature.canAdd(addReferenceContext)) {
+                                            addConnectionFeature.add(addReferenceContext);
+                                        }
+                                    }
+                                }
+
+                            }
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
             }
         }
-	}
+    }
 
-	@Override
-	public String getDescription() {
-		return "Promote Component Reference";
-	}
+    @Override
+    public String getDescription() {
+        return "Promote Component Reference";
+    }
 
-	@Override
-	public boolean canExecute(ICustomContext context) {
+    @Override
+    public boolean canExecute(ICustomContext context) {
         PictogramElement[] pes = context.getPictogramElements();
         if (pes != null && pes.length == 1) {
             Object bo = getBusinessObjectForPictogramElement(pes[0]);
             if (bo instanceof Component) {
-            	Component component = (Component) bo;
-            	if (!component.getReference().isEmpty()) {
-            		return true;
-            	}
+                Component component = (Component) bo;
+                if (!component.getReference().isEmpty()) {
+                    return true;
+                }
             }
         }
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public String getName() {
-		return "Promote Component Reference";
-	}
+    @Override
+    public String getName() {
+        return "Promote Component Reference";
+    }
 
-	@Override
-	public boolean hasDoneChanges() {
-		return this.hasDoneChanges;
-	}
+    @Override
+    public boolean hasDoneChanges() {
+        return this._hasDoneChanges;
+    }
 
-	@Override
-	public String getImageId() {
-		return ImageProvider.IMG_16_PLUS;
-	}
+    @Override
+    public String getImageId() {
+        return ImageProvider.IMG_16_PLUS;
+    }
 
-	@Override
-	public boolean isAvailable(IContext context) {
-		return true;
-	}
+    @Override
+    public boolean isAvailable(IContext context) {
+        return true;
+    }
 
 }

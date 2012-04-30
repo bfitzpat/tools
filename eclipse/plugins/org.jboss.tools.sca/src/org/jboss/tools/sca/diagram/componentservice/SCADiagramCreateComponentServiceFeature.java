@@ -34,71 +34,81 @@ import org.jboss.tools.sca.core.ModelHandler;
 import org.jboss.tools.sca.core.ModelHandlerLocator;
 import org.jboss.tools.sca.diagram.componentservice.wizards.SCADiagramAddComponentServiceWizard;
 
+/**
+ * @author bfitzpat
+ * 
+ */
 public class SCADiagramCreateComponentServiceFeature extends AbstractCreateFeature {
 
+    /**
+     * @param fp the feature provider
+     */
     public SCADiagramCreateComponentServiceFeature(IFeatureProvider fp) {
-    	super (fp, "Component Service", "Create component service");
+        super(fp, "Component Service", "Create component service");
     }
-    
-	@Override
-	public boolean canCreate(ICreateContext context) {
-		ContainerShape targetContainer = context.getTargetContainer();
-		// check if user wants to add to a component
-		if (targetContainer instanceof Component) {
-			return true;
-		} 
-		if (getBusinessObjectForPictogramElement(targetContainer) instanceof Component) {
-			return true;
-		}
-		return false;
-	}
 
-	@Override
-	public Object[] create(ICreateContext context) {
-		
-		String newClassName = null;
-		Interface newInterface = null;
-		SCADiagramAddComponentServiceWizard wizard = new SCADiagramAddComponentServiceWizard();
-		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		WizardDialog wizDialog = new WizardDialog(shell, wizard);
-		int rtn_code = wizDialog.open();
-		if (rtn_code == Window.OK) {
-			newClassName = wizard.getComponentServiceName();
-			newInterface = wizard.getInterface();
-		} else {
-			return EMPTY;
-		}
+    @Override
+    public boolean canCreate(ICreateContext context) {
+        ContainerShape targetContainer = context.getTargetContainer();
+        // check if user wants to add to a component
+        if (targetContainer instanceof Component) {
+            return true;
+        }
+        if (getBusinessObjectForPictogramElement(targetContainer) instanceof Component) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Object[] create(ICreateContext context) {
+
+        String newClassName = null;
+        Interface newInterface = null;
+        SCADiagramAddComponentServiceWizard wizard = new SCADiagramAddComponentServiceWizard();
+        Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+        WizardDialog wizDialog = new WizardDialog(shell, wizard);
+        int rtn_code = wizDialog.open();
+        if (rtn_code == Window.OK) {
+            newClassName = wizard.getComponentServiceName();
+            newInterface = wizard.getInterface();
+        } else {
+            return EMPTY;
+        }
 
         ComponentService newCService = null;
-		try {
-			ModelHandler mh = ModelHandlerLocator.getModelHandler(getDiagram().eResource());
-			Object o = getBusinessObjectForPictogramElement(context.getTargetContainer());
-			newCService = mh.createComponentService((Component)o);
-			newCService.setName(newClassName);
-			if (newInterface != null) {
-				// do something with it
-				if (newInterface instanceof JavaInterface) 
-					newCService.getInterfaceGroup().set(ScaPackage.eINSTANCE.getDocumentRoot_InterfaceJava(), newInterface);
-				else if (newInterface instanceof WSDLPortType) 
-					newCService.getInterfaceGroup().set(ScaPackage.eINSTANCE.getDocumentRoot_InterfaceWsdl(), newInterface);
-			}
-		} catch (IOException e) {
-			Activator.logError(e);
-		}
+        try {
+            ModelHandler mh = ModelHandlerLocator.getModelHandler(getDiagram().eResource());
+            Object o = getBusinessObjectForPictogramElement(context.getTargetContainer());
+            newCService = mh.createComponentService((Component) o);
+            newCService.setName(newClassName);
+            if (newInterface != null) {
+                // do something with it
+                if (newInterface instanceof JavaInterface) {
+                    newCService.getInterfaceGroup().set(ScaPackage.eINSTANCE.getDocumentRoot_InterfaceJava(),
+                            newInterface);
+                } else if (newInterface instanceof WSDLPortType) {
+                    newCService.getInterfaceGroup().set(ScaPackage.eINSTANCE.getDocumentRoot_InterfaceWsdl(),
+                            newInterface);
+                }
+            }
+        } catch (IOException e) {
+            Activator.logError(e);
+        }
 
         // do the add
         addGraphicalRepresentation(context, newCService);
 
-		// activate direct editing after object creation
-		getFeatureProvider().getDirectEditingInfo().setActive(true);
+        // activate direct editing after object creation
+        getFeatureProvider().getDirectEditingInfo().setActive(true);
 
-		// return newly created business object(s)
-        return new Object[] { newCService };
-	}
+        // return newly created business object(s)
+        return new Object[] {newCService };
+    }
 
-	@Override
-	public String getCreateImageId() {
-		return ImageProvider.IMG_16_COMPONENT_SERVICE;
-	}
+    @Override
+    public String getCreateImageId() {
+        return ImageProvider.IMG_16_COMPONENT_SERVICE;
+    }
 
 }

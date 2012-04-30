@@ -19,69 +19,92 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Implementation;
 import org.jboss.tools.sca.diagram.internal.wizards.BaseWizard;
 import org.jboss.tools.switchyard.model.camel.CamelImplementationType;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramAddImplementationWizard extends BaseWizard {
 
-	private SCADiagramAddImplementationStartPage startPage = null;
-	private SCADiagramAddComponentImplementationCamelPage camelPage = null;
-	private Diagram diagram = null;
-	private Component component = null;
-	
-	public SCADiagramAddImplementationWizard() {
-		super();
-		initPages();
-		setWindowTitle("New Implementation");
-	}
-	
-	public void setComponent ( Component component ) {
-		this.component = component;
-	}
-	
-	public Component getComponent() {
-		return this.component;
-	}
-	
-	public void setDiagram( Diagram diagram ) {
-		this.diagram = diagram;
-	}
-	
-	public Diagram getDiagram() {
-		return this.diagram;
-	}
-	
-	private void initPages() {
-		startPage = new SCADiagramAddImplementationStartPage("start");
-		camelPage = new SCADiagramAddComponentImplementationCamelPage(startPage, "camel");
-	}
-	
-	@Override
-	public boolean performFinish() {
-		if (startPage != null && startPage.getImplementation() != null) {
-			return true;
-		}
-		return false;
-	}
+    private SCADiagramAddImplementationStartPage _startPage = null;
+    private SCADiagramAddComponentImplementationCamelPage _camelPage = null;
+    private Diagram _diagram = null;
+    private Component _component = null;
 
-	@Override
-	public void addPages() {
-		addPage(startPage);
-		addPage(camelPage);
-	}
+    /**
+     * Constructor.
+     */
+    public SCADiagramAddImplementationWizard() {
+        super();
+        initPages();
+        setWindowTitle("New Implementation");
+    }
 
-	public Implementation getImplementation() {
-		if (startPage != null) 
-			return startPage.getImplementation();
-		return null;
-	}
+    /**
+     * @param component this component
+     */
+    public void setComponent(Component component) {
+        this._component = component;
+    }
 
-	@Override
-	public IWizardPage getNextPage(IWizardPage page) {
-		if (page.equals(startPage)) {
-			Implementation interfaceToTest = startPage.getImplementation();
-			if (interfaceToTest instanceof CamelImplementationType) {
-				camelPage.refresh();
-				return camelPage;
-			}
-		}
-		return super.getNextPage(page);
-	}
+    /**
+     * @return the component
+     */
+    public Component getComponent() {
+        return this._component;
+    }
+
+    /**
+     * @param diagram the diagram
+     */
+    public void setDiagram(Diagram diagram) {
+        this._diagram = diagram;
+    }
+
+    /**
+     * @return the diagram
+     */
+    public Diagram getDiagram() {
+        return this._diagram;
+    }
+
+    private void initPages() {
+        _startPage = new SCADiagramAddImplementationStartPage("start");
+        _camelPage = new SCADiagramAddComponentImplementationCamelPage(_startPage, "camel");
+    }
+
+    @Override
+    public boolean performFinish() {
+        if (_startPage != null && _startPage.getImplementation() != null) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void addPages() {
+        addPage(_startPage);
+        addPage(_camelPage);
+    }
+
+    /**
+     * @return the implementation
+     */
+    public Implementation getImplementation() {
+        if (_startPage != null) {
+            return _startPage.getImplementation();
+        }
+        return null;
+    }
+
+    @Override
+    public IWizardPage getNextPage(IWizardPage page) {
+        if (page.equals(_startPage)) {
+            Implementation interfaceToTest = _startPage.getImplementation();
+            if (interfaceToTest instanceof CamelImplementationType) {
+                _camelPage.refresh();
+                return _camelPage;
+            }
+        }
+        return super.getNextPage(page);
+    }
 }

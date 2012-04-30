@@ -17,51 +17,62 @@ import org.eclipse.jface.wizard.Wizard;
 import org.jboss.tools.switchyard.model.soap.SOAPBindingType;
 import org.jboss.tools.switchyard.model.switchyard.SwitchYardBindingType;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramAddBindingWizard extends Wizard {
 
-	private SCADiagramAddBindingStartPage startPage = null;
-	private SCADiagramAddBindingSOAPPage soapPage = null;
-	
-	public SCADiagramAddBindingWizard() {
-		super();
-		initPages();
-		setWindowTitle("New Binding");
-	}
-	
-	private void initPages() {
-		startPage = new SCADiagramAddBindingStartPage("start");
-		soapPage = new SCADiagramAddBindingSOAPPage(startPage, "soap");
-	}
-	
-	@Override
-	public boolean performFinish() {
-		if (startPage != null && startPage.getBinding() != null) {
-			return true;
-		}
-		return false;
-	}
+    private SCADiagramAddBindingStartPage _startPage = null;
+    private SCADiagramAddBindingSOAPPage _soapPage = null;
 
-	@Override
-	public void addPages() {
-		addPage(startPage);
-		addPage(soapPage);
-	}
+    /**
+     * No-arg constructor.
+     */
+    public SCADiagramAddBindingWizard() {
+        super();
+        initPages();
+        setWindowTitle("New Binding");
+    }
 
-	public SwitchYardBindingType getBinding() {
-		if (startPage != null) 
-			return startPage.getBinding();
-		return null;
-	}
+    private void initPages() {
+        _startPage = new SCADiagramAddBindingStartPage("start");
+        _soapPage = new SCADiagramAddBindingSOAPPage(_startPage, "soap");
+    }
 
-	@Override
-	public IWizardPage getNextPage(IWizardPage page) {
-		if (page.equals(startPage)) {
-			SwitchYardBindingType bindingToTest = startPage.getBinding();
-			if (bindingToTest instanceof SOAPBindingType) {
-				soapPage.refresh();
-				return soapPage;
-			}
-		}
-		return super.getNextPage(page);
-	}
+    @Override
+    public boolean performFinish() {
+        if (_startPage != null && _startPage.getBinding() != null) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void addPages() {
+        addPage(_startPage);
+        addPage(_soapPage);
+    }
+
+    /**
+     * @return selected binding
+     */
+    public SwitchYardBindingType getBinding() {
+        if (_startPage != null) {
+            return _startPage.getBinding();
+        }
+        return null;
+    }
+
+    @Override
+    public IWizardPage getNextPage(IWizardPage page) {
+        if (page.equals(_startPage)) {
+            SwitchYardBindingType bindingToTest = _startPage.getBinding();
+            if (bindingToTest instanceof SOAPBindingType) {
+                _soapPage.refresh();
+                return _soapPage;
+            }
+        }
+        return super.getNextPage(page);
+    }
 }

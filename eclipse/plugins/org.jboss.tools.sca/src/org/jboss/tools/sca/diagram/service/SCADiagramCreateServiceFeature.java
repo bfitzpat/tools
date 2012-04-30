@@ -25,52 +25,59 @@ import org.jboss.tools.sca.ImageProvider;
 import org.jboss.tools.sca.core.ModelHandler;
 import org.jboss.tools.sca.core.ModelHandlerLocator;
 
+/**
+ * @author bfitzpat
+ * 
+ */
 public class SCADiagramCreateServiceFeature extends AbstractCreateFeature {
 
-	private static final String TITLE = "Create service";
+    private static final String TITLE = "Create service";
     private static final String USER_QUESTION = "Enter new service name";
 
+    /**
+     * @param fp the feature provider
+     */
     public SCADiagramCreateServiceFeature(IFeatureProvider fp) {
-    	super (fp, "Service", "Create service");
+        super(fp, "Service", "Create service");
     }
-    
-	@Override
-	public boolean canCreate(ICreateContext context) {
-		if (getBusinessObjectForPictogramElement(context.getTargetContainer()) instanceof Composite) {
-			return true;
-		}
-		return false;
-	}
 
-	@Override
-	public Object[] create(ICreateContext context) {
-		Service newClass = null;
+    @Override
+    public boolean canCreate(ICreateContext context) {
+        if (getBusinessObjectForPictogramElement(context.getTargetContainer()) instanceof Composite) {
+            return true;
+        }
+        return false;
+    }
 
-		// ask user for EClass name
+    @Override
+    public Object[] create(ICreateContext context) {
+        Service newClass = null;
+
+        // ask user for EClass name
         String newClassName = ExampleUtil.askString(TITLE, USER_QUESTION, "");
         if (newClassName == null || newClassName.trim().length() == 0) {
             return EMPTY;
         }
 
-		try {
-			ModelHandler mh = ModelHandlerLocator.getModelHandler(getDiagram().eResource());
-			Object o = getBusinessObjectForPictogramElement(context.getTargetContainer());
-			newClass = mh.createService((Composite)o);
-			newClass.setName(newClassName);
-		} catch (IOException e) {
-			Activator.logError(e);
-		}
+        try {
+            ModelHandler mh = ModelHandlerLocator.getModelHandler(getDiagram().eResource());
+            Object o = getBusinessObjectForPictogramElement(context.getTargetContainer());
+            newClass = mh.createService((Composite) o);
+            newClass.setName(newClassName);
+        } catch (IOException e) {
+            Activator.logError(e);
+        }
 
         // do the add
         addGraphicalRepresentation(context, newClass);
 
         // return newly created business object(s)
-        return new Object[] { newClass };
-	}
+        return new Object[] {newClass };
+    }
 
-	@Override
-	public String getCreateImageId() {
-		return ImageProvider.IMG_16_SERVICE;
-	}
+    @Override
+    public String getCreateImageId() {
+        return ImageProvider.IMG_16_SERVICE;
+    }
 
 }

@@ -21,69 +21,97 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
- * The activator class controls the plug-in life cycle
+ * The activator class controls the plug-in life cycle.
  */
 public class Activator extends AbstractUIPlugin {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "org.jboss.tools.sca"; //$NON-NLS-1$
+    /** The plug-in ID. **/
+    public static final String PLUGIN_ID = "org.jboss.tools.sca"; //$NON-NLS-1$
 
-	// The shared instance
-	private static Activator plugin;
-	
-	/**
-	 * The constructor
-	 */
-	public Activator() {
-	}
+    /* The shared instance */
+    private static Activator PLUGIN;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
-	}
+    /**
+     * The constructor.
+     */
+    public Activator() {
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
+     *      )
+     */
+    @Override
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        PLUGIN = this;
+    }
 
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return plugin;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
+     * )
+     */
+    @Override
+    public void stop(BundleContext context) throws Exception {
+        PLUGIN = null;
+        super.stop(context);
+    }
 
-	public static void logStatus(IStatus status) {
-		Platform.getLog(plugin.getBundle()).log(status);
-	}
+    /**
+     * Returns the shared instance.
+     * 
+     * @return the shared instance
+     */
+    public static Activator getDefault() {
+        return PLUGIN;
+    }
 
-	public static void logError(Exception e) {
-		logStatus(createStatus(e));
-	}
+    /**
+     * Log the status.
+     * @param status the status to be logged
+     */
+    public static void logStatus(IStatus status) {
+        Platform.getLog(PLUGIN.getBundle()).log(status);
+    }
 
-	private static Status createStatus(Exception e) {
-		return new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
-	}
+    /**
+     * Log the error.
+     * @param e the exception to be logged
+     */
+    public static void logError(Exception e) {
+        logStatus(createStatus(e));
+    }
 
-	public static Status createStatus(String message) {
-		return new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, null);
-	}
+    /**
+     * @param e the exception to be put in the status
+     * @return
+     */
+    private static Status createStatus(Exception e) {
+        return new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
+    }
 
-	public static void showErrorWithLogging(Exception e){
-		Status s = createStatus(e);
-		logStatus(s);
-		ErrorDialog.openError(PlatformUI.getWorkbench().getDisplay().getActiveShell(), "An error occured", null, s);
-	}
+    /**
+     * Create a status message.
+     * @param message the message to include in the status
+     * @return Status
+     */
+    public static Status createStatus(String message) {
+        return new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, null);
+    }
+
+    /**
+     * Show an error dialog and log the exception.
+     * @param e the Exception to log and pop up the dialog for
+     */
+    public static void showErrorWithLogging(Exception e) {
+        Status s = createStatus(e);
+        logStatus(s);
+        ErrorDialog.openError(PlatformUI.getWorkbench().getDisplay().getActiveShell(), "An error occured", null, s);
+    }
 
 }

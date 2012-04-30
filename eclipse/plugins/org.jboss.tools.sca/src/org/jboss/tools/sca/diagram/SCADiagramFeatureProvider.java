@@ -81,174 +81,173 @@ import org.jboss.tools.sca.diagram.service.SCADiagramMoveServiceFeature;
 import org.jboss.tools.sca.diagram.service.SCADiagramResizeServiceFeature;
 import org.jboss.tools.switchyard.model.switchyard.SwitchYardBindingType;
 
+/**
+ * @author bfitzpat
+ * 
+ */
 public class SCADiagramFeatureProvider extends DefaultFeatureProvider {
 
-	public SCADiagramFeatureProvider(IDiagramTypeProvider dtp) {
-		super(dtp);
-	}
+    /**
+     * @param dtp the diagram type provider
+     */
+    public SCADiagramFeatureProvider(IDiagramTypeProvider dtp) {
+        super(dtp);
+    }
 
-	@Override
+    @Override
+    public IAddFeature getAddFeature(IAddContext context) {
+        // is object for add request a EClass?
+        if (context.getNewObject() instanceof Composite) {
+            return new SCADiagramAddCompositeFeature(this);
+        }
+        if (context.getNewObject() instanceof Component) {
+            return new SCADiagramAddComponentFeature(this);
+        }
+        if (context.getNewObject() instanceof Service) {
+            return new SCADiagramAddServiceFeature(this);
+        }
+        if (context.getNewObject() instanceof SwitchYardBindingType) {
+            return new SCADiagramAddBindingFeature(this);
+        }
+        if (context.getNewObject() instanceof Reference) {
+            if (context instanceof AddConnectionContext) {
+                return new SCADiagramAddReferenceLinkFeature(this);
+            } else {
+                return new SCADiagramAddCompositeReferenceFeature(this);
+            }
+        }
+        if (context.getNewObject() instanceof ComponentReference) {
+            if (context instanceof AddConnectionContext) {
+                return new SCADiagramAddReferenceLinkFeature(this);
+            } else {
+                return new SCADiagramAddComponentReferenceFeature(this);
+            }
+        }
+        if (context.getNewObject() instanceof ComponentService) {
+            if (context instanceof AddConnectionContext) {
+                return new SCADiagramAddComponentServiceLinkFeature(this);
+            } else {
+                return new SCADiagramAddComponentServiceFeature(this);
+            }
+        }
+        if (context.getNewObject() instanceof Implementation) {
+            return new SCADiagramAddImplementationFeature(this);
+        }
+        return super.getAddFeature(context);
+    }
 
-	public IAddFeature getAddFeature(IAddContext context) {
-		// is object for add request a EClass?
-		if (context.getNewObject() instanceof Composite) {
-			return new SCADiagramAddCompositeFeature(this);
-		}
-		if (context.getNewObject() instanceof Component) {
-			return new SCADiagramAddComponentFeature(this);
-		}
-		if (context.getNewObject() instanceof Service) {
-			return new SCADiagramAddServiceFeature(this);
-		}
-		if (context.getNewObject() instanceof SwitchYardBindingType) {
-			return new SCADiagramAddBindingFeature(this);
-		}
-		if (context.getNewObject() instanceof Reference) {
-			if (context instanceof AddConnectionContext) {
-				return new SCADiagramAddReferenceLinkFeature(this);
-			} else {
-				return new SCADiagramAddCompositeReferenceFeature(this);
-			}
-		}
-		if (context.getNewObject() instanceof ComponentReference) {
-			if (context instanceof AddConnectionContext) {
-				return new SCADiagramAddReferenceLinkFeature(this);
-			} else {
-				return new SCADiagramAddComponentReferenceFeature(this);
-			}
-		}
-		if (context.getNewObject() instanceof ComponentService) {
-			if (context instanceof AddConnectionContext) {
-				return new SCADiagramAddComponentServiceLinkFeature(this);
-			} else {
-				return new SCADiagramAddComponentServiceFeature(this);
-			}
-		}
-		if (context.getNewObject() instanceof Implementation) {
-			return new SCADiagramAddImplementationFeature(this);
-		}
-		return super.getAddFeature(context);
-	}
+    @Override
+    public ICreateFeature[] getCreateFeatures() {
+        return new ICreateFeature[] {new SCADiagramCreateCompositeFeature(this),
+                new SCADiagramCreateComponentFeature(this), new SCADiagramCreateServiceFeature(this),
+                new SCADiagramCreateComponentServiceFeature(this), new SCADiagramCreateComponentReferenceFeature(this),
+                new SCADiagramCreateCompositeReferenceFeature(this), new SCADiagramCreateBindingFeature(this),
+                new SCADiagramCreateImplementationFeature(this) };
+    }
 
-	@Override
-	public ICreateFeature[] getCreateFeatures() {
-		return new ICreateFeature[] { new SCADiagramCreateCompositeFeature(this),
-				new SCADiagramCreateComponentFeature(this),
-				new SCADiagramCreateServiceFeature(this),
-				new SCADiagramCreateComponentServiceFeature(this),
-				new SCADiagramCreateComponentReferenceFeature(this),
-				new SCADiagramCreateCompositeReferenceFeature(this),
-				new SCADiagramCreateBindingFeature(this),
-				new SCADiagramCreateImplementationFeature(this)
-			};
-	}
+    @Override
+    public ICreateConnectionFeature[] getCreateConnectionFeatures() {
+        return new ICreateConnectionFeature[] {new SCADiagramCreateReferenceLinkFeature(this),
+                new SCADiagramCreateComponentServiceLinkFeature(this) };
+    }
 
-	@Override
-	public ICreateConnectionFeature[] getCreateConnectionFeatures() {
-		return new ICreateConnectionFeature[] { 
-				new SCADiagramCreateReferenceLinkFeature(this),
-				new SCADiagramCreateComponentServiceLinkFeature(this)
-		};
-	}
+    @Override
+    public IUpdateFeature getUpdateFeature(IUpdateContext context) {
+        PictogramElement pictogramElement = context.getPictogramElement();
+        if (pictogramElement instanceof ContainerShape) {
+            Object bo = getBusinessObjectForPictogramElement(pictogramElement);
+            if (bo instanceof Composite) {
+                return new SCADiagramUpdateCompositeFeature(this);
+            }
+        }
+        return super.getUpdateFeature(context);
+    }
 
-	@Override
-	public IUpdateFeature getUpdateFeature(IUpdateContext context) {
-		PictogramElement pictogramElement = context.getPictogramElement();
-		if (pictogramElement instanceof ContainerShape) {
-			Object bo = getBusinessObjectForPictogramElement(pictogramElement);
-			if (bo instanceof Composite) {
-				return new SCADiagramUpdateCompositeFeature(this);
-			}
-		}
-		return super.getUpdateFeature(context);
-	}
+    @Override
+    public IMoveShapeFeature getMoveShapeFeature(IMoveShapeContext context) {
+        Shape shape = context.getShape();
+        Object bo = getBusinessObjectForPictogramElement(shape);
+        if (bo instanceof Composite) {
+            return new SCADiagramMoveCompositeFeature(this);
+        }
+        if (bo instanceof Service) {
+            return new SCADiagramMoveServiceFeature(this);
+        }
+        if (bo instanceof Reference) {
+            return new SCADiagramMoveCompositeReferenceFeature(this);
+        }
+        return super.getMoveShapeFeature(context);
+    }
 
-	@Override
+    @Override
+    public IFeature[] getDragAndDropFeatures(IPictogramElementContext context) {
+        // simply return all create connection features
+        return getCreateConnectionFeatures();
 
-	public IMoveShapeFeature getMoveShapeFeature(IMoveShapeContext context) {
-		Shape shape = context.getShape();
-		Object bo = getBusinessObjectForPictogramElement(shape);
-		if (bo instanceof Composite) {
-			return new SCADiagramMoveCompositeFeature(this);
-		}
-		if (bo instanceof Service) {
-			return new SCADiagramMoveServiceFeature(this);
-		}
-		if (bo instanceof Reference) {
-			return new SCADiagramMoveCompositeReferenceFeature(this);
-		}
-		return super.getMoveShapeFeature(context);
-	}
+    }
 
-	@Override
-	public IFeature[] getDragAndDropFeatures(IPictogramElementContext context) {
-		// simply return all create connection features
-				return getCreateConnectionFeatures();
+    @Override
+    public IDirectEditingFeature getDirectEditingFeature(IDirectEditingContext context) {
+        PictogramElement pe = context.getPictogramElement();
+        Object bo = getBusinessObjectForPictogramElement(pe);
+        if (bo instanceof Composite) {
+            return new SCADiagramDirectEditCompositeFeature(this);
+        }
+        if (bo instanceof Component) {
+            return new SCADiagramDirectEditComponentFeature(this);
+        }
+        if (bo instanceof Service) {
+            return new SCADiagramDirectEditServiceFeature(this);
+        }
+        if (bo instanceof Reference) {
+            return new SCADiagramDirectEditCompositeReferenceFeature(this);
+        }
+        return super.getDirectEditingFeature(context);
+    }
 
-	}
+    @Override
+    public ILayoutFeature getLayoutFeature(ILayoutContext context) {
+        PictogramElement pictogramElement = context.getPictogramElement();
+        Object bo = getBusinessObjectForPictogramElement(pictogramElement);
+        if (bo instanceof Composite) {
+            return new SCADiagramLayoutCompositeFeature(this);
+        }
+        if (bo instanceof Service) {
+            return new SCADiagramLayoutServiceFeature(this);
+        }
+        if (bo instanceof Reference) {
+            return new SCADiagramLayoutCompositeReferenceFeature(this);
+        }
+        return super.getLayoutFeature(context);
+    }
 
-	@Override
-	public IDirectEditingFeature getDirectEditingFeature(IDirectEditingContext context) {
-		PictogramElement pe = context.getPictogramElement();
-		Object bo = getBusinessObjectForPictogramElement(pe);
-		if (bo instanceof Composite) {
-			return new SCADiagramDirectEditCompositeFeature(this);
-		}
-		if (bo instanceof Component) {
-			return new SCADiagramDirectEditComponentFeature(this);
-		}
-		if (bo instanceof Service) {
-			return new SCADiagramDirectEditServiceFeature(this);
-		}
-		if (bo instanceof Reference) {
-			return new SCADiagramDirectEditCompositeReferenceFeature(this);
-		}
-		return super.getDirectEditingFeature(context);
-	}
+    @Override
+    public IResizeShapeFeature getResizeShapeFeature(IResizeShapeContext context) {
+        PictogramElement pe = context.getPictogramElement();
+        Object bo = getBusinessObjectForPictogramElement(pe);
+        if (bo instanceof Service) {
+            return new SCADiagramResizeServiceFeature(this);
+        }
+        if (bo instanceof Component) {
+            return new SCADiagramResizeComponentFeature(this);
+        }
+        if (bo instanceof Reference) {
+            return new SCADiagramResizeCompositeReferenceFeature(this);
+        }
+        return super.getResizeShapeFeature(context);
+    }
 
-	@Override
-	public ILayoutFeature getLayoutFeature(ILayoutContext context) {
-		PictogramElement pictogramElement = context.getPictogramElement();
-		Object bo = getBusinessObjectForPictogramElement(pictogramElement);
-		if (bo instanceof Composite) {
-			return new SCADiagramLayoutCompositeFeature(this);
-		}
-		if (bo instanceof Service) {
-			return new SCADiagramLayoutServiceFeature(this);
-		}
-		if (bo instanceof Reference) {
-			return new SCADiagramLayoutCompositeReferenceFeature(this);
-		}
-		return super.getLayoutFeature(context);
-	}
-
-	@Override
-	public IResizeShapeFeature getResizeShapeFeature(IResizeShapeContext context) {
-		PictogramElement pe = context.getPictogramElement();
-		Object bo = getBusinessObjectForPictogramElement(pe);
-		if (bo instanceof Service) {
-			return new SCADiagramResizeServiceFeature(this);
-		}
-		if (bo instanceof Component) {
-			return new SCADiagramResizeComponentFeature(this);
-		}
-		if (bo instanceof Reference) {
-			return new SCADiagramResizeCompositeReferenceFeature(this);
-		}
-		return super.getResizeShapeFeature(context);
-	}
-
-	@Override
-	public ICustomFeature[] getCustomFeatures(ICustomContext context) {
-		PictogramElement[] pes = context.getPictogramElements();
-		if (pes != null && pes.length == 1) {
-			Object bo = getBusinessObjectForPictogramElement(pes[0]);
-			if (bo instanceof Component) {
-				return new ICustomFeature[] { new SCADiagramCustomPromoteServiceFeature(this),
-						new SCADiagramCustomPromoteReferenceFeature(this)};
-			}
-		}
-		return super.getCustomFeatures(context);
-	}
+    @Override
+    public ICustomFeature[] getCustomFeatures(ICustomContext context) {
+        PictogramElement[] pes = context.getPictogramElements();
+        if (pes != null && pes.length == 1) {
+            Object bo = getBusinessObjectForPictogramElement(pes[0]);
+            if (bo instanceof Component) {
+                return new ICustomFeature[] {new SCADiagramCustomPromoteServiceFeature(this),
+                        new SCADiagramCustomPromoteReferenceFeature(this) };
+            }
+        }
+        return super.getCustomFeatures(context);
+    }
 
 }

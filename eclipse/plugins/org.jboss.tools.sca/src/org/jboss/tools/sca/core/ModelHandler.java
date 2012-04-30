@@ -68,320 +68,445 @@ import org.jboss.tools.switchyard.model.transform.TransformPackage;
 import org.jboss.tools.switchyard.model.validate.ValidatePackage;
 import org.open.oasis.docs.ns.opencsa.sca.bpel.BPELPackage;
 
+/**
+ * @author bfitzpat
+ * 
+ */
+/**
+ * @author bfitzpat
+ *
+ */
 public class ModelHandler {
 
-	SwitchyardResourceImpl resource;
+    private SwitchyardResourceImpl _resource;
 
-	ModelHandler() {
-	}
+    ModelHandler() {
+    }
 
-	void createDefinitionsIfMissing() {
-		EList<EObject> contents = resource.getContents();
+    void createDefinitionsIfMissing() {
+        EList<EObject> contents = _resource.getContents();
 
-		if (contents.isEmpty() || !(contents.get(0) instanceof DocumentRoot)) {
-			
-			TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(resource);
+        if (contents.isEmpty() || !(contents.get(0) instanceof DocumentRoot)) {
 
-			if (domain != null) {
+            TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(_resource);
 
-				domain.getCommandStack().execute(new RecordingCommand(domain) {
-					@Override
-					protected void doExecute() {
-						DocumentRoot docRoot = createDocumentRoot();
-						SwitchYardType switchYardRoot = createSY(SwitchYardType.class);
-						docRoot.setSwitchyard(switchYardRoot);
-						resource.getContents().add(docRoot);
-					}
-				});
-				return;
-			}
-		}
-	}
+            if (domain != null) {
 
-	public static ModelHandler getInstance(EObject object) throws IOException {
-		return ModelHandlerLocator.getModelHandler(object.eResource());
-	}
+                domain.getCommandStack().execute(new RecordingCommand(domain) {
+                    @Override
+                    protected void doExecute() {
+                        DocumentRoot docRoot = createDocumentRoot();
+                        SwitchYardType switchYardRoot = createSY(SwitchYardType.class);
+                        docRoot.setSwitchyard(switchYardRoot);
+                        _resource.getContents().add(docRoot);
+                    }
+                });
+                return;
+            }
+        }
+    }
 
-	public SwitchyardResourceImpl getResource() {
-		return resource;
-	}
+    /**
+     * Get the ModelHandler instance for the EMF object instance.
+     * 
+     * @param object instance to search for
+     * @return ModelHandler instance
+     * @throws IOException the ioexception
+     */
+    public static ModelHandler getInstance(EObject object) throws IOException {
+        return ModelHandlerLocator.getModelHandler(object.eResource());
+    }
 
-	public void save() {
-		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(resource);
-		if (domain != null) {
-			domain.getCommandStack().execute(new RecordingCommand(domain) {
-				@Override
-				protected void doExecute() {
-					saveResource();
-				}
-			});
-		} else {
-			saveResource();
-		}
-	}
+    /**
+     * Get the resource associated with this ModelHandler.
+     * 
+     * @return a SwitchyardResource instance
+     */
+    public SwitchyardResourceImpl getResource() {
+        return _resource;
+    }
+    
+    /**
+     * @param resource resource
+     */
+    protected void setResource(SwitchyardResourceImpl resource) {
+        this._resource = resource;
+    }
 
-	private void saveResource() {
-		try {
-			resource.save(Collections.EMPTY_MAP);
-		} catch (IOException e) {
-			Activator.logError(e);
-		}
-	}
-	
-	public DocumentRoot getDocumentRoot() {
-		if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof DocumentRoot) {
-			DocumentRoot documentRoot = (DocumentRoot) resource.getContents().get(0);
-			return documentRoot;
-		}
-		return null;
-	}
-	
-	public SwitchYardType getRootSwitchYard() {
-		DocumentRoot documentRoot = getDocumentRoot();
-		if (documentRoot != null && documentRoot.eContents().get(0) instanceof SwitchYardType) {
-			SwitchYardType syType = (SwitchYardType) documentRoot.eContents().get(0);
-			return syType;
-		}
-		return null;
-	}
+    /**
+     * Save the file.
+     */
+    public void save() {
+        TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(_resource);
+        if (domain != null) {
+            domain.getCommandStack().execute(new RecordingCommand(domain) {
+                @Override
+                protected void doExecute() {
+                    saveResource();
+                }
+            });
+        } else {
+            saveResource();
+        }
+    }
 
-	public Composite getRootComposite() {
-		SwitchYardType syType = getRootSwitchYard();
-		if (syType != null) {
-			return syType.getComposite();
-		}
-		return null;
-	}
-	
-	public DocumentRoot createDocumentRoot() {
-		DocumentRoot documentRoot = createSY(DocumentRoot.class);
-		return documentRoot;
-	}
+    private void saveResource() {
+        try {
+            _resource.save(Collections.EMPTY_MAP);
+        } catch (IOException e) {
+            Activator.logError(e);
+        }
+    }
 
-	public SwitchYardType createSwitchYard() {
-		SwitchYardType switchYardRoot = createSY(SwitchYardType.class);
-		if (getDocumentRoot() == null) 
-			createDocumentRoot();
-		getDocumentRoot().setSwitchyard(switchYardRoot);
-		return switchYardRoot;
-	}
+    /**
+     * @return DocumentRoot for the EMF resource
+     */
+    public DocumentRoot getDocumentRoot() {
+        if (!_resource.getContents().isEmpty() && _resource.getContents().get(0) instanceof DocumentRoot) {
+            DocumentRoot documentRoot = (DocumentRoot) _resource.getContents().get(0);
+            return documentRoot;
+        }
+        return null;
+    }
 
-	public Composite createComposite() {
-		if (getDocumentRoot() == null) 
-			createDocumentRoot();
-		if (getRootSwitchYard() == null)
-			createSwitchYard();
-		Composite composite = createSCA(Composite.class);
-		composite.setTargetNamespace(getRootSwitchYard().getTargetNamespace());
-		getRootSwitchYard().setComposite(composite);
-		return composite;
-	}
+    /**
+     * @return the root SwitchYard element
+     */
+    public SwitchYardType getRootSwitchYard() {
+        DocumentRoot documentRoot = getDocumentRoot();
+        if (documentRoot != null && documentRoot.eContents().get(0) instanceof SwitchYardType) {
+            SwitchYardType syType = (SwitchYardType) documentRoot.eContents().get(0);
+            return syType;
+        }
+        return null;
+    }
 
-	public Service createService(Composite source) {
-		Service service = createSCA(Service.class);
-		source.getService().add(service);
-		return service;
-	}
+    /**
+     * @return the root Composite
+     */
+    public Composite getRootComposite() {
+        SwitchYardType syType = getRootSwitchYard();
+        if (syType != null) {
+            return syType.getComposite();
+        }
+        return null;
+    }
 
-	public Component createComponent(Composite source) {
-		Component component = createSCA(Component.class);
-		source.getComponent().add(component);
-		return component;
-	}
+    /**
+     * @return the created DocumentRoot
+     */
+    public DocumentRoot createDocumentRoot() {
+        DocumentRoot documentRoot = createSY(DocumentRoot.class);
+        return documentRoot;
+    }
 
-	public Reference createCompositeReference(Composite source) {
-		Reference compositeRef = createSCA(Reference.class);
-		source.getReference().add(compositeRef);
-		return compositeRef;
-	}
+    /**
+     * @return the created SwitchYard element
+     */
+    public SwitchYardType createSwitchYard() {
+        SwitchYardType switchYardRoot = createSY(SwitchYardType.class);
+        if (getDocumentRoot() == null) {
+            createDocumentRoot();
+        }
+        getDocumentRoot().setSwitchyard(switchYardRoot);
+        return switchYardRoot;
+    }
 
-	public ComponentReference createComponentReference(Component source) {
-		ComponentReference componentRef = createSCA(ComponentReference.class);
-		source.getReference().add(componentRef);
-		return componentRef;
-	}
+    /**
+     * @return the created Composite
+     */
+    public Composite createComposite() {
+        if (getDocumentRoot() == null) {
+            createDocumentRoot();
+        }
+        if (getRootSwitchYard() == null) {
+            createSwitchYard();
+        }
+        Composite composite = createSCA(Composite.class);
+        composite.setTargetNamespace(getRootSwitchYard().getTargetNamespace());
+        getRootSwitchYard().setComposite(composite);
+        return composite;
+    }
 
-	public ComponentService createComponentService(Component source) {
-		ComponentService componentService = createSCA(ComponentService.class);
-		source.getService().add(componentService);
-		return componentService;
-	}
+    /**
+     * @param source the composite to create the service for
+     * @return the service
+     */
+    public Service createService(Composite source) {
+        Service service = createSCA(Service.class);
+        source.getService().add(service);
+        return service;
+    }
 
-	public SOAPBindingType createSOAPBinding(Service source) {
-		SOAPBindingType soapBinding = SOAPFactory.eINSTANCE.createSOAPBindingType();
-		source.getBindingGroup().add(SOAPPackage.eINSTANCE.getDocumentRoot_BindingSoap(), soapBinding);
-		return soapBinding;
-	}
+    /**
+     * @param source the composite to create the component for
+     * @return the component
+     */
+    public Component createComponent(Composite source) {
+        Component component = createSCA(Component.class);
+        source.getComponent().add(component);
+        return component;
+    }
 
-	public SOAPBindingType createSOAPBinding(Reference source) {
-		SOAPBindingType soapBinding = createSOAP(SOAPBindingType.class);
-		source.getBindingGroup().add(SOAPPackage.eINSTANCE.getDocumentRoot_BindingSoap(), soapBinding);
-		return soapBinding;
-	}
+    /**
+     * @param source the composite to create the composite reference for
+     * @return the composite reference
+     */
+    public Reference createCompositeReference(Composite source) {
+        Reference compositeRef = createSCA(Reference.class);
+        source.getReference().add(compositeRef);
+        return compositeRef;
+    }
 
-	public CamelBindingType createCamelBinding(Service source) {
-		CamelBindingType camelBinding = createSY(CamelBindingType.class);
-		source.getBindingGroup().add(CamelPackage.eINSTANCE.getDocumentRoot_BindingCamel(), camelBinding);
-		return camelBinding;
-	}
+    /**
+     * @param source the Component to create the component reference for
+     * @return the component reference
+     */
+    public ComponentReference createComponentReference(Component source) {
+        ComponentReference componentRef = createSCA(ComponentReference.class);
+        source.getReference().add(componentRef);
+        return componentRef;
+    }
 
-	public RouteDefinition createRouteDefinition(CamelImplementationType source) {
-		RouteDefinition routeDefn = createSpring(RouteDefinition.class);
-		source.setRoute(routeDefn);
-		return routeDefn;
-	}
+    /**
+     * @param source the component to create the component service for
+     * @return the component service
+     */
+    public ComponentService createComponentService(Component source) {
+        ComponentService componentService = createSCA(ComponentService.class);
+        source.getService().add(componentService);
+        return componentService;
+    }
 
-	public static void registerPackages ( ResourceSet resourceSet ) {
-		resourceSet.getPackageRegistry().put("http://docs.oasis-open.org/ns/opencsa/sca/200912", ScaPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put("urn:switchyard-config:switchyard:1.0", SwitchyardPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put("urn:switchyard-config:transform:1.0", TransformPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put("urn:switchyard-component-bean:config:1.0", BeanPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put("urn:switchyard-config:validate:1.0", ValidatePackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put("urn:switchyard-component-soap:config:1.0", SOAPPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put("urn:switchyard-component-rules:config:1.0", RulesPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put("urn:switchyard-component-hornetq:config:1.0", HornetQPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put("urn:switchyard-component-common-rules:config:1.0", CommonRulesPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put("urn:switchyard-component-clojure:config:1.0", ClojurePackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put("urn:switchyard-component-camel:config:1.0", CamelPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put("urn:switchyard-component-bpm:config:1.0", BPMPackage.eINSTANCE);
-		resourceSet.getPackageRegistry().put("http://docs.oasis-open.org/ns/opencsa/sca/200903", BPELPackage.eINSTANCE);
-	}
-	
-	void loadResource() {
-		URI fileuri = resource.getURI();
+    /**
+     * @param source the Service to create the SOAP binding for
+     * @return the soap binding
+     */
+    public SOAPBindingType createSOAPBinding(Service source) {
+        SOAPBindingType soapBinding = SOAPFactory.eINSTANCE.createSOAPBindingType();
+        source.getBindingGroup().add(SOAPPackage.eINSTANCE.getDocumentRoot_BindingSoap(), soapBinding);
+        return soapBinding;
+    }
 
-		TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(resource);
-		ResourceSet resourceSet = editingDomain.getResourceSet();
+    /**
+     * @param source Reference to create the SOAP binding for
+     * @return the soap binding
+     */
+    public SOAPBindingType createSOAPBinding(Reference source) {
+        SOAPBindingType soapBinding = createSOAP(SOAPBindingType.class);
+        source.getBindingGroup().add(SOAPPackage.eINSTANCE.getDocumentRoot_BindingSoap(), soapBinding);
+        return soapBinding;
+    }
 
-		ExtendedMetaData extendedMetaData = 
-				new BasicExtendedMetaData(resourceSet.getPackageRegistry());
-		editingDomain.getResourceSet().getLoadOptions().put
-			(XMLResource.OPTION_EXTENDED_META_DATA, extendedMetaData);
-		editingDomain.getResourceSet().getResourceFactoryRegistry().getExtensionToFactoryMap().put
-			(Resource.Factory.Registry.DEFAULT_EXTENSION, 
-					new SwitchyardResourceFactoryImpl());
+    /**
+     * @param source Service to create new camel binding for
+     * @return new camel binding
+     */
+    public CamelBindingType createCamelBinding(Service source) {
+        CamelBindingType camelBinding = createSY(CamelBindingType.class);
+        source.getBindingGroup().add(CamelPackage.eINSTANCE.getDocumentRoot_BindingCamel(), camelBinding);
+        return camelBinding;
+    }
 
-		// Register the package to make it available during loading.
-		registerPackages(resourceSet);
+    /**
+     * @param source Camel implementation to create route for
+     * @return new route definition
+     */
+    public RouteDefinition createRouteDefinition(CamelImplementationType source) {
+        RouteDefinition routeDefn = createSpring(RouteDefinition.class);
+        source.setRoute(routeDefn);
+        return routeDefn;
+    }
 
-		try {
-			resource = (SwitchyardResourceImpl) resourceSet.getResource(fileuri, true);
-		} catch (WrappedException we) {
-			resource = (SwitchyardResourceImpl) resourceSet.getResource(fileuri, true);
-		} catch (Exception e) {
-			resource = (SwitchyardResourceImpl) resourceSet.getResource(fileuri, true);
-		}
-	}
+    /**
+     * @param resourceSet register all the EMF packages for the SY resource set
+     */
+    public static void registerPackages(ResourceSet resourceSet) {
+        resourceSet.getPackageRegistry().put("http://docs.oasis-open.org/ns/opencsa/sca/200912", ScaPackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put("urn:switchyard-config:switchyard:1.0", SwitchyardPackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put("urn:switchyard-config:transform:1.0", TransformPackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put("urn:switchyard-component-bean:config:1.0", BeanPackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put("urn:switchyard-config:validate:1.0", ValidatePackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put("urn:switchyard-component-soap:config:1.0", SOAPPackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put("urn:switchyard-component-rules:config:1.0", RulesPackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put("urn:switchyard-component-hornetq:config:1.0", HornetQPackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put("urn:switchyard-component-common-rules:config:1.0",
+                CommonRulesPackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put("urn:switchyard-component-clojure:config:1.0", ClojurePackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put("urn:switchyard-component-camel:config:1.0", CamelPackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put("urn:switchyard-component-bpm:config:1.0", BPMPackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put("http://docs.oasis-open.org/ns/opencsa/sca/200903", BPELPackage.eINSTANCE);
+    }
 
-	@SuppressWarnings("unchecked")
-	public <T> List<T> getAll(final Class<T> class1) {
-		ArrayList<T> l = new ArrayList<T>();
-		TreeIterator<EObject> contents = resource.getAllContents();
-		for (; contents.hasNext();) {
-			Object t = contents.next();
-			if (class1.isInstance(t)) {
-				l.add((T) t);
-			}
-		}
-		return l;
-	}
+    void loadResource() {
+        URI fileuri = _resource.getURI();
 
-	/**
-	 * General-purpose factory method that sets appropriate default values for new objects.
-	 */
-	public EObject create(EClass eClass) {
-		EObject newObject = null;
-		EPackage pkg = eClass.getEPackage();
-		EFactory factory = pkg.getEFactoryInstance();
-		newObject = factory.create(eClass);
-		initialize(newObject);
-		return newObject;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public <T extends EObject> T createSY(Class<T> clazz) {
-		EObject newObject = null;
-		EClassifier eClassifier = SwitchyardPackage.eINSTANCE.getEClassifier(clazz.getSimpleName());
-		if (eClassifier instanceof EClass) {
-			EClass eClass = (EClass)eClassifier;
-			newObject = SwitchyardFactory.eINSTANCE.create(eClass);
-		}
-		
-		if (newObject!=null) {
-			initialize(newObject);
-		}
+        TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(_resource);
+        ResourceSet resourceSet = editingDomain.getResourceSet();
 
-		return (T)newObject;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public <T extends EObject> T createSOAP(Class<T> clazz) {
-		EObject newObject = null;
-		EClassifier eClassifier = SwitchyardPackage.eINSTANCE.getEClassifier(clazz.getSimpleName());
-		if (eClassifier instanceof EClass) {
-			EClass eClass = (EClass)eClassifier;
-			newObject = SOAPFactory.eINSTANCE.create(eClass);
-		}
-		
-		if (newObject!=null) {
-			initialize(newObject);
-		}
+        ExtendedMetaData extendedMetaData = new BasicExtendedMetaData(resourceSet.getPackageRegistry());
+        editingDomain.getResourceSet().getLoadOptions().put(XMLResource.OPTION_EXTENDED_META_DATA, extendedMetaData);
+        editingDomain.getResourceSet().getResourceFactoryRegistry().getExtensionToFactoryMap()
+                .put(Resource.Factory.Registry.DEFAULT_EXTENSION, new SwitchyardResourceFactoryImpl());
 
-		return (T)newObject;
-	}
+        // Register the package to make it available during loading.
+        registerPackages(resourceSet);
 
-	@SuppressWarnings("unchecked")
-	public <T extends EObject> T createSCA(Class<T> clazz) {
-		EObject newObject = null;
-		EClassifier eClassifier = ScaPackage.eINSTANCE.getEClassifier(clazz.getSimpleName());
-		if (eClassifier instanceof EClass) {
-			EClass eClass = (EClass)eClassifier;
-			newObject = ScaFactory.eINSTANCE.create(eClass);
-		}
-		
-		if (newObject!=null) {
-			initialize(newObject);
-		}
+        try {
+            _resource = (SwitchyardResourceImpl) resourceSet.getResource(fileuri, true);
+        } catch (WrappedException we) {
+            _resource = (SwitchyardResourceImpl) resourceSet.getResource(fileuri, true);
+        } catch (Exception e) {
+            _resource = (SwitchyardResourceImpl) resourceSet.getResource(fileuri, true);
+        }
+    }
 
-		return (T)newObject;
-	}
+    /**
+     * List all instances of a class in the resource.
+     * @param class1 class to search for
+     * @param <T> class
+     * @return list to return
+     */
+    @SuppressWarnings("unchecked")
+    public <T> List<T> getAll(final Class<T> class1) {
+        ArrayList<T> l = new ArrayList<T>();
+        TreeIterator<EObject> contents = _resource.getAllContents();
+        for (; contents.hasNext();) {
+            Object t = contents.next();
+            if (class1.isInstance(t)) {
+                l.add((T) t);
+            }
+        }
+        return l;
+    }
 
-	@SuppressWarnings("unchecked")
-	public <T extends EObject> T createSpring(Class<T> clazz) {
-		EObject newObject = null;
-		EClassifier eClassifier = SpringPackage.eINSTANCE.getEClassifier(clazz.getSimpleName());
-		if (eClassifier instanceof EClass) {
-			EClass eClass = (EClass)eClassifier;
-			newObject = SpringFactory.eINSTANCE.create(eClass);
-		}
-		
-		if (newObject!=null) {
-			initialize(newObject);
-		}
+    /**
+     * General-purpose factory method that sets appropriate default values for
+     * new objects.
+     * @param eClass to create
+     * @return class instance
+     */
+    public EObject create(EClass eClass) {
+        EObject newObject = null;
+        EPackage pkg = eClass.getEPackage();
+        EFactory factory = pkg.getEFactoryInstance();
+        newObject = factory.create(eClass);
+        initialize(newObject);
+        return newObject;
+    }
 
-		return (T)newObject;
-	}
+    /**
+     * @param clazz the class from the Switchyard factory to create
+     * @param <T> the class 
+     * @return the class instance
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends EObject> T createSY(Class<T> clazz) {
+        EObject newObject = null;
+        EClassifier eClassifier = SwitchyardPackage.eINSTANCE.getEClassifier(clazz.getSimpleName());
+        if (eClassifier instanceof EClass) {
+            EClass eClass = (EClass) eClassifier;
+            newObject = SwitchyardFactory.eINSTANCE.create(eClass);
+        }
 
-	public void initialize(EObject newObject) {
-		if (newObject!=null) {
-//			if (newObject.eClass().getEPackage() == Bpmn2Package.eINSTANCE) {
-//				// Set appropriate default values for the object features here
-//				switch (newObject.eClass().getClassifierID()) {
-//				case Bpmn2Package.ITEM_DEFINITION:
-//					((ItemDefinition)newObject).setItemKind(ItemKind.INFORMATION);
-//				}
-//			}
-			
-			// if the object has an "id", assign it now.
-//			String id = ModelUtil.setID(newObject,resource);
-			// also set a default name
-//			EStructuralFeature feature = newObject.eClass().getEStructuralFeature("name");
-//			if (feature!=null) {
-//				if (id!=null)
-//					newObject.eSet(feature, ModelUtil.toDisplayName(id));
-//				else
-//					newObject.eSet(feature, "New "+ModelUtil.toDisplayName(newObject.eClass().getName()));
-//			}
-		}
-	}
+        if (newObject != null) {
+            initialize(newObject);
+        }
+
+        return (T) newObject;
+    }
+
+    /**
+     * @param clazz the class from the SOAP factory to create
+     * @param <T> the class 
+     * @return the class instance
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends EObject> T createSOAP(Class<T> clazz) {
+        EObject newObject = null;
+        EClassifier eClassifier = SOAPPackage.eINSTANCE.getEClassifier(clazz.getSimpleName());
+        if (eClassifier instanceof EClass) {
+            EClass eClass = (EClass) eClassifier;
+            newObject = SOAPFactory.eINSTANCE.create(eClass);
+        }
+
+        if (newObject != null) {
+            initialize(newObject);
+        }
+
+        return (T) newObject;
+    }
+
+    /**
+     * @param clazz the class from the SCA factory to create
+     * @param <T> the class 
+     * @return the class instance
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends EObject> T createSCA(Class<T> clazz) {
+        EObject newObject = null;
+        EClassifier eClassifier = ScaPackage.eINSTANCE.getEClassifier(clazz.getSimpleName());
+        if (eClassifier instanceof EClass) {
+            EClass eClass = (EClass) eClassifier;
+            newObject = ScaFactory.eINSTANCE.create(eClass);
+        }
+
+        if (newObject != null) {
+            initialize(newObject);
+        }
+
+        return (T) newObject;
+    }
+
+    /**
+     * @param clazz the class from the Spring factory to create
+     * @param <T> the class 
+     * @return the class instance
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends EObject> T createSpring(Class<T> clazz) {
+        EObject newObject = null;
+        EClassifier eClassifier = SpringPackage.eINSTANCE.getEClassifier(clazz.getSimpleName());
+        if (eClassifier instanceof EClass) {
+            EClass eClass = (EClass) eClassifier;
+            newObject = SpringFactory.eINSTANCE.create(eClass);
+        }
+
+        if (newObject != null) {
+            initialize(newObject);
+        }
+
+        return (T) newObject;
+    }
+
+    /**
+     * @param newObject the object to initialize from
+     */
+    public void initialize(EObject newObject) {
+        // not used currently, brought over from the BPMN2 editor
+        return;
+//        if (newObject != null) {
+//            // if (newObject.eClass().getEPackage() == Bpmn2Package.eINSTANCE) {
+//            // // Set appropriate default values for the object features here
+//            // switch (newObject.eClass().getClassifierID()) {
+//            // case Bpmn2Package.ITEM_DEFINITION:
+//            // ((ItemDefinition)newObject).setItemKind(ItemKind.INFORMATION);
+//            // }
+//            // }
+//
+//            // if the object has an "id", assign it now.
+//            // String id = ModelUtil.setID(newObject,resource);
+//            // also set a default name
+//            // EStructuralFeature feature =
+//            // newObject.eClass().getEStructuralFeature("name");
+//            // if (feature!=null) {
+//            // if (id!=null)
+//            // newObject.eSet(feature, ModelUtil.toDisplayName(id));
+//            // else
+//            // newObject.eSet(feature,
+//            // "New "+ModelUtil.toDisplayName(newObject.eClass().getName()));
+//            // }
+//        }
+    }
+
 }

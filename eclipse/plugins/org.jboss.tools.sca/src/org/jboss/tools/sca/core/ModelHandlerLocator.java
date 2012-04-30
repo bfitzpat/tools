@@ -22,68 +22,99 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.jboss.tools.switchyard.model.switchyard.util.SwitchyardResourceImpl;
 
-public class ModelHandlerLocator {
+/**
+ * @author bfitzpat
+ *
+ */
+public final class ModelHandlerLocator {
 
-	private static HashMap<URI, ModelHandler> map = new HashMap<URI, ModelHandler>();
-	private static HashMap<URI, ModelHandler> diagramMap = new HashMap<URI, ModelHandler>();
+    private static HashMap<URI, ModelHandler> MAP = new HashMap<URI, ModelHandler>();
+    private static HashMap<URI, ModelHandler> DIAGRAM_MAP = new HashMap<URI, ModelHandler>();
 
-	public static ModelHandler getModelHandler(Resource eResource) throws IOException {
-		if (eResource==null)
-			return null;
-		URI uri = eResource.getURI();
+    private ModelHandlerLocator() {
+        // empty
+    }
+    
+    /**
+     * @param eResource the resource to search for
+     * @return the model handler for the resource
+     * @throws IOException the exception
+     */
+    public static ModelHandler getModelHandler(Resource eResource) throws IOException {
+        if (eResource == null) {
+            return null;
+        }
+        URI uri = eResource.getURI();
 
-		return getModelHandler(uri);
-	}
+        return getModelHandler(uri);
+    }
 
-	public static ModelHandler getModelHandler(URI path) throws IOException {
-		ModelHandler modelHandler = map.get(path);
-		if (modelHandler == null) {
-			return diagramMap.get(path);
-		}
-		return modelHandler;
-	}
+    /**
+     * @param path the URI of the resource to search for
+     * @return the model handler
+     * @throws IOException the exception
+     */
+    public static ModelHandler getModelHandler(URI path) throws IOException {
+        ModelHandler modelHandler = MAP.get(path);
+        if (modelHandler == null) {
+            return DIAGRAM_MAP.get(path);
+        }
+        return modelHandler;
+    }
 
-	public static void put(URI diagramPath, ModelHandler mh) {
-		diagramMap.put(diagramPath, mh);
-	}
+    /**
+     * @param diagramPath the URI for the diagram
+     * @param mh the model handler instance
+     */
+    public static void put(URI diagramPath, ModelHandler mh) {
+        DIAGRAM_MAP.put(diagramPath, mh);
+    }
 
-	public static void releaseModel(URI path) {
-		map.remove(path);
-	}
+    /**
+     * @param path the URI of the model to release
+     */
+    public static void releaseModel(URI path) {
+        MAP.remove(path);
+    }
 
-	public static ModelHandler createModelHandler(URI path, final SwitchyardResourceImpl switchyardResource) {
-		if (map.containsKey(path)) {
-			return map.get(path);
-		}
-		return createNewModelHandler(path, switchyardResource);
-	}
+    /**
+     * @param path the URI of the model
+     * @param switchyardResource the resource
+     * @return the model handler
+     */
+    public static ModelHandler createModelHandler(URI path, final SwitchyardResourceImpl switchyardResource) {
+        if (MAP.containsKey(path)) {
+            return MAP.get(path);
+        }
+        return createNewModelHandler(path, switchyardResource);
+    }
 
-	private static ModelHandler createNewModelHandler(URI path, final SwitchyardResourceImpl switchyardResource) {
-		ModelHandler handler = new ModelHandler();
-		map.put(path, handler);
-		handler.resource = switchyardResource;
+    private static ModelHandler createNewModelHandler(URI path, final SwitchyardResourceImpl switchyardResource) {
+        ModelHandler handler = new ModelHandler();
+        MAP.put(path, handler);
+        handler.setResource(switchyardResource);
 
-		URI uri = switchyardResource.getURI();
+        URI uri = switchyardResource.getURI();
 
-		try {
-			IWorkspace workspace = ResourcesPlugin.getWorkspace();
-			String platformString = uri.toPlatformString(true);
+        try {
+            IWorkspace workspace = ResourcesPlugin.getWorkspace();
+            String platformString = uri.toPlatformString(true);
 
-			// platformString is null if file is outside of workspace
-			if ((platformString == null || workspace.getRoot().getFile(new Path(platformString)).exists())
-					&& !switchyardResource.isLoaded()) {
-				handler.loadResource();
-			}
-		} catch (IllegalStateException e) {
+            // platformString is null if file is outside of workspace
+            if ((platformString == null || workspace.getRoot().getFile(new Path(platformString)).exists())
+                    && !switchyardResource.isLoaded()) {
+                handler.loadResource();
+            }
+        } catch (IllegalStateException e) {
 
-			// Workspace is not initialized so we must be running tests!
-			if (!switchyardResource.isLoaded()) {
-				handler.loadResource();
-			}
-		}
+            // Workspace is not initialized so we must be running tests!
+            if (!switchyardResource.isLoaded()) {
+                handler.loadResource();
+            }
+        }
 
-		handler.createDefinitionsIfMissing();
-		return handler;
-	}
+        handler.createDefinitionsIfMissing();
+        return handler;
+    }
 
 }

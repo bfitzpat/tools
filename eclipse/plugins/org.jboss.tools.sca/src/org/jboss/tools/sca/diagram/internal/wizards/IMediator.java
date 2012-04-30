@@ -22,11 +22,11 @@ import org.eclipse.jface.wizard.IWizardPage;
  */
 public interface IMediator {
 
-	/**
-	 * Mediates the wizard page with respect to which page will be next in the
-	 * sequence.
-	 * 
-	 * @param wizardPage Mediated page
-	 */
-	public void mediatePage(IWizardPage wizardPage);
+    /**
+     * Mediates the wizard page with respect to which page will be next in the
+     * sequence.
+     * 
+     * @param wizardPage Mediated page
+     */
+    public void mediatePage(IWizardPage wizardPage);
 }

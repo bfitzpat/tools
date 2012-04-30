@@ -30,89 +30,90 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.jboss.tools.sca.diagram.StyleUtil;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramAddServiceFeature extends AbstractAddShapeFeature {
 
-	public SCADiagramAddServiceFeature( IFeatureProvider fp ) {
-		super(fp);
-	}
+    /**
+     * @param fp the feature provider
+     */
+    public SCADiagramAddServiceFeature(IFeatureProvider fp) {
+        super(fp);
+    }
 
-	@Override
-	public boolean canAdd(IAddContext context) {
-		// check if user wants to add a Service
-		if (context.getNewObject() instanceof Service ) {
-			
-			if (getBusinessObjectForPictogramElement(context.getTargetContainer()) instanceof Composite) {
-				return true;
-			}
-		}
-		return false;
-	}
+    @Override
+    public boolean canAdd(IAddContext context) {
+        // check if user wants to add a Service
+        if (context.getNewObject() instanceof Service) {
 
-	@Override
-	public PictogramElement add(IAddContext context) {
-		Service addedService = null;
-		if (context.getNewObject() instanceof Service) {
-			addedService = (Service) context.getNewObject();
-		}
-		ContainerShape targetContainerShape = null;
-		if (context.getTargetContainer() instanceof ContainerShape) 
-			targetContainerShape = (ContainerShape) context.getTargetContainer();
+            if (getBusinessObjectForPictogramElement(context.getTargetContainer()) instanceof Composite) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-		// CONTAINER SHAPE WITH ROUNDED RECTANGLE
-		IPeCreateService peCreateService = Graphiti.getPeCreateService();
-		IGaService gaService = Graphiti.getGaService();
-		
-		ContainerShape containerShape = peCreateService.createContainerShape(targetContainerShape, true);
+    @Override
+    public PictogramElement add(IAddContext context) {
+        Service addedService = null;
+        if (context.getNewObject() instanceof Service) {
+            addedService = (Service) context.getNewObject();
+        }
+        ContainerShape targetContainerShape = null;
+        if (context.getTargetContainer() instanceof ContainerShape) {
+            targetContainerShape = (ContainerShape) context.getTargetContainer();
+        }
 
-	    // check whether the context has a size (e.g. from a create feature)
+        // CONTAINER SHAPE WITH ROUNDED RECTANGLE
+        IPeCreateService peCreateService = Graphiti.getPeCreateService();
+        IGaService gaService = Graphiti.getGaService();
+
+        ContainerShape containerShape = peCreateService.createContainerShape(targetContainerShape, true);
+
+        // check whether the context has a size (e.g. from a create feature)
         // otherwise define a default size for the shape
         int width = context.getWidth() <= 0 ? StyleUtil.SERVICE_WIDTH : context.getWidth();
         int height = context.getHeight() <= 0 ? StyleUtil.SERVICE_HEIGHT : context.getHeight();
- 
+
         Rectangle invisibleRectangle = gaService.createInvisibleRectangle(containerShape);
-        gaService.setLocationAndSize(invisibleRectangle,
-                context.getX() , context.getY(), width , height);
+        gaService.setLocationAndSize(invisibleRectangle, context.getX(), context.getY(), width, height);
 
         Polygon p = null;
         // create service
-		{
-			// arrow through points: top-middle, bottom-right, bottom-left
-			p = gaService.createPolygon(invisibleRectangle, StyleUtil.LARGE_RIGHT_ARROW);
-            p.setStyle(StyleUtil
-                    .getStyleForService(getDiagram()));
-	        p.setParentGraphicsAlgorithm(invisibleRectangle);
 
-			gaService.setLocationAndSize(p,
-					0, 0, width, height);
+        // arrow through points: top-middle, bottom-right, bottom-left
+        p = gaService.createPolygon(invisibleRectangle, StyleUtil.LARGE_RIGHT_ARROW);
+        p.setStyle(StyleUtil.getStyleForService(getDiagram()));
+        p.setParentGraphicsAlgorithm(invisibleRectangle);
 
-			Graphiti.getPeService().setPropertyValue(p, "sca-type", "service");
+        gaService.setLocationAndSize(p, 0, 0, width, height);
 
-			// create link and wire it
-			link(containerShape, addedService);
+        Graphiti.getPeService().setPropertyValue(p, "sca-type", "service");
 
-			ChopboxAnchor anchor = 
-					peCreateService.createChopboxAnchor(containerShape);
-			anchor.setActive(true);
-			link(anchor, addedService);
-		}
-		// SHAPE WITH TEXT
-		{
-			// create and set text graphics algorithm
-			Text text = gaService.createDefaultText(getDiagram(), p,
-					addedService.getName());
-			Font font = gaService.manageFont(getDiagram(), text.getFont().getName(), text.getFont().getSize(), false, true);
-			text.setFont(font);
+        // create link and wire it
+        link(containerShape, addedService);
 
-			text.setForeground(manageColor(StyleUtil.BLACK));
-			int left = p.getPoints().get(5).getX();
-			int right = p.getPoints().get(1).getX();
-			text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
-			text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
-			gaService.setLocationAndSize(text, left + 10, 0, right - left - 10, height );
+        ChopboxAnchor anchor = peCreateService.createChopboxAnchor(containerShape);
+        anchor.setActive(true);
+        link(anchor, addedService);
 
-		}
+        // SHAPE WITH TEXT
+        // create and set text graphics algorithm
+        Text text = gaService.createDefaultText(getDiagram(), p, addedService.getName());
+        Font font = gaService.manageFont(getDiagram(), text.getFont().getName(), text.getFont().getSize(), false,
+                true);
+        text.setFont(font);
 
-		return containerShape;
+        text.setForeground(manageColor(StyleUtil.BLACK));
+        int left = p.getPoints().get(5).getX();
+        int right = p.getPoints().get(1).getX();
+        text.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+        text.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
+        gaService.setLocationAndSize(text, left + 10, 0, right - left - 10, height);
 
-	}
+        return containerShape;
+
+    }
 }

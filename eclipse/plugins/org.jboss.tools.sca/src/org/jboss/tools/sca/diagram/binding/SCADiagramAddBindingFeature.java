@@ -21,36 +21,44 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.jboss.tools.switchyard.model.switchyard.SwitchYardBindingType;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SCADiagramAddBindingFeature extends AbstractAddShapeFeature {
 
-	public SCADiagramAddBindingFeature( IFeatureProvider fp ) {
-		super(fp);
-	}
+    /**
+     * @param fp feature provider
+     */
+    public SCADiagramAddBindingFeature(IFeatureProvider fp) {
+        super(fp);
+    }
 
-	@Override
-	public boolean canAdd(IAddContext context) {
-		// check if user wants to add a component service
-		if (context.getNewObject() instanceof SwitchYardBindingType) {
-			ContainerShape targetContainer = context.getTargetContainer();
-			// check if user wants to add to a component
-			if (getBusinessObjectForPictogramElement(targetContainer) instanceof Service) {
-				return true;
-			} else 	if (getBusinessObjectForPictogramElement(targetContainer) instanceof Reference) {
-				return true;
-			}
+    @Override
+    public boolean canAdd(IAddContext context) {
+        // check if user wants to add a component service
+        if (context.getNewObject() instanceof SwitchYardBindingType) {
+            ContainerShape targetContainer = context.getTargetContainer();
+            // check if user wants to add to a component
+            if (getBusinessObjectForPictogramElement(targetContainer) instanceof Service) {
+                return true;
+            } else if (getBusinessObjectForPictogramElement(targetContainer) instanceof Reference) {
+                return true;
+            }
 
-		}
-		return false;
-	}
+        }
+        return false;
+    }
 
-	@Override
-	public PictogramElement add(IAddContext context) {
-		ContainerShape targetContainer = context.getTargetContainer();
-		
-		// nothing really to add - just refresh the object so the decorator appears
-		getDiagramEditor().refresh(targetContainer);
-		
-		return targetContainer;
-	}
-	
+    @Override
+    public PictogramElement add(IAddContext context) {
+        ContainerShape targetContainer = context.getTargetContainer();
+
+        // nothing really to add - just refresh the object so the decorator
+        // appears
+        getDiagramEditor().refresh(targetContainer);
+
+        return targetContainer;
+    }
+
 }

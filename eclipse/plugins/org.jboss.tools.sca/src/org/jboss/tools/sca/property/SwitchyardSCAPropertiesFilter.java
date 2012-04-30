@@ -20,20 +20,24 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public class SwitchyardSCAPropertiesFilter extends AbstractPropertySectionFilter {
 
-	@Override
-	protected boolean accept(PictogramElement pe) {
-		EObject bo = Graphiti.getLinkService().getBusinessObjectForLinkedPictogramElement(pe);
-		if (bo instanceof Composite) {
-			return true;
-		}
-		if (bo instanceof Component) {
-			return true;
-		}
-		if (bo instanceof Service) {
-			return true;
-		}
-		return false;
-	}
+    @Override
+    protected boolean accept(PictogramElement pe) {
+        EObject bo = Graphiti.getLinkService().getBusinessObjectForLinkedPictogramElement(pe);
+        if (bo instanceof Composite) {
+            return true;
+        }
+        if (bo instanceof Component) {
+            return true;
+        }
+        if (bo instanceof Service) {
+            return true;
+        }
+        return false;
+    }
 }

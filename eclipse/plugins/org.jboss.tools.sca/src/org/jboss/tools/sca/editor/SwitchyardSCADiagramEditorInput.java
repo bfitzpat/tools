@@ -18,42 +18,64 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.graphiti.ui.editor.DiagramEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 
+/**
+ * @author bfitzpat
+ *
+ */
 public final class SwitchyardSCADiagramEditorInput extends DiagramEditorInput {
 
-	private final TransactionalEditingDomain domain;
+    private final TransactionalEditingDomain _domain;
 
-	SwitchyardSCADiagramEditorInput(URI diagramUri, TransactionalEditingDomain domain, String providerId) {
-		super(diagramUri, domain, providerId);
-		this.domain = domain;
-	}
+    /**
+     * @param diagramUri diagram uri
+     * @param domain editing domain
+     * @param providerId editor provider id
+     */
+    SwitchyardSCADiagramEditorInput(URI diagramUri, TransactionalEditingDomain domain, String providerId) {
+        super(diagramUri, domain, providerId);
+        this._domain = domain;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		boolean superEquals = super.equals(obj);
-		if (superEquals) {
-			return true;
-		}
+    /* (non-Javadoc)
+     * @see org.eclipse.graphiti.ui.editor.DiagramEditorInput#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        boolean superEquals = super.equals(obj);
+        if (superEquals) {
+            return true;
+        }
 
-		// Eclipse makes FileEditorInputs for files to be opened. Here we check if the file is actually the same
-		// as the DiagramEditorInput uses. This is for preventing opening new editors for the same file.
-		if (obj instanceof FileEditorInput) {
+        // Eclipse makes FileEditorInputs for files to be opened. Here we check
+        // if the file is actually the same
+        // as the DiagramEditorInput uses. This is for preventing opening new
+        // editors for the same file.
+        if (obj instanceof FileEditorInput) {
 
-			String path = ((FileEditorInput) obj).getFile().getFullPath().toString();
-			URI platformUri = URI.createPlatformResourceURI(path, true);
+            String path = ((FileEditorInput) obj).getFile().getFullPath().toString();
+            URI platformUri = URI.createPlatformResourceURI(path, true);
 
-			for (Resource resource : domain.getResourceSet().getResources()) {
-				if (resource.getURI().equals(platformUri)) {
-					return true;
-				}
-			}
+            for (Resource resource : _domain.getResourceSet().getResources()) {
+                if (resource.getURI().equals(platformUri)) {
+                    return true;
+                }
+            }
 
-		}
-		return false;
-	}
+        }
+        return false;
+    }
 
-	@SuppressWarnings("rawtypes")
-	@Override
-	public Object getAdapter(Class adapter) {
-		return super.getAdapter(adapter);
-	}
+    @SuppressWarnings("rawtypes")
+    @Override
+    public Object getAdapter(Class adapter) {
+        return super.getAdapter(adapter);
+    }
+
+    /* (non-Javadoc)
+     * @see org.eclipse.graphiti.ui.editor.DiagramEditorInput#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
