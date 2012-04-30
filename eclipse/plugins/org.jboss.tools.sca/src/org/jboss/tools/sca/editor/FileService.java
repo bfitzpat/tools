@@ -94,14 +94,14 @@ public final class FileService {
                     public void run() {
                         Transaction parentTx;
                         if (editingDomain != null
-                                && ((TransactionalEditingDomainImpl) editingDomain).getActiveTransaction() != null) {
+                                && (parentTx = ((TransactionalEditingDomainImpl) editingDomain).getActiveTransaction()) != null) {
                             do {
-                                parentTx = ((TransactionalEditingDomainImpl) editingDomain).getActiveTransaction();
                                 if (!parentTx.isReadOnly()) {
                                     throw new IllegalStateException(
                                             "FileService.save() called from within a command (likely produces a deadlock)"); //$NON-NLS-1$
                                 }
-                            } while (parentTx != null);
+                            } while ((parentTx = ((TransactionalEditingDomainImpl) editingDomain)
+                                    .getActiveTransaction().getParent()) != null);
                         }
 
                         final EList<Resource> resources = editingDomain.getResourceSet().getResources();
