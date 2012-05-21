@@ -224,7 +224,7 @@ public class WSDLURISelectionComposite {
                         if (_bindingPort != null && _bindingPort.trim().length() > 0) {
                             try {
                                 Integer.parseInt(_bindingPort);
-                                _binding.setSocketAddr(_bindingPort);
+                                _binding.setSocketAddr(":" + _bindingPort);
                             } catch (NumberFormatException nfe) {
                                 _binding.setSocketAddr(null);
                             }
@@ -240,7 +240,7 @@ public class WSDLURISelectionComposite {
                 if (_bindingPort != null && _bindingPort.trim().length() > 0) {
                     try {
                         Integer.parseInt(_bindingPort);
-                        _binding.setSocketAddr(_bindingPort);
+                        _binding.setSocketAddr(":" + _bindingPort);
                     } catch (NumberFormatException nfe) {
                         _binding.setSocketAddr(null);
                     }
@@ -379,7 +379,11 @@ public class WSDLURISelectionComposite {
         }
         if (_mWSDLPortText != null && !_mWSDLPortText.isDisposed()) {
             _inUpdate = true;
-            _mWSDLPortText.setText(_binding.getSocketAddr());
+            _bindingPort = _binding.getSocketAddr();
+            if (_bindingPort.startsWith(":")) {
+                _bindingPort = _bindingPort.substring(1);
+            }
+            _mWSDLPortText.setText(_bindingPort);
             _inUpdate = false;
         }
         setVisibilityOfPortControls(this._binding != null);
