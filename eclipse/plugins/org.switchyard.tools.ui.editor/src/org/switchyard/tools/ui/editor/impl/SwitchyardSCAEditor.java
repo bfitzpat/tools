@@ -171,6 +171,12 @@ public class SwitchyardSCAEditor extends DiagramEditor {
         return _editorAdapter;
     }
 
+    protected void initializeGraphicalViewer() {
+        super.initializeGraphicalViewer();
+
+        getGraphicalViewer().addSelectionChangedListener(new PESelectionPaletteChangeListener(getPaletteRoot()));
+    }
+    
     @Override
     public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 

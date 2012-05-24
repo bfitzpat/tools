@@ -88,7 +88,7 @@ public class SCADiagramLayoutCompositeFeature extends AbstractLayoutFeature {
             containerGa.setWidth(containerWidth);
             anythingChanged = true;
         }
-
+        
         final IGaService gaService = Graphiti.getGaService();
         for (GraphicsAlgorithm ga : containerGa.getGraphicsAlgorithmChildren()) {
             IDimension size = gaService.calculateSize(ga);

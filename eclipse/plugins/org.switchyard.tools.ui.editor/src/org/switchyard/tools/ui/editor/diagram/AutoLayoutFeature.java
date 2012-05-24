@@ -117,6 +117,12 @@ public class AutoLayoutFeature extends AbstractCustomFeature {
             }
         }
         layoutPictogramElement(shape);
+//        GraphicalViewer gv = SwitchyardSCAEditor.getActiveEditor().getGraphicalViewer();
+//        org.eclipse.graphiti.ui.internal.editor.GFFigureCanvas canvas = (org.eclipse.graphiti.ui.internal.editor.GFFigureCanvas) gv.getControl();
+//        int viewwidth = canvas.getViewport().getClientArea().width;
+//        int viewheight = canvas.getViewport().getClientArea().height;
+//        shape.getGraphicsAlgorithm().setHeight(viewheight);
+//        shape.getGraphicsAlgorithm().setWidth(viewwidth);
     }
 
     /**

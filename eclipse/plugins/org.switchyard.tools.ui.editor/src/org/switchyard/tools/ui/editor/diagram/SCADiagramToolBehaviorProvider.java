@@ -167,6 +167,7 @@ public class SCADiagramToolBehaviorProvider extends DefaultToolBehaviorProvider 
 
         // add connections
         PaletteCompartmentEntry connectionsEntry = new PaletteCompartmentEntry("Connections", null);
+        connectionsEntry.setInitiallyOpen(true);
         ret.add(connectionsEntry);
 
         // add all create-connection-features to the new stack-entry
@@ -180,22 +181,27 @@ public class SCADiagramToolBehaviorProvider extends DefaultToolBehaviorProvider 
 
         // add new compartment for composites
         PaletteCompartmentEntry compositeEntry = new PaletteCompartmentEntry("Composites", null);
+        compositeEntry.setInitiallyOpen(true);
         ret.add(compositeEntry);
 
         // add new compartment for components
         PaletteCompartmentEntry componentEntry = new PaletteCompartmentEntry("Components", null);
+        componentEntry.setInitiallyOpen(true);
         ret.add(componentEntry);
 
         // add new compartment for components
         PaletteCompartmentEntry bindingsEntry = new PaletteCompartmentEntry("Bindings", null);
+        bindingsEntry.setInitiallyOpen(true);
         ret.add(bindingsEntry);
 
         // add new compartment for components
         PaletteCompartmentEntry implementationsEntry = new PaletteCompartmentEntry("Implementations", null);
+        implementationsEntry.setInitiallyOpen(true);
         ret.add(implementationsEntry);
 
         // add new compartment for anything else
         PaletteCompartmentEntry miscEntry = new PaletteCompartmentEntry("Other", null);
+        miscEntry.setInitiallyOpen(true);
 
         // add all create-features to the new stack-entry
         IFeatureProvider featureProvider = getFeatureProvider();
