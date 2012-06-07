@@ -660,6 +660,11 @@ public class ModelHandler {
         TransformType smooksType = TransformFactory.eINSTANCE.createSmooksTransformType1();
         typeList.add(smooksType);
 
+        TransformType jsonType = TransformFactory.eINSTANCE.createJsonTransformType();
+        typeList.add(jsonType);
+
+        TransformType javaType = TransformFactory.eINSTANCE.createJavaTransformType1();
+        typeList.add(javaType);
         return typeList;
     }
 
