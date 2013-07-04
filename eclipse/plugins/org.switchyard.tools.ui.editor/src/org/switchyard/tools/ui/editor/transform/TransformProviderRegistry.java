@@ -42,7 +42,9 @@ public final class TransformProviderRegistry {
         _providers.add(new JSONTransformProvider());
         _providers.add(new XSLTransformProvider());
         _providers.add(new SmooksTransformProvider());
+        _providers.add(new DozerTransformProvider());
     }
+    
 
     /**
      * @return the registered providers.

@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.BasicFeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.soa.sca.core.model.addressing.AddressingFactory;
 import org.eclipse.soa.sca.core.model.addressing.AddressingPackage;
 import org.eclipse.soa.sca.core.model.addressing.RelatesToType;
 import org.eclipse.soa.sca.core.model.addressing.RelationshipType;
@@ -124,7 +125,7 @@ public class RelatesToTypeImpl extends EObjectImpl implements RelatesToType {
 	 * @generated
 	 */
 	public String getValue() {
-		return this.value;
+		return value;
 	}
 
 	/**
@@ -133,10 +134,10 @@ public class RelatesToTypeImpl extends EObjectImpl implements RelatesToType {
 	 * @generated
 	 */
 	public void setValue(String newValue) {
-		String oldValue = this.value;
-		this.value = newValue;
+		String oldValue = value;
+		value = newValue;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AddressingPackage.RELATES_TO_TYPE__VALUE, oldValue, this.value));
+			eNotify(new ENotificationImpl(this, Notification.SET, AddressingPackage.RELATES_TO_TYPE__VALUE, oldValue, value));
 	}
 
 	/**
@@ -145,7 +146,7 @@ public class RelatesToTypeImpl extends EObjectImpl implements RelatesToType {
 	 * @generated
 	 */
 	public Object getRelationshipType() {
-		return this.relationshipType;
+		return relationshipType;
 	}
 
 	/**
@@ -154,12 +155,12 @@ public class RelatesToTypeImpl extends EObjectImpl implements RelatesToType {
 	 * @generated
 	 */
 	public void setRelationshipType(Object newRelationshipType) {
-		Object oldRelationshipType = this.relationshipType;
-		this.relationshipType = newRelationshipType;
-		boolean oldRelationshipTypeESet = this.relationshipTypeESet;
-		this.relationshipTypeESet = true;
+		Object oldRelationshipType = relationshipType;
+		relationshipType = newRelationshipType;
+		boolean oldRelationshipTypeESet = relationshipTypeESet;
+		relationshipTypeESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AddressingPackage.RELATES_TO_TYPE__RELATIONSHIP_TYPE, oldRelationshipType, this.relationshipType, !oldRelationshipTypeESet));
+			eNotify(new ENotificationImpl(this, Notification.SET, AddressingPackage.RELATES_TO_TYPE__RELATIONSHIP_TYPE, oldRelationshipType, relationshipType, !oldRelationshipTypeESet));
 	}
 
 	/**
@@ -168,10 +169,10 @@ public class RelatesToTypeImpl extends EObjectImpl implements RelatesToType {
 	 * @generated
 	 */
 	public void unsetRelationshipType() {
-		Object oldRelationshipType = this.relationshipType;
-		boolean oldRelationshipTypeESet = this.relationshipTypeESet;
-		this.relationshipType = RELATIONSHIP_TYPE_EDEFAULT;
-		this.relationshipTypeESet = false;
+		Object oldRelationshipType = relationshipType;
+		boolean oldRelationshipTypeESet = relationshipTypeESet;
+		relationshipType = RELATIONSHIP_TYPE_EDEFAULT;
+		relationshipTypeESet = false;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.UNSET, AddressingPackage.RELATES_TO_TYPE__RELATIONSHIP_TYPE, oldRelationshipType, RELATIONSHIP_TYPE_EDEFAULT, oldRelationshipTypeESet));
 	}
@@ -182,7 +183,7 @@ public class RelatesToTypeImpl extends EObjectImpl implements RelatesToType {
 	 * @generated
 	 */
 	public boolean isSetRelationshipType() {
-		return this.relationshipTypeESet;
+		return relationshipTypeESet;
 	}
 
 	/**
@@ -191,10 +192,10 @@ public class RelatesToTypeImpl extends EObjectImpl implements RelatesToType {
 	 * @generated
 	 */
 	public FeatureMap getAnyAttribute() {
-		if (this.anyAttribute == null) {
-			this.anyAttribute = new BasicFeatureMap(this, AddressingPackage.RELATES_TO_TYPE__ANY_ATTRIBUTE);
+		if (anyAttribute == null) {
+			anyAttribute = new BasicFeatureMap(this, AddressingPackage.RELATES_TO_TYPE__ANY_ATTRIBUTE);
 		}
-		return this.anyAttribute;
+		return anyAttribute;
 	}
 
 	/**
@@ -205,8 +206,8 @@ public class RelatesToTypeImpl extends EObjectImpl implements RelatesToType {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AddressingPackage.RELATES_TO_TYPE__ANY_ATTRIBUTE:
-			return ((InternalEList<?>)getAnyAttribute()).basicRemove(otherEnd, msgs);
+			case AddressingPackage.RELATES_TO_TYPE__ANY_ATTRIBUTE:
+				return ((InternalEList<?>)getAnyAttribute()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -219,13 +220,13 @@ public class RelatesToTypeImpl extends EObjectImpl implements RelatesToType {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AddressingPackage.RELATES_TO_TYPE__VALUE:
-			return getValue();
-		case AddressingPackage.RELATES_TO_TYPE__RELATIONSHIP_TYPE:
-			return getRelationshipType();
-		case AddressingPackage.RELATES_TO_TYPE__ANY_ATTRIBUTE:
-			if (coreType) return getAnyAttribute();
-			return ((FeatureMap.Internal)getAnyAttribute()).getWrapper();
+			case AddressingPackage.RELATES_TO_TYPE__VALUE:
+				return getValue();
+			case AddressingPackage.RELATES_TO_TYPE__RELATIONSHIP_TYPE:
+				return getRelationshipType();
+			case AddressingPackage.RELATES_TO_TYPE__ANY_ATTRIBUTE:
+				if (coreType) return getAnyAttribute();
+				return ((FeatureMap.Internal)getAnyAttribute()).getWrapper();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -238,15 +239,15 @@ public class RelatesToTypeImpl extends EObjectImpl implements RelatesToType {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AddressingPackage.RELATES_TO_TYPE__VALUE:
-			setValue((String)newValue);
-			return;
-		case AddressingPackage.RELATES_TO_TYPE__RELATIONSHIP_TYPE:
-			setRelationshipType(newValue);
-			return;
-		case AddressingPackage.RELATES_TO_TYPE__ANY_ATTRIBUTE:
-			((FeatureMap.Internal)getAnyAttribute()).set(newValue);
-			return;
+			case AddressingPackage.RELATES_TO_TYPE__VALUE:
+				setValue((String)newValue);
+				return;
+			case AddressingPackage.RELATES_TO_TYPE__RELATIONSHIP_TYPE:
+				setRelationshipType(newValue);
+				return;
+			case AddressingPackage.RELATES_TO_TYPE__ANY_ATTRIBUTE:
+				((FeatureMap.Internal)getAnyAttribute()).set(newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -259,15 +260,15 @@ public class RelatesToTypeImpl extends EObjectImpl implements RelatesToType {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AddressingPackage.RELATES_TO_TYPE__VALUE:
-			setValue(VALUE_EDEFAULT);
-			return;
-		case AddressingPackage.RELATES_TO_TYPE__RELATIONSHIP_TYPE:
-			unsetRelationshipType();
-			return;
-		case AddressingPackage.RELATES_TO_TYPE__ANY_ATTRIBUTE:
-			getAnyAttribute().clear();
-			return;
+			case AddressingPackage.RELATES_TO_TYPE__VALUE:
+				setValue(VALUE_EDEFAULT);
+				return;
+			case AddressingPackage.RELATES_TO_TYPE__RELATIONSHIP_TYPE:
+				unsetRelationshipType();
+				return;
+			case AddressingPackage.RELATES_TO_TYPE__ANY_ATTRIBUTE:
+				getAnyAttribute().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -280,12 +281,12 @@ public class RelatesToTypeImpl extends EObjectImpl implements RelatesToType {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AddressingPackage.RELATES_TO_TYPE__VALUE:
-			return VALUE_EDEFAULT == null ? this.value != null : !VALUE_EDEFAULT.equals(this.value);
-		case AddressingPackage.RELATES_TO_TYPE__RELATIONSHIP_TYPE:
-			return isSetRelationshipType();
-		case AddressingPackage.RELATES_TO_TYPE__ANY_ATTRIBUTE:
-			return this.anyAttribute != null && !this.anyAttribute.isEmpty();
+			case AddressingPackage.RELATES_TO_TYPE__VALUE:
+				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+			case AddressingPackage.RELATES_TO_TYPE__RELATIONSHIP_TYPE:
+				return isSetRelationshipType();
+			case AddressingPackage.RELATES_TO_TYPE__ANY_ATTRIBUTE:
+				return anyAttribute != null && !anyAttribute.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -301,11 +302,11 @@ public class RelatesToTypeImpl extends EObjectImpl implements RelatesToType {
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (value: ");
-		result.append(this.value);
+		result.append(value);
 		result.append(", relationshipType: ");
-		if (this.relationshipTypeESet) result.append(this.relationshipType); else result.append("<unset>");
+		if (relationshipTypeESet) result.append(relationshipType); else result.append("<unset>");
 		result.append(", anyAttribute: ");
-		result.append(this.anyAttribute);
+		result.append(anyAttribute);
 		result.append(')');
 		return result.toString();
 	}

@@ -64,7 +64,7 @@ public class InstanceItemProviderAdapterFactory extends InstanceAdapterFactory i
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ChildCreationExtenderManager childCreationExtenderManager = new ChildCreationExtenderManager(CoreSCAEditPlugin.INSTANCE, InstancePackage.eNS_URI);
+	protected ChildCreationExtenderManager childCreationExtenderManager = new ChildCreationExtenderManager(InstanceEditPlugin.INSTANCE, InstancePackage.eNS_URI);
 
 	/**
 	 * This keeps track of all the supported types checked by {@link #isFactoryForType isFactoryForType}.

@@ -43,355 +43,355 @@ import org.eclipse.soa.sca.sca1_1.model.sca.ScaPackage;
  */
 public class ComponentReferenceImpl extends ContractImpl implements ComponentReference {
 	/**
-     * The default value of the '{@link #isAutowire() <em>Autowire</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #isAutowire() <em>Autowire</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #isAutowire()
-     * @generated
-     * @ordered
-     */
+	 * @see #isAutowire()
+	 * @generated
+	 * @ordered
+	 */
 	protected static final boolean AUTOWIRE_EDEFAULT = false;
 
 	/**
-     * The cached value of the '{@link #isAutowire() <em>Autowire</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #isAutowire() <em>Autowire</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #isAutowire()
-     * @generated
-     * @ordered
-     */
+	 * @see #isAutowire()
+	 * @generated
+	 * @ordered
+	 */
 	protected boolean autowire = AUTOWIRE_EDEFAULT;
 
 	/**
-     * This is true if the Autowire attribute has been set.
-     * <!-- begin-user-doc -->
+	 * This is true if the Autowire attribute has been set.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
 	protected boolean autowireESet;
 
 	/**
-     * The default value of the '{@link #getMultiplicity() <em>Multiplicity</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getMultiplicity() <em>Multiplicity</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getMultiplicity()
-     * @generated
-     * @ordered
-     */
+	 * @see #getMultiplicity()
+	 * @generated
+	 * @ordered
+	 */
 	protected static final Multiplicity MULTIPLICITY_EDEFAULT = Multiplicity._11;
 
 	/**
-     * The cached value of the '{@link #getMultiplicity() <em>Multiplicity</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getMultiplicity() <em>Multiplicity</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getMultiplicity()
-     * @generated
-     * @ordered
-     */
+	 * @see #getMultiplicity()
+	 * @generated
+	 * @ordered
+	 */
 	protected Multiplicity multiplicity = MULTIPLICITY_EDEFAULT;
 
 	/**
-     * This is true if the Multiplicity attribute has been set.
-     * <!-- begin-user-doc -->
+	 * This is true if the Multiplicity attribute has been set.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
 	protected boolean multiplicityESet;
 
 	/**
-     * The default value of the '{@link #isNonOverridable() <em>Non Overridable</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #isNonOverridable() <em>Non Overridable</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #isNonOverridable()
-     * @generated
-     * @ordered
-     */
+	 * @see #isNonOverridable()
+	 * @generated
+	 * @ordered
+	 */
 	protected static final boolean NON_OVERRIDABLE_EDEFAULT = false;
 
 	/**
-     * The cached value of the '{@link #isNonOverridable() <em>Non Overridable</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #isNonOverridable() <em>Non Overridable</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #isNonOverridable()
-     * @generated
-     * @ordered
-     */
+	 * @see #isNonOverridable()
+	 * @generated
+	 * @ordered
+	 */
 	protected boolean nonOverridable = NON_OVERRIDABLE_EDEFAULT;
 
 	/**
-     * This is true if the Non Overridable attribute has been set.
-     * <!-- begin-user-doc -->
+	 * This is true if the Non Overridable attribute has been set.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
 	protected boolean nonOverridableESet;
 
 	/**
-     * The default value of the '{@link #isWiredByImpl() <em>Wired By Impl</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #isWiredByImpl() <em>Wired By Impl</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #isWiredByImpl()
-     * @generated
-     * @ordered
-     */
+	 * @see #isWiredByImpl()
+	 * @generated
+	 * @ordered
+	 */
 	protected static final boolean WIRED_BY_IMPL_EDEFAULT = false;
 
 	/**
-     * The cached value of the '{@link #isWiredByImpl() <em>Wired By Impl</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #isWiredByImpl() <em>Wired By Impl</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #isWiredByImpl()
-     * @generated
-     * @ordered
-     */
+	 * @see #isWiredByImpl()
+	 * @generated
+	 * @ordered
+	 */
 	protected boolean wiredByImpl = WIRED_BY_IMPL_EDEFAULT;
 
 	/**
-     * This is true if the Wired By Impl attribute has been set.
-     * <!-- begin-user-doc -->
+	 * This is true if the Wired By Impl attribute has been set.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
 	protected boolean wiredByImplESet;
 
 	/**
-     * The cached value of the '{@link #getTarget() <em>Target</em>}' reference list.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getTarget() <em>Target</em>}' reference list.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getTarget()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTarget()
+	 * @generated
+	 * @ordered
+	 */
 	protected EList<ComponentService> target;
 
 	/**
-     * The default value of the '{@link #getId() <em>Id</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getId()
-     * @generated
-     * @ordered
-     */
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
 	protected static final String ID_EDEFAULT = "";
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected ComponentReferenceImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return ScaPackage.eINSTANCE.getComponentReference();
-    }
+		return ScaPackage.eINSTANCE.getComponentReference();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public boolean isAutowire() {
-        return autowire;
-    }
+		return autowire;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void setAutowire(boolean newAutowire) {
-        boolean oldAutowire = autowire;
-        autowire = newAutowire;
-        boolean oldAutowireESet = autowireESet;
-        autowireESet = true;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.COMPONENT_REFERENCE__AUTOWIRE, oldAutowire, autowire, !oldAutowireESet));
-    }
+		boolean oldAutowire = autowire;
+		autowire = newAutowire;
+		boolean oldAutowireESet = autowireESet;
+		autowireESet = true;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.COMPONENT_REFERENCE__AUTOWIRE, oldAutowire, autowire, !oldAutowireESet));
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void unsetAutowire() {
-        boolean oldAutowire = autowire;
-        boolean oldAutowireESet = autowireESet;
-        autowire = AUTOWIRE_EDEFAULT;
-        autowireESet = false;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.COMPONENT_REFERENCE__AUTOWIRE, oldAutowire, AUTOWIRE_EDEFAULT, oldAutowireESet));
-    }
+		boolean oldAutowire = autowire;
+		boolean oldAutowireESet = autowireESet;
+		autowire = AUTOWIRE_EDEFAULT;
+		autowireESet = false;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.COMPONENT_REFERENCE__AUTOWIRE, oldAutowire, AUTOWIRE_EDEFAULT, oldAutowireESet));
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public boolean isSetAutowire() {
-        return autowireESet;
-    }
+		return autowireESet;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public Multiplicity getMultiplicity() {
-        return multiplicity;
-    }
+		return multiplicity;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void setMultiplicity(Multiplicity newMultiplicity) {
-        Multiplicity oldMultiplicity = multiplicity;
-        multiplicity = newMultiplicity == null ? MULTIPLICITY_EDEFAULT : newMultiplicity;
-        boolean oldMultiplicityESet = multiplicityESet;
-        multiplicityESet = true;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.COMPONENT_REFERENCE__MULTIPLICITY, oldMultiplicity, multiplicity, !oldMultiplicityESet));
-    }
+		Multiplicity oldMultiplicity = multiplicity;
+		multiplicity = newMultiplicity == null ? MULTIPLICITY_EDEFAULT : newMultiplicity;
+		boolean oldMultiplicityESet = multiplicityESet;
+		multiplicityESet = true;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.COMPONENT_REFERENCE__MULTIPLICITY, oldMultiplicity, multiplicity, !oldMultiplicityESet));
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void unsetMultiplicity() {
-        Multiplicity oldMultiplicity = multiplicity;
-        boolean oldMultiplicityESet = multiplicityESet;
-        multiplicity = MULTIPLICITY_EDEFAULT;
-        multiplicityESet = false;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.COMPONENT_REFERENCE__MULTIPLICITY, oldMultiplicity, MULTIPLICITY_EDEFAULT, oldMultiplicityESet));
-    }
+		Multiplicity oldMultiplicity = multiplicity;
+		boolean oldMultiplicityESet = multiplicityESet;
+		multiplicity = MULTIPLICITY_EDEFAULT;
+		multiplicityESet = false;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.COMPONENT_REFERENCE__MULTIPLICITY, oldMultiplicity, MULTIPLICITY_EDEFAULT, oldMultiplicityESet));
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public boolean isSetMultiplicity() {
-        return multiplicityESet;
-    }
+		return multiplicityESet;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public boolean isNonOverridable() {
-        return nonOverridable;
-    }
+		return nonOverridable;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void setNonOverridable(boolean newNonOverridable) {
-        boolean oldNonOverridable = nonOverridable;
-        nonOverridable = newNonOverridable;
-        boolean oldNonOverridableESet = nonOverridableESet;
-        nonOverridableESet = true;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.COMPONENT_REFERENCE__NON_OVERRIDABLE, oldNonOverridable, nonOverridable, !oldNonOverridableESet));
-    }
+		boolean oldNonOverridable = nonOverridable;
+		nonOverridable = newNonOverridable;
+		boolean oldNonOverridableESet = nonOverridableESet;
+		nonOverridableESet = true;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.COMPONENT_REFERENCE__NON_OVERRIDABLE, oldNonOverridable, nonOverridable, !oldNonOverridableESet));
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void unsetNonOverridable() {
-        boolean oldNonOverridable = nonOverridable;
-        boolean oldNonOverridableESet = nonOverridableESet;
-        nonOverridable = NON_OVERRIDABLE_EDEFAULT;
-        nonOverridableESet = false;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.COMPONENT_REFERENCE__NON_OVERRIDABLE, oldNonOverridable, NON_OVERRIDABLE_EDEFAULT, oldNonOverridableESet));
-    }
+		boolean oldNonOverridable = nonOverridable;
+		boolean oldNonOverridableESet = nonOverridableESet;
+		nonOverridable = NON_OVERRIDABLE_EDEFAULT;
+		nonOverridableESet = false;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.COMPONENT_REFERENCE__NON_OVERRIDABLE, oldNonOverridable, NON_OVERRIDABLE_EDEFAULT, oldNonOverridableESet));
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public boolean isSetNonOverridable() {
-        return nonOverridableESet;
-    }
+		return nonOverridableESet;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public boolean isWiredByImpl() {
-        return wiredByImpl;
-    }
+		return wiredByImpl;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void setWiredByImpl(boolean newWiredByImpl) {
-        boolean oldWiredByImpl = wiredByImpl;
-        wiredByImpl = newWiredByImpl;
-        boolean oldWiredByImplESet = wiredByImplESet;
-        wiredByImplESet = true;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.COMPONENT_REFERENCE__WIRED_BY_IMPL, oldWiredByImpl, wiredByImpl, !oldWiredByImplESet));
-    }
+		boolean oldWiredByImpl = wiredByImpl;
+		wiredByImpl = newWiredByImpl;
+		boolean oldWiredByImplESet = wiredByImplESet;
+		wiredByImplESet = true;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.COMPONENT_REFERENCE__WIRED_BY_IMPL, oldWiredByImpl, wiredByImpl, !oldWiredByImplESet));
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void unsetWiredByImpl() {
-        boolean oldWiredByImpl = wiredByImpl;
-        boolean oldWiredByImplESet = wiredByImplESet;
-        wiredByImpl = WIRED_BY_IMPL_EDEFAULT;
-        wiredByImplESet = false;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.COMPONENT_REFERENCE__WIRED_BY_IMPL, oldWiredByImpl, WIRED_BY_IMPL_EDEFAULT, oldWiredByImplESet));
-    }
+		boolean oldWiredByImpl = wiredByImpl;
+		boolean oldWiredByImplESet = wiredByImplESet;
+		wiredByImpl = WIRED_BY_IMPL_EDEFAULT;
+		wiredByImplESet = false;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.COMPONENT_REFERENCE__WIRED_BY_IMPL, oldWiredByImpl, WIRED_BY_IMPL_EDEFAULT, oldWiredByImplESet));
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public boolean isSetWiredByImpl() {
-        return wiredByImplESet;
-    }
+		return wiredByImplESet;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EList<ComponentService> getTarget() {
-        if (target == null) {
-            target = new EObjectEList<ComponentService>(ComponentService.class, this, ScaPackage.COMPONENT_REFERENCE__TARGET);
-        }
-        return target;
-    }
+		if (target == null) {
+			target = new EObjectEList<ComponentService>(ComponentService.class, this, ScaPackage.COMPONENT_REFERENCE__TARGET);
+		}
+		return target;
+	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -418,146 +418,146 @@ public class ComponentReferenceImpl extends ContractImpl implements ComponentRef
 	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void setId(String newId) {
-        // TODO: implement this method to set the 'Id' attribute
-        // Ensure that you remove @generated or mark it @generated NOT
-        throw new UnsupportedOperationException();
-    }
+		// TODO: implement this method to set the 'Id' attribute
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case ScaPackage.COMPONENT_REFERENCE__AUTOWIRE:
-                return isAutowire();
-            case ScaPackage.COMPONENT_REFERENCE__MULTIPLICITY:
-                return getMultiplicity();
-            case ScaPackage.COMPONENT_REFERENCE__NON_OVERRIDABLE:
-                return isNonOverridable();
-            case ScaPackage.COMPONENT_REFERENCE__WIRED_BY_IMPL:
-                return isWiredByImpl();
-            case ScaPackage.COMPONENT_REFERENCE__TARGET:
-                return getTarget();
-            case ScaPackage.COMPONENT_REFERENCE__ID:
-                return getId();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case ScaPackage.COMPONENT_REFERENCE__AUTOWIRE:
+				return isAutowire();
+			case ScaPackage.COMPONENT_REFERENCE__MULTIPLICITY:
+				return getMultiplicity();
+			case ScaPackage.COMPONENT_REFERENCE__NON_OVERRIDABLE:
+				return isNonOverridable();
+			case ScaPackage.COMPONENT_REFERENCE__WIRED_BY_IMPL:
+				return isWiredByImpl();
+			case ScaPackage.COMPONENT_REFERENCE__TARGET:
+				return getTarget();
+			case ScaPackage.COMPONENT_REFERENCE__ID:
+				return getId();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case ScaPackage.COMPONENT_REFERENCE__AUTOWIRE:
-                setAutowire((Boolean)newValue);
-                return;
-            case ScaPackage.COMPONENT_REFERENCE__MULTIPLICITY:
-                setMultiplicity((Multiplicity)newValue);
-                return;
-            case ScaPackage.COMPONENT_REFERENCE__NON_OVERRIDABLE:
-                setNonOverridable((Boolean)newValue);
-                return;
-            case ScaPackage.COMPONENT_REFERENCE__WIRED_BY_IMPL:
-                setWiredByImpl((Boolean)newValue);
-                return;
-            case ScaPackage.COMPONENT_REFERENCE__TARGET:
-                getTarget().clear();
-                getTarget().addAll((Collection<? extends ComponentService>)newValue);
-                return;
-            case ScaPackage.COMPONENT_REFERENCE__ID:
-                setId((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case ScaPackage.COMPONENT_REFERENCE__AUTOWIRE:
+				setAutowire((Boolean)newValue);
+				return;
+			case ScaPackage.COMPONENT_REFERENCE__MULTIPLICITY:
+				setMultiplicity((Multiplicity)newValue);
+				return;
+			case ScaPackage.COMPONENT_REFERENCE__NON_OVERRIDABLE:
+				setNonOverridable((Boolean)newValue);
+				return;
+			case ScaPackage.COMPONENT_REFERENCE__WIRED_BY_IMPL:
+				setWiredByImpl((Boolean)newValue);
+				return;
+			case ScaPackage.COMPONENT_REFERENCE__TARGET:
+				getTarget().clear();
+				getTarget().addAll((Collection<? extends ComponentService>)newValue);
+				return;
+			case ScaPackage.COMPONENT_REFERENCE__ID:
+				setId((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public void eUnset(int featureID) {
-        switch (featureID) {
-            case ScaPackage.COMPONENT_REFERENCE__AUTOWIRE:
-                unsetAutowire();
-                return;
-            case ScaPackage.COMPONENT_REFERENCE__MULTIPLICITY:
-                unsetMultiplicity();
-                return;
-            case ScaPackage.COMPONENT_REFERENCE__NON_OVERRIDABLE:
-                unsetNonOverridable();
-                return;
-            case ScaPackage.COMPONENT_REFERENCE__WIRED_BY_IMPL:
-                unsetWiredByImpl();
-                return;
-            case ScaPackage.COMPONENT_REFERENCE__TARGET:
-                getTarget().clear();
-                return;
-            case ScaPackage.COMPONENT_REFERENCE__ID:
-                setId(ID_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case ScaPackage.COMPONENT_REFERENCE__AUTOWIRE:
+				unsetAutowire();
+				return;
+			case ScaPackage.COMPONENT_REFERENCE__MULTIPLICITY:
+				unsetMultiplicity();
+				return;
+			case ScaPackage.COMPONENT_REFERENCE__NON_OVERRIDABLE:
+				unsetNonOverridable();
+				return;
+			case ScaPackage.COMPONENT_REFERENCE__WIRED_BY_IMPL:
+				unsetWiredByImpl();
+				return;
+			case ScaPackage.COMPONENT_REFERENCE__TARGET:
+				getTarget().clear();
+				return;
+			case ScaPackage.COMPONENT_REFERENCE__ID:
+				setId(ID_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case ScaPackage.COMPONENT_REFERENCE__AUTOWIRE:
-                return isSetAutowire();
-            case ScaPackage.COMPONENT_REFERENCE__MULTIPLICITY:
-                return isSetMultiplicity();
-            case ScaPackage.COMPONENT_REFERENCE__NON_OVERRIDABLE:
-                return isSetNonOverridable();
-            case ScaPackage.COMPONENT_REFERENCE__WIRED_BY_IMPL:
-                return isSetWiredByImpl();
-            case ScaPackage.COMPONENT_REFERENCE__TARGET:
-                return target != null && !target.isEmpty();
-            case ScaPackage.COMPONENT_REFERENCE__ID:
-                return ID_EDEFAULT == null ? getId() != null : !ID_EDEFAULT.equals(getId());
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case ScaPackage.COMPONENT_REFERENCE__AUTOWIRE:
+				return isSetAutowire();
+			case ScaPackage.COMPONENT_REFERENCE__MULTIPLICITY:
+				return isSetMultiplicity();
+			case ScaPackage.COMPONENT_REFERENCE__NON_OVERRIDABLE:
+				return isSetNonOverridable();
+			case ScaPackage.COMPONENT_REFERENCE__WIRED_BY_IMPL:
+				return isSetWiredByImpl();
+			case ScaPackage.COMPONENT_REFERENCE__TARGET:
+				return target != null && !target.isEmpty();
+			case ScaPackage.COMPONENT_REFERENCE__ID:
+				return ID_EDEFAULT == null ? getId() != null : !ID_EDEFAULT.equals(getId());
+		}
+		return super.eIsSet(featureID);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public String toString() {
-        if (eIsProxy()) return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (autowire: ");
-        if (autowireESet) result.append(autowire); else result.append("<unset>");
-        result.append(", multiplicity: ");
-        if (multiplicityESet) result.append(multiplicity); else result.append("<unset>");
-        result.append(", nonOverridable: ");
-        if (nonOverridableESet) result.append(nonOverridable); else result.append("<unset>");
-        result.append(", wiredByImpl: ");
-        if (wiredByImplESet) result.append(wiredByImpl); else result.append("<unset>");
-        result.append(')');
-        return result.toString();
-    }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (autowire: ");
+		if (autowireESet) result.append(autowire); else result.append("<unset>");
+		result.append(", multiplicity: ");
+		if (multiplicityESet) result.append(multiplicity); else result.append("<unset>");
+		result.append(", nonOverridable: ");
+		if (nonOverridableESet) result.append(nonOverridable); else result.append("<unset>");
+		result.append(", wiredByImpl: ");
+		if (wiredByImplESet) result.append(wiredByImpl); else result.append("<unset>");
+		result.append(')');
+		return result.toString();
+	}
 
 } //ComponentReferenceImpl

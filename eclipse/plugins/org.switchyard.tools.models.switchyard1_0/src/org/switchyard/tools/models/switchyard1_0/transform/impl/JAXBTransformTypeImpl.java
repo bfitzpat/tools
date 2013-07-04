@@ -29,136 +29,136 @@ import org.switchyard.tools.models.switchyard1_0.transform.TransformPackage;
  */
 public class JAXBTransformTypeImpl extends TransformTypeImpl implements JAXBTransformType {
 	/**
-     * The default value of the '{@link #getContextPath() <em>Context Path</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getContextPath() <em>Context Path</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getContextPath()
-     * @generated
-     * @ordered
-     */
+	 * @see #getContextPath()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String CONTEXT_PATH_EDEFAULT = null;
     /**
-     * The cached value of the '{@link #getContextPath() <em>Context Path</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getContextPath() <em>Context Path</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getContextPath()
-     * @generated
-     * @ordered
-     */
+	 * @see #getContextPath()
+	 * @generated
+	 * @ordered
+	 */
     protected String contextPath = CONTEXT_PATH_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected JAXBTransformTypeImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return TransformPackage.Literals.JAXB_TRANSFORM_TYPE;
-    }
+		return TransformPackage.Literals.JAXB_TRANSFORM_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getContextPath() {
-        return contextPath;
-    }
+		return contextPath;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setContextPath(String newContextPath) {
-        String oldContextPath = contextPath;
-        contextPath = newContextPath;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TransformPackage.JAXB_TRANSFORM_TYPE__CONTEXT_PATH, oldContextPath, contextPath));
-    }
+		String oldContextPath = contextPath;
+		contextPath = newContextPath;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TransformPackage.JAXB_TRANSFORM_TYPE__CONTEXT_PATH, oldContextPath, contextPath));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case TransformPackage.JAXB_TRANSFORM_TYPE__CONTEXT_PATH:
-                return getContextPath();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case TransformPackage.JAXB_TRANSFORM_TYPE__CONTEXT_PATH:
+				return getContextPath();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case TransformPackage.JAXB_TRANSFORM_TYPE__CONTEXT_PATH:
-                setContextPath((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case TransformPackage.JAXB_TRANSFORM_TYPE__CONTEXT_PATH:
+				setContextPath((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case TransformPackage.JAXB_TRANSFORM_TYPE__CONTEXT_PATH:
-                setContextPath(CONTEXT_PATH_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case TransformPackage.JAXB_TRANSFORM_TYPE__CONTEXT_PATH:
+				setContextPath(CONTEXT_PATH_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case TransformPackage.JAXB_TRANSFORM_TYPE__CONTEXT_PATH:
-                return CONTEXT_PATH_EDEFAULT == null ? contextPath != null : !CONTEXT_PATH_EDEFAULT.equals(contextPath);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case TransformPackage.JAXB_TRANSFORM_TYPE__CONTEXT_PATH:
+				return CONTEXT_PATH_EDEFAULT == null ? contextPath != null : !CONTEXT_PATH_EDEFAULT.equals(contextPath);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (contextPath: ");
-        result.append(contextPath);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (contextPath: ");
+		result.append(contextPath);
+		result.append(')');
+		return result.toString();
+	}
 
 } //JAXBTransformTypeImpl

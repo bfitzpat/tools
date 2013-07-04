@@ -22,22 +22,22 @@ import org.eclipse.soa.sca.sca1_1.model.sca.ScaPackage;
  */
 public class SCABindingImpl extends BindingImpl implements SCABinding {
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected SCABindingImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return ScaPackage.eINSTANCE.getSCABinding();
-    }
+		return ScaPackage.eINSTANCE.getSCABinding();
+	}
 
 } //SCABindingImpl

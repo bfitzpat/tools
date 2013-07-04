@@ -47,6 +47,7 @@ import org.switchyard.tools.models.switchyard1_0.soap.SOAPBindingType;
 import org.switchyard.tools.models.switchyard1_0.switchyard.EsbInterface;
 import org.switchyard.tools.models.switchyard1_0.switchyard.TransformType;
 import org.switchyard.tools.models.switchyard1_0.switchyard.ValidateType;
+import org.switchyard.tools.models.switchyard1_0.transform.DozerTransformType;
 import org.switchyard.tools.models.switchyard1_0.transform.JAXBTransformType;
 import org.switchyard.tools.models.switchyard1_0.transform.JavaTransformType1;
 import org.switchyard.tools.models.switchyard1_0.transform.JsonTransformType;
@@ -257,6 +258,8 @@ public final class LabelAdapter {
             label = "JSON";
         } else if (transform instanceof SmooksTransformType1) {
             label = "Smooks";
+        } else if (transform instanceof DozerTransformType) {
+            label = "Dozer";
         }
         URI _modelUri = URI.createPlatformResourceURI(SwitchyardSCAEditor.getActiveEditor().getModelFile()
                 .getFullPath().toString(), true);

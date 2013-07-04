@@ -69,7 +69,7 @@ public class AddressingItemProviderAdapterFactory extends AddressingAdapterFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ChildCreationExtenderManager childCreationExtenderManager = new ChildCreationExtenderManager(CoreSCAEditPlugin.INSTANCE, AddressingPackage.eNS_URI);
+	protected ChildCreationExtenderManager childCreationExtenderManager = new ChildCreationExtenderManager(AddressingEditPlugin.INSTANCE, AddressingPackage.eNS_URI);
 
 	/**
 	 * This keeps track of all the supported types checked by {@link #isFactoryForType isFactoryForType}.

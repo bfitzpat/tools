@@ -39,7 +39,7 @@ public class AddressingFactoryImpl extends EFactoryImpl implements AddressingFac
 	 */
 	public static AddressingFactory init() {
 		try {
-			AddressingFactory theAddressingFactory = (AddressingFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.w3.org/2005/08/addressing"); 
+			AddressingFactory theAddressingFactory = (AddressingFactory)EPackage.Registry.INSTANCE.getEFactory(AddressingPackage.eNS_URI);
 			if (theAddressingFactory != null) {
 				return theAddressingFactory;
 			}
