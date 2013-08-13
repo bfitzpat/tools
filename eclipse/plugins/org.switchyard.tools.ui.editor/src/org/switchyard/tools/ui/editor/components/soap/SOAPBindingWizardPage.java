@@ -98,7 +98,12 @@ public class SOAPBindingWizardPage extends WizardPage {
      * @return the binding being edited.
      */
     public Binding getBinding() {
-        return _soapServiceComposite.getBinding();
+        if (_soapServiceComposite != null) {
+            return _soapServiceComposite.getBinding();
+        } else if (_soapReferenceComposite != null) {
+            return _soapReferenceComposite.getBinding();
+        }
+        return null;
     }
 
 }
