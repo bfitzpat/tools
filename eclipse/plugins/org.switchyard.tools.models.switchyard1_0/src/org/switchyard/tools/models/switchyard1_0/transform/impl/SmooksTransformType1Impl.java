@@ -32,271 +32,271 @@ import org.switchyard.tools.models.switchyard1_0.transform.TransformPackage;
  */
 public class SmooksTransformType1Impl extends TransformTypeImpl implements SmooksTransformType1 {
 	/**
-     * The default value of the '{@link #getType() <em>Type</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getType()
-     * @generated
-     * @ordered
-     */
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
     protected static final SmooksTransformType TYPE_EDEFAULT = SmooksTransformType.SMOOKS;
     /**
-     * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getType()
-     * @generated
-     * @ordered
-     */
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
     protected SmooksTransformType type = TYPE_EDEFAULT;
     /**
-     * This is true if the Type attribute has been set.
-     * <!-- begin-user-doc -->
+	 * This is true if the Type attribute has been set.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     protected boolean typeESet;
     /**
-     * The default value of the '{@link #getConfig() <em>Config</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getConfig() <em>Config</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getConfig()
-     * @generated
-     * @ordered
-     */
+	 * @see #getConfig()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String CONFIG_EDEFAULT = null;
     /**
-     * The cached value of the '{@link #getConfig() <em>Config</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getConfig() <em>Config</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getConfig()
-     * @generated
-     * @ordered
-     */
+	 * @see #getConfig()
+	 * @generated
+	 * @ordered
+	 */
     protected String config = CONFIG_EDEFAULT;
     /**
-     * The default value of the '{@link #getReportPath() <em>Report Path</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getReportPath() <em>Report Path</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getReportPath()
-     * @generated
-     * @ordered
-     */
+	 * @see #getReportPath()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String REPORT_PATH_EDEFAULT = null;
     /**
-     * The cached value of the '{@link #getReportPath() <em>Report Path</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getReportPath() <em>Report Path</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getReportPath()
-     * @generated
-     * @ordered
-     */
+	 * @see #getReportPath()
+	 * @generated
+	 * @ordered
+	 */
     protected String reportPath = REPORT_PATH_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected SmooksTransformType1Impl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return TransformPackage.Literals.SMOOKS_TRANSFORM_TYPE1;
-    }
+		return TransformPackage.Literals.SMOOKS_TRANSFORM_TYPE1;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public SmooksTransformType getType() {
-        return type;
-    }
+		return type;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setType(SmooksTransformType newType) {
-        SmooksTransformType oldType = type;
-        type = newType == null ? TYPE_EDEFAULT : newType;
-        boolean oldTypeESet = typeESet;
-        typeESet = true;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TransformPackage.SMOOKS_TRANSFORM_TYPE1__TYPE, oldType, type, !oldTypeESet));
-    }
+		SmooksTransformType oldType = type;
+		type = newType == null ? TYPE_EDEFAULT : newType;
+		boolean oldTypeESet = typeESet;
+		typeESet = true;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TransformPackage.SMOOKS_TRANSFORM_TYPE1__TYPE, oldType, type, !oldTypeESet));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void unsetType() {
-        SmooksTransformType oldType = type;
-        boolean oldTypeESet = typeESet;
-        type = TYPE_EDEFAULT;
-        typeESet = false;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, TransformPackage.SMOOKS_TRANSFORM_TYPE1__TYPE, oldType, TYPE_EDEFAULT, oldTypeESet));
-    }
+		SmooksTransformType oldType = type;
+		boolean oldTypeESet = typeESet;
+		type = TYPE_EDEFAULT;
+		typeESet = false;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.UNSET, TransformPackage.SMOOKS_TRANSFORM_TYPE1__TYPE, oldType, TYPE_EDEFAULT, oldTypeESet));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public boolean isSetType() {
-        return typeESet;
-    }
+		return typeESet;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getConfig() {
-        return config;
-    }
+		return config;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setConfig(String newConfig) {
-        String oldConfig = config;
-        config = newConfig;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TransformPackage.SMOOKS_TRANSFORM_TYPE1__CONFIG, oldConfig, config));
-    }
+		String oldConfig = config;
+		config = newConfig;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TransformPackage.SMOOKS_TRANSFORM_TYPE1__CONFIG, oldConfig, config));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getReportPath() {
-        return reportPath;
-    }
+		return reportPath;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setReportPath(String newReportPath) {
-        String oldReportPath = reportPath;
-        reportPath = newReportPath;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, TransformPackage.SMOOKS_TRANSFORM_TYPE1__REPORT_PATH, oldReportPath, reportPath));
-    }
+		String oldReportPath = reportPath;
+		reportPath = newReportPath;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TransformPackage.SMOOKS_TRANSFORM_TYPE1__REPORT_PATH, oldReportPath, reportPath));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case TransformPackage.SMOOKS_TRANSFORM_TYPE1__TYPE:
-                return getType();
-            case TransformPackage.SMOOKS_TRANSFORM_TYPE1__CONFIG:
-                return getConfig();
-            case TransformPackage.SMOOKS_TRANSFORM_TYPE1__REPORT_PATH:
-                return getReportPath();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case TransformPackage.SMOOKS_TRANSFORM_TYPE1__TYPE:
+				return getType();
+			case TransformPackage.SMOOKS_TRANSFORM_TYPE1__CONFIG:
+				return getConfig();
+			case TransformPackage.SMOOKS_TRANSFORM_TYPE1__REPORT_PATH:
+				return getReportPath();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case TransformPackage.SMOOKS_TRANSFORM_TYPE1__TYPE:
-                setType((SmooksTransformType)newValue);
-                return;
-            case TransformPackage.SMOOKS_TRANSFORM_TYPE1__CONFIG:
-                setConfig((String)newValue);
-                return;
-            case TransformPackage.SMOOKS_TRANSFORM_TYPE1__REPORT_PATH:
-                setReportPath((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case TransformPackage.SMOOKS_TRANSFORM_TYPE1__TYPE:
+				setType((SmooksTransformType)newValue);
+				return;
+			case TransformPackage.SMOOKS_TRANSFORM_TYPE1__CONFIG:
+				setConfig((String)newValue);
+				return;
+			case TransformPackage.SMOOKS_TRANSFORM_TYPE1__REPORT_PATH:
+				setReportPath((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case TransformPackage.SMOOKS_TRANSFORM_TYPE1__TYPE:
-                unsetType();
-                return;
-            case TransformPackage.SMOOKS_TRANSFORM_TYPE1__CONFIG:
-                setConfig(CONFIG_EDEFAULT);
-                return;
-            case TransformPackage.SMOOKS_TRANSFORM_TYPE1__REPORT_PATH:
-                setReportPath(REPORT_PATH_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case TransformPackage.SMOOKS_TRANSFORM_TYPE1__TYPE:
+				unsetType();
+				return;
+			case TransformPackage.SMOOKS_TRANSFORM_TYPE1__CONFIG:
+				setConfig(CONFIG_EDEFAULT);
+				return;
+			case TransformPackage.SMOOKS_TRANSFORM_TYPE1__REPORT_PATH:
+				setReportPath(REPORT_PATH_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case TransformPackage.SMOOKS_TRANSFORM_TYPE1__TYPE:
-                return isSetType();
-            case TransformPackage.SMOOKS_TRANSFORM_TYPE1__CONFIG:
-                return CONFIG_EDEFAULT == null ? config != null : !CONFIG_EDEFAULT.equals(config);
-            case TransformPackage.SMOOKS_TRANSFORM_TYPE1__REPORT_PATH:
-                return REPORT_PATH_EDEFAULT == null ? reportPath != null : !REPORT_PATH_EDEFAULT.equals(reportPath);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case TransformPackage.SMOOKS_TRANSFORM_TYPE1__TYPE:
+				return isSetType();
+			case TransformPackage.SMOOKS_TRANSFORM_TYPE1__CONFIG:
+				return CONFIG_EDEFAULT == null ? config != null : !CONFIG_EDEFAULT.equals(config);
+			case TransformPackage.SMOOKS_TRANSFORM_TYPE1__REPORT_PATH:
+				return REPORT_PATH_EDEFAULT == null ? reportPath != null : !REPORT_PATH_EDEFAULT.equals(reportPath);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (type: ");
-        if (typeESet) result.append(type); else result.append("<unset>");
-        result.append(", config: ");
-        result.append(config);
-        result.append(", reportPath: ");
-        result.append(reportPath);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (type: ");
+		if (typeESet) result.append(type); else result.append("<unset>");
+		result.append(", config: ");
+		result.append(config);
+		result.append(", reportPath: ");
+		result.append(reportPath);
+		result.append(')');
+		return result.toString();
+	}
 
 } //SmooksTransformType1Impl

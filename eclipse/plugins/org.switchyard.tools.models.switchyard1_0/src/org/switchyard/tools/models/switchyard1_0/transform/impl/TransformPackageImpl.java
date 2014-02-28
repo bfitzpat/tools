@@ -64,6 +64,7 @@ import org.switchyard.tools.models.switchyard1_0.spring.impl.SpringPackageImpl;
 import org.switchyard.tools.models.switchyard1_0.switchyard.SwitchyardPackage;
 import org.switchyard.tools.models.switchyard1_0.switchyard.impl.SwitchyardPackageImpl;
 import org.switchyard.tools.models.switchyard1_0.transform.DocumentRoot;
+import org.switchyard.tools.models.switchyard1_0.transform.DozerTransformType;
 import org.switchyard.tools.models.switchyard1_0.transform.JAXBTransformType;
 import org.switchyard.tools.models.switchyard1_0.transform.JavaTransformType;
 import org.switchyard.tools.models.switchyard1_0.transform.JavaTransformType1;
@@ -84,113 +85,120 @@ import org.switchyard.tools.models.switchyard1_0.validate.impl.ValidatePackageIm
  */
 public class TransformPackageImpl extends EPackageImpl implements TransformPackage {
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	private EClass documentRootEClass = null;
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	private EClass javaTransformType1EClass = null;
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	private EClass jaxbTransformTypeEClass = null;
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	private EClass jsonTransformTypeEClass = null;
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	private EClass smooksTransformType1EClass = null;
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	private EClass xsltTransformTypeEClass = null;
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
+	private EClass dozerTransformTypeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EEnum javaTransformTypeEEnum = null;
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	private EEnum smooksTransformTypeEEnum = null;
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	private EDataType javaTransformTypeObjectEDataType = null;
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	private EDataType smooksTransformTypeObjectEDataType = null;
 
 	/**
-     * Creates an instance of the model <b>Package</b>, registered with
-     * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
-     * package URI value.
-     * <p>Note: the correct way to create the package is via the static
-     * factory method {@link #init init()}, which also performs
-     * initialization of the package, or returns the registered package,
-     * if one already exists.
-     * <!-- begin-user-doc -->
+	 * Creates an instance of the model <b>Package</b>, registered with
+	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
+	 * package URI value.
+	 * <p>Note: the correct way to create the package is via the static
+	 * factory method {@link #init init()}, which also performs
+	 * initialization of the package, or returns the registered package,
+	 * if one already exists.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see org.eclipse.emf.ecore.EPackage.Registry
-     * @see org.switchyard.tools.models.switchyard1_0.transform.TransformPackage#eNS_URI
-     * @see #init()
-     * @generated
-     */
+	 * @see org.eclipse.emf.ecore.EPackage.Registry
+	 * @see org.switchyard.tools.models.switchyard1_0.transform.TransformPackage#eNS_URI
+	 * @see #init()
+	 * @generated
+	 */
 	private TransformPackageImpl() {
-        super(eNS_URI, TransformFactory.eINSTANCE);
-    }
+		super(eNS_URI, TransformFactory.eINSTANCE);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	private static boolean isInited = false;
 
 	/**
-     * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-     * 
-     * <p>This method is used to initialize {@link TransformPackage#eINSTANCE} when that field is accessed.
-     * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
-     * <!-- begin-user-doc -->
+	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
+	 * 
+	 * <p>This method is used to initialize {@link TransformPackage#eINSTANCE} when that field is accessed.
+	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #eNS_URI
-     * @see #createPackageContents()
-     * @see #initializePackageContents()
-     * @generated
-     */
+	 * @see #eNS_URI
+	 * @see #createPackageContents()
+	 * @see #initializePackageContents()
+	 * @generated
+	 */
 	public static TransformPackage init() {
         if (isInited) return (TransformPackage)EPackage.Registry.INSTANCE.getEPackage(TransformPackage.eNS_URI);
 
@@ -286,578 +294,636 @@ public class TransformPackageImpl extends EPackageImpl implements TransformPacka
 
         // Mark meta-data to indicate it can't be changed
         theTransformPackage.freeze();
-
   
-        // Update the registry and return the package
-        EPackage.Registry.INSTANCE.put(TransformPackage.eNS_URI, theTransformPackage);
-        return theTransformPackage;
-    }
+		// Update the registry and return the package
+		EPackage.Registry.INSTANCE.put(TransformPackage.eNS_URI, theTransformPackage);
+		return theTransformPackage;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EClass getDocumentRoot() {
-        return documentRootEClass;
-    }
+		return documentRootEClass;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EAttribute getDocumentRoot_Mixed() {
-        return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)documentRootEClass.getEStructuralFeatures().get(0);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EReference getDocumentRoot_XMLNSPrefixMap() {
-        return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
-    }
+		return (EReference)documentRootEClass.getEStructuralFeatures().get(1);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EReference getDocumentRoot_XSISchemaLocation() {
-        return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
-    }
+		return (EReference)documentRootEClass.getEStructuralFeatures().get(2);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EReference getDocumentRoot_TransformJava() {
-        return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
-    }
+		return (EReference)documentRootEClass.getEStructuralFeatures().get(3);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EReference getDocumentRoot_TransformJaxb() {
-        return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
-    }
+		return (EReference)documentRootEClass.getEStructuralFeatures().get(4);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EReference getDocumentRoot_TransformJson() {
-        return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
-    }
+		return (EReference)documentRootEClass.getEStructuralFeatures().get(5);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EReference getDocumentRoot_TransformSmooks() {
-        return (EReference)documentRootEClass.getEStructuralFeatures().get(6);
-    }
+		return (EReference)documentRootEClass.getEStructuralFeatures().get(6);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EReference getDocumentRoot_TransformXslt() {
-        return (EReference)documentRootEClass.getEStructuralFeatures().get(7);
-    }
+		return (EReference)documentRootEClass.getEStructuralFeatures().get(7);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
+	public EReference getDocumentRoot_TransformDozer() {
+		return (EReference)documentRootEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getJavaTransformType1() {
-        return javaTransformType1EClass;
-    }
+		return javaTransformType1EClass;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EAttribute getJavaTransformType1_Class() {
-        return (EAttribute)javaTransformType1EClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)javaTransformType1EClass.getEStructuralFeatures().get(0);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EAttribute getJavaTransformType1_Bean() {
-        return (EAttribute)javaTransformType1EClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)javaTransformType1EClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EClass getJAXBTransformType() {
-        return jaxbTransformTypeEClass;
-    }
+		return jaxbTransformTypeEClass;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EAttribute getJAXBTransformType_ContextPath() {
-        return (EAttribute)jaxbTransformTypeEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)jaxbTransformTypeEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EClass getJsonTransformType() {
-        return jsonTransformTypeEClass;
-    }
+		return jsonTransformTypeEClass;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EClass getSmooksTransformType1() {
-        return smooksTransformType1EClass;
-    }
+		return smooksTransformType1EClass;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EAttribute getSmooksTransformType1_Type() {
-        return (EAttribute)smooksTransformType1EClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)smooksTransformType1EClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EAttribute getSmooksTransformType1_Config() {
-        return (EAttribute)smooksTransformType1EClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)smooksTransformType1EClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EAttribute getSmooksTransformType1_ReportPath() {
-        return (EAttribute)smooksTransformType1EClass.getEStructuralFeatures().get(2);
-    }
+		return (EAttribute)smooksTransformType1EClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EClass getXsltTransformType() {
-        return xsltTransformTypeEClass;
-    }
+		return xsltTransformTypeEClass;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EAttribute getXsltTransformType_XsltFile() {
-        return (EAttribute)xsltTransformTypeEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)xsltTransformTypeEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EAttribute getXsltTransformType_FailOnWarning() {
-        return (EAttribute)xsltTransformTypeEClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)xsltTransformTypeEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
+	public EClass getDozerTransformType() {
+		return dozerTransformTypeEClass;
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getDozerTransformType_Config() {
+		return (EAttribute)dozerTransformTypeEClass.getEStructuralFeatures().get(0);
+	}
+
+				/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EEnum getJavaTransformType() {
-        return javaTransformTypeEEnum;
-    }
+		return javaTransformTypeEEnum;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EEnum getSmooksTransformType() {
-        return smooksTransformTypeEEnum;
-    }
+		return smooksTransformTypeEEnum;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EDataType getJavaTransformTypeObject() {
-        return javaTransformTypeObjectEDataType;
-    }
+		return javaTransformTypeObjectEDataType;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EDataType getSmooksTransformTypeObject() {
-        return smooksTransformTypeObjectEDataType;
-    }
+		return smooksTransformTypeObjectEDataType;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public TransformFactory getTransformFactory() {
-        return (TransformFactory)getEFactoryInstance();
-    }
+		return (TransformFactory)getEFactoryInstance();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	private boolean isCreated = false;
 
 	/**
-     * Creates the meta-model objects for the package.  This method is
-     * guarded to have no affect on any invocation but its first.
-     * <!-- begin-user-doc -->
+	 * Creates the meta-model objects for the package.  This method is
+	 * guarded to have no affect on any invocation but its first.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void createPackageContents() {
-        if (isCreated) return;
-        isCreated = true;
+		if (isCreated) return;
+		isCreated = true;
 
-        // Create classes and their features
-        documentRootEClass = createEClass(DOCUMENT_ROOT);
-        createEAttribute(documentRootEClass, DOCUMENT_ROOT__MIXED);
-        createEReference(documentRootEClass, DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
-        createEReference(documentRootEClass, DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
-        createEReference(documentRootEClass, DOCUMENT_ROOT__TRANSFORM_JAVA);
-        createEReference(documentRootEClass, DOCUMENT_ROOT__TRANSFORM_JAXB);
-        createEReference(documentRootEClass, DOCUMENT_ROOT__TRANSFORM_JSON);
-        createEReference(documentRootEClass, DOCUMENT_ROOT__TRANSFORM_SMOOKS);
-        createEReference(documentRootEClass, DOCUMENT_ROOT__TRANSFORM_XSLT);
+		// Create classes and their features
+		documentRootEClass = createEClass(DOCUMENT_ROOT);
+		createEAttribute(documentRootEClass, DOCUMENT_ROOT__MIXED);
+		createEReference(documentRootEClass, DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
+		createEReference(documentRootEClass, DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
+		createEReference(documentRootEClass, DOCUMENT_ROOT__TRANSFORM_JAVA);
+		createEReference(documentRootEClass, DOCUMENT_ROOT__TRANSFORM_JAXB);
+		createEReference(documentRootEClass, DOCUMENT_ROOT__TRANSFORM_JSON);
+		createEReference(documentRootEClass, DOCUMENT_ROOT__TRANSFORM_SMOOKS);
+		createEReference(documentRootEClass, DOCUMENT_ROOT__TRANSFORM_XSLT);
+		createEReference(documentRootEClass, DOCUMENT_ROOT__TRANSFORM_DOZER);
 
-        javaTransformType1EClass = createEClass(JAVA_TRANSFORM_TYPE1);
-        createEAttribute(javaTransformType1EClass, JAVA_TRANSFORM_TYPE1__CLASS);
-        createEAttribute(javaTransformType1EClass, JAVA_TRANSFORM_TYPE1__BEAN);
+		javaTransformType1EClass = createEClass(JAVA_TRANSFORM_TYPE1);
+		createEAttribute(javaTransformType1EClass, JAVA_TRANSFORM_TYPE1__CLASS);
+		createEAttribute(javaTransformType1EClass, JAVA_TRANSFORM_TYPE1__BEAN);
 
-        jaxbTransformTypeEClass = createEClass(JAXB_TRANSFORM_TYPE);
-        createEAttribute(jaxbTransformTypeEClass, JAXB_TRANSFORM_TYPE__CONTEXT_PATH);
+		jaxbTransformTypeEClass = createEClass(JAXB_TRANSFORM_TYPE);
+		createEAttribute(jaxbTransformTypeEClass, JAXB_TRANSFORM_TYPE__CONTEXT_PATH);
 
-        jsonTransformTypeEClass = createEClass(JSON_TRANSFORM_TYPE);
+		jsonTransformTypeEClass = createEClass(JSON_TRANSFORM_TYPE);
 
-        smooksTransformType1EClass = createEClass(SMOOKS_TRANSFORM_TYPE1);
-        createEAttribute(smooksTransformType1EClass, SMOOKS_TRANSFORM_TYPE1__TYPE);
-        createEAttribute(smooksTransformType1EClass, SMOOKS_TRANSFORM_TYPE1__CONFIG);
-        createEAttribute(smooksTransformType1EClass, SMOOKS_TRANSFORM_TYPE1__REPORT_PATH);
+		smooksTransformType1EClass = createEClass(SMOOKS_TRANSFORM_TYPE1);
+		createEAttribute(smooksTransformType1EClass, SMOOKS_TRANSFORM_TYPE1__TYPE);
+		createEAttribute(smooksTransformType1EClass, SMOOKS_TRANSFORM_TYPE1__CONFIG);
+		createEAttribute(smooksTransformType1EClass, SMOOKS_TRANSFORM_TYPE1__REPORT_PATH);
 
-        xsltTransformTypeEClass = createEClass(XSLT_TRANSFORM_TYPE);
-        createEAttribute(xsltTransformTypeEClass, XSLT_TRANSFORM_TYPE__XSLT_FILE);
-        createEAttribute(xsltTransformTypeEClass, XSLT_TRANSFORM_TYPE__FAIL_ON_WARNING);
+		xsltTransformTypeEClass = createEClass(XSLT_TRANSFORM_TYPE);
+		createEAttribute(xsltTransformTypeEClass, XSLT_TRANSFORM_TYPE__XSLT_FILE);
+		createEAttribute(xsltTransformTypeEClass, XSLT_TRANSFORM_TYPE__FAIL_ON_WARNING);
 
-        // Create enums
-        javaTransformTypeEEnum = createEEnum(JAVA_TRANSFORM_TYPE);
-        smooksTransformTypeEEnum = createEEnum(SMOOKS_TRANSFORM_TYPE);
+		dozerTransformTypeEClass = createEClass(DOZER_TRANSFORM_TYPE);
+		createEAttribute(dozerTransformTypeEClass, DOZER_TRANSFORM_TYPE__CONFIG);
 
-        // Create data types
-        javaTransformTypeObjectEDataType = createEDataType(JAVA_TRANSFORM_TYPE_OBJECT);
-        smooksTransformTypeObjectEDataType = createEDataType(SMOOKS_TRANSFORM_TYPE_OBJECT);
-    }
+		// Create enums
+		javaTransformTypeEEnum = createEEnum(JAVA_TRANSFORM_TYPE);
+		smooksTransformTypeEEnum = createEEnum(SMOOKS_TRANSFORM_TYPE);
+
+		// Create data types
+		javaTransformTypeObjectEDataType = createEDataType(JAVA_TRANSFORM_TYPE_OBJECT);
+		smooksTransformTypeObjectEDataType = createEDataType(SMOOKS_TRANSFORM_TYPE_OBJECT);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	private boolean isInitialized = false;
 
 	/**
-     * Complete the initialization of the package and its meta-model.  This
-     * method is guarded to have no affect on any invocation but its first.
-     * <!-- begin-user-doc -->
+	 * Complete the initialization of the package and its meta-model.  This
+	 * method is guarded to have no affect on any invocation but its first.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void initializePackageContents() {
-        if (isInitialized) return;
-        isInitialized = true;
+		if (isInitialized) return;
+		isInitialized = true;
 
-        // Initialize package
-        setName(eNAME);
-        setNsPrefix(eNS_PREFIX);
-        setNsURI(eNS_URI);
+		// Initialize package
+		setName(eNAME);
+		setNsPrefix(eNS_PREFIX);
+		setNsURI(eNS_URI);
 
-        // Obtain other dependent packages
-        SwitchyardPackage theSwitchyardPackage = (SwitchyardPackage)EPackage.Registry.INSTANCE.getEPackage(SwitchyardPackage.eNS_URI);
-        XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
+		// Obtain other dependent packages
+		SwitchyardPackage theSwitchyardPackage = (SwitchyardPackage)EPackage.Registry.INSTANCE.getEPackage(SwitchyardPackage.eNS_URI);
+		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
 
-        // Create type parameters
+		// Create type parameters
 
-        // Set bounds for type parameters
+		// Set bounds for type parameters
 
-        // Add supertypes to classes
-        javaTransformType1EClass.getESuperTypes().add(theSwitchyardPackage.getTransformType());
-        jaxbTransformTypeEClass.getESuperTypes().add(theSwitchyardPackage.getTransformType());
-        jsonTransformTypeEClass.getESuperTypes().add(theSwitchyardPackage.getTransformType());
-        smooksTransformType1EClass.getESuperTypes().add(theSwitchyardPackage.getTransformType());
-        xsltTransformTypeEClass.getESuperTypes().add(theSwitchyardPackage.getTransformType());
+		// Add supertypes to classes
+		javaTransformType1EClass.getESuperTypes().add(theSwitchyardPackage.getTransformType());
+		jaxbTransformTypeEClass.getESuperTypes().add(theSwitchyardPackage.getTransformType());
+		jsonTransformTypeEClass.getESuperTypes().add(theSwitchyardPackage.getTransformType());
+		smooksTransformType1EClass.getESuperTypes().add(theSwitchyardPackage.getTransformType());
+		xsltTransformTypeEClass.getESuperTypes().add(theSwitchyardPackage.getTransformType());
+		dozerTransformTypeEClass.getESuperTypes().add(theSwitchyardPackage.getTransformType());
 
-        // Initialize classes and features; add operations and parameters
-        initEClass(documentRootEClass, DocumentRoot.class, "DocumentRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getDocumentRoot_Mixed(), ecorePackage.getEFeatureMapEntry(), "mixed", null, 0, -1, null, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getDocumentRoot_XMLNSPrefixMap(), ecorePackage.getEStringToStringMapEntry(), null, "xMLNSPrefixMap", null, 0, -1, null, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getDocumentRoot_XSISchemaLocation(), ecorePackage.getEStringToStringMapEntry(), null, "xSISchemaLocation", null, 0, -1, null, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getDocumentRoot_TransformJava(), this.getJavaTransformType1(), null, "transformJava", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-        initEReference(getDocumentRoot_TransformJaxb(), this.getJAXBTransformType(), null, "transformJaxb", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-        initEReference(getDocumentRoot_TransformJson(), this.getJsonTransformType(), null, "transformJson", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-        initEReference(getDocumentRoot_TransformSmooks(), this.getSmooksTransformType1(), null, "transformSmooks", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-        initEReference(getDocumentRoot_TransformXslt(), this.getXsltTransformType(), null, "transformXslt", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		// Initialize classes and features; add operations and parameters
+		initEClass(documentRootEClass, DocumentRoot.class, "DocumentRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getDocumentRoot_Mixed(), ecorePackage.getEFeatureMapEntry(), "mixed", null, 0, -1, null, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDocumentRoot_XMLNSPrefixMap(), ecorePackage.getEStringToStringMapEntry(), null, "xMLNSPrefixMap", null, 0, -1, null, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDocumentRoot_XSISchemaLocation(), ecorePackage.getEStringToStringMapEntry(), null, "xSISchemaLocation", null, 0, -1, null, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDocumentRoot_TransformJava(), this.getJavaTransformType1(), null, "transformJava", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getDocumentRoot_TransformJaxb(), this.getJAXBTransformType(), null, "transformJaxb", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getDocumentRoot_TransformJson(), this.getJsonTransformType(), null, "transformJson", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getDocumentRoot_TransformSmooks(), this.getSmooksTransformType1(), null, "transformSmooks", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getDocumentRoot_TransformXslt(), this.getXsltTransformType(), null, "transformXslt", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getDocumentRoot_TransformDozer(), this.getDozerTransformType(), null, "transformDozer", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
-        initEClass(javaTransformType1EClass, JavaTransformType1.class, "JavaTransformType1", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getJavaTransformType1_Class(), theXMLTypePackage.getString(), "class", null, 0, 1, JavaTransformType1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getJavaTransformType1_Bean(), theXMLTypePackage.getString(), "bean", null, 0, 1, JavaTransformType1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(javaTransformType1EClass, JavaTransformType1.class, "JavaTransformType1", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getJavaTransformType1_Class(), theXMLTypePackage.getString(), "class", null, 0, 1, JavaTransformType1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getJavaTransformType1_Bean(), theXMLTypePackage.getString(), "bean", null, 0, 1, JavaTransformType1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(jaxbTransformTypeEClass, JAXBTransformType.class, "JAXBTransformType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getJAXBTransformType_ContextPath(), theXMLTypePackage.getString(), "contextPath", null, 0, 1, JAXBTransformType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(jaxbTransformTypeEClass, JAXBTransformType.class, "JAXBTransformType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getJAXBTransformType_ContextPath(), theXMLTypePackage.getString(), "contextPath", null, 0, 1, JAXBTransformType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(jsonTransformTypeEClass, JsonTransformType.class, "JsonTransformType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(jsonTransformTypeEClass, JsonTransformType.class, "JsonTransformType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-        initEClass(smooksTransformType1EClass, SmooksTransformType1.class, "SmooksTransformType1", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getSmooksTransformType1_Type(), this.getSmooksTransformType(), "type", null, 1, 1, SmooksTransformType1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getSmooksTransformType1_Config(), theXMLTypePackage.getString(), "config", null, 1, 1, SmooksTransformType1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getSmooksTransformType1_ReportPath(), theXMLTypePackage.getString(), "reportPath", null, 0, 1, SmooksTransformType1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(smooksTransformType1EClass, SmooksTransformType1.class, "SmooksTransformType1", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getSmooksTransformType1_Type(), this.getSmooksTransformType(), "type", null, 1, 1, SmooksTransformType1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSmooksTransformType1_Config(), theXMLTypePackage.getString(), "config", null, 1, 1, SmooksTransformType1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSmooksTransformType1_ReportPath(), theXMLTypePackage.getString(), "reportPath", null, 0, 1, SmooksTransformType1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(xsltTransformTypeEClass, XsltTransformType.class, "XsltTransformType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getXsltTransformType_XsltFile(), theXMLTypePackage.getString(), "xsltFile", null, 1, 1, XsltTransformType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getXsltTransformType_FailOnWarning(), theXMLTypePackage.getString(), "failOnWarning", null, 0, 1, XsltTransformType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(xsltTransformTypeEClass, XsltTransformType.class, "XsltTransformType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXsltTransformType_XsltFile(), theXMLTypePackage.getString(), "xsltFile", null, 1, 1, XsltTransformType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXsltTransformType_FailOnWarning(), theXMLTypePackage.getString(), "failOnWarning", null, 0, 1, XsltTransformType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        // Initialize enums and add enum literals
-        initEEnum(javaTransformTypeEEnum, JavaTransformType.class, "JavaTransformType");
-        addEEnumLiteral(javaTransformTypeEEnum, JavaTransformType.XML2JAVA);
-        addEEnumLiteral(javaTransformTypeEEnum, JavaTransformType.JAVA2XML);
+		initEClass(dozerTransformTypeEClass, DozerTransformType.class, "DozerTransformType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getDozerTransformType_Config(), theXMLTypePackage.getString(), "config", null, 1, 1, DozerTransformType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEEnum(smooksTransformTypeEEnum, SmooksTransformType.class, "SmooksTransformType");
-        addEEnumLiteral(smooksTransformTypeEEnum, SmooksTransformType.SMOOKS);
-        addEEnumLiteral(smooksTransformTypeEEnum, SmooksTransformType.XML2JAVA);
-        addEEnumLiteral(smooksTransformTypeEEnum, SmooksTransformType.JAVA2XML);
+		// Initialize enums and add enum literals
+		initEEnum(javaTransformTypeEEnum, JavaTransformType.class, "JavaTransformType");
+		addEEnumLiteral(javaTransformTypeEEnum, JavaTransformType.XML2JAVA);
+		addEEnumLiteral(javaTransformTypeEEnum, JavaTransformType.JAVA2XML);
 
-        // Initialize data types
-        initEDataType(javaTransformTypeObjectEDataType, JavaTransformType.class, "JavaTransformTypeObject", IS_SERIALIZABLE, IS_GENERATED_INSTANCE_CLASS);
-        initEDataType(smooksTransformTypeObjectEDataType, SmooksTransformType.class, "SmooksTransformTypeObject", IS_SERIALIZABLE, IS_GENERATED_INSTANCE_CLASS);
+		initEEnum(smooksTransformTypeEEnum, SmooksTransformType.class, "SmooksTransformType");
+		addEEnumLiteral(smooksTransformTypeEEnum, SmooksTransformType.SMOOKS);
+		addEEnumLiteral(smooksTransformTypeEEnum, SmooksTransformType.XML2JAVA);
+		addEEnumLiteral(smooksTransformTypeEEnum, SmooksTransformType.JAVA2XML);
 
-        // Create resource
-        createResource(eNS_URI);
+		// Initialize data types
+		initEDataType(javaTransformTypeObjectEDataType, JavaTransformType.class, "JavaTransformTypeObject", IS_SERIALIZABLE, IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(smooksTransformTypeObjectEDataType, SmooksTransformType.class, "SmooksTransformTypeObject", IS_SERIALIZABLE, IS_GENERATED_INSTANCE_CLASS);
 
-        // Create annotations
-        // http:///org/eclipse/emf/ecore/util/ExtendedMetaData
-        createExtendedMetaDataAnnotations();
-    }
+		// Create resource
+		createResource(eNS_URI);
+
+		// Create annotations
+		// http:///org/eclipse/emf/ecore/util/ExtendedMetaData
+		createExtendedMetaDataAnnotations();
+	}
 
 	/**
-     * Initializes the annotations for <b>http:///org/eclipse/emf/ecore/util/ExtendedMetaData</b>.
-     * <!-- begin-user-doc -->
+	 * Initializes the annotations for <b>http:///org/eclipse/emf/ecore/util/ExtendedMetaData</b>.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected void createExtendedMetaDataAnnotations() {
-        String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";		
-        addAnnotation
-          (documentRootEClass, 
-           source, 
-           new String[] {
-             "name", "",
-             "kind", "mixed"
-           });		
-        addAnnotation
-          (getDocumentRoot_Mixed(), 
-           source, 
-           new String[] {
-             "kind", "elementWildcard",
-             "name", ":mixed"
-           });		
-        addAnnotation
-          (getDocumentRoot_XMLNSPrefixMap(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "xmlns:prefix"
-           });		
-        addAnnotation
-          (getDocumentRoot_XSISchemaLocation(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "xsi:schemaLocation"
-           });		
-        addAnnotation
-          (getDocumentRoot_TransformJava(), 
-           source, 
-           new String[] {
-             "kind", "element",
-             "name", "transform.java",
-             "namespace", "##targetNamespace",
-             "affiliation", "urn:switchyard-config:switchyard:1.0#transform"
-           });		
-        addAnnotation
-          (getDocumentRoot_TransformJaxb(), 
-           source, 
-           new String[] {
-             "kind", "element",
-             "name", "transform.jaxb",
-             "namespace", "##targetNamespace",
-             "affiliation", "urn:switchyard-config:switchyard:1.0#transform"
-           });		
-        addAnnotation
-          (getDocumentRoot_TransformJson(), 
-           source, 
-           new String[] {
-             "kind", "element",
-             "name", "transform.json",
-             "namespace", "##targetNamespace",
-             "affiliation", "urn:switchyard-config:switchyard:1.0#transform"
-           });		
-        addAnnotation
-          (getDocumentRoot_TransformSmooks(), 
-           source, 
-           new String[] {
-             "kind", "element",
-             "name", "transform.smooks",
-             "namespace", "##targetNamespace",
-             "affiliation", "urn:switchyard-config:switchyard:1.0#transform"
-           });		
-        addAnnotation
-          (getDocumentRoot_TransformXslt(), 
-           source, 
-           new String[] {
-             "kind", "element",
-             "name", "transform.xslt",
-             "namespace", "##targetNamespace",
-             "affiliation", "urn:switchyard-config:switchyard:1.0#transform"
-           });		
-        addAnnotation
-          (javaTransformTypeEEnum, 
-           source, 
-           new String[] {
-             "name", "javaTransformType"
-           });					
-        addAnnotation
-          (javaTransformType1EClass, 
-           source, 
-           new String[] {
-             "name", "JavaTransformType",
-             "kind", "empty"
-           });		
-        addAnnotation
-          (getJavaTransformType1_Class(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "class"
-           });		
-        addAnnotation
-          (getJavaTransformType1_Bean(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "bean"
-           });		
-        addAnnotation
-          (javaTransformTypeObjectEDataType, 
-           source, 
-           new String[] {
-             "name", "javaTransformType:Object",
-             "baseType", "javaTransformType"
-           });			
-        addAnnotation
-          (jaxbTransformTypeEClass, 
-           source, 
-           new String[] {
-             "name", "JAXBTransformType",
-             "kind", "empty"
-           });			
-        addAnnotation
-          (jsonTransformTypeEClass, 
-           source, 
-           new String[] {
-             "name", "JsonTransformType",
-             "kind", "empty"
-           });		
-        addAnnotation
-          (smooksTransformTypeEEnum, 
-           source, 
-           new String[] {
-             "name", "smooksTransformType"
-           });						
-        addAnnotation
-          (smooksTransformType1EClass, 
-           source, 
-           new String[] {
-             "name", "SmooksTransformType",
-             "kind", "empty"
-           });		
-        addAnnotation
-          (getSmooksTransformType1_Type(), 
-           source, 
-           new String[] {
-             "name", "type",
-             "kind", "attribute"
-           });		
-        addAnnotation
-          (getSmooksTransformType1_Config(), 
-           source, 
-           new String[] {
-             "name", "config",
-             "kind", "attribute"
-           });		
-        addAnnotation
-          (getSmooksTransformType1_ReportPath(), 
-           source, 
-           new String[] {
-             "name", "reportPath",
-             "kind", "attribute"
-           });		
-        addAnnotation
-          (smooksTransformTypeObjectEDataType, 
-           source, 
-           new String[] {
-             "name", "smooksTransformType:Object",
-             "baseType", "smooksTransformType"
-           });			
-        addAnnotation
-          (xsltTransformTypeEClass, 
-           source, 
-           new String[] {
-             "name", "XsltTransformType",
-             "kind", "empty"
-           });
-    }
+		String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";		
+		addAnnotation
+		  (documentRootEClass, 
+		   source, 
+		   new String[] {
+			 "name", "",
+			 "kind", "mixed"
+		   });		
+		addAnnotation
+		  (getDocumentRoot_Mixed(), 
+		   source, 
+		   new String[] {
+			 "kind", "elementWildcard",
+			 "name", ":mixed"
+		   });		
+		addAnnotation
+		  (getDocumentRoot_XMLNSPrefixMap(), 
+		   source, 
+		   new String[] {
+			 "kind", "attribute",
+			 "name", "xmlns:prefix"
+		   });		
+		addAnnotation
+		  (getDocumentRoot_XSISchemaLocation(), 
+		   source, 
+		   new String[] {
+			 "kind", "attribute",
+			 "name", "xsi:schemaLocation"
+		   });		
+		addAnnotation
+		  (getDocumentRoot_TransformJava(), 
+		   source, 
+		   new String[] {
+			 "kind", "element",
+			 "name", "transform.java",
+			 "namespace", "##targetNamespace",
+			 "affiliation", "urn:switchyard-config:switchyard:1.0#transform"
+		   });		
+		addAnnotation
+		  (getDocumentRoot_TransformJaxb(), 
+		   source, 
+		   new String[] {
+			 "kind", "element",
+			 "name", "transform.jaxb",
+			 "namespace", "##targetNamespace",
+			 "affiliation", "urn:switchyard-config:switchyard:1.0#transform"
+		   });		
+		addAnnotation
+		  (getDocumentRoot_TransformJson(), 
+		   source, 
+		   new String[] {
+			 "kind", "element",
+			 "name", "transform.json",
+			 "namespace", "##targetNamespace",
+			 "affiliation", "urn:switchyard-config:switchyard:1.0#transform"
+		   });		
+		addAnnotation
+		  (getDocumentRoot_TransformSmooks(), 
+		   source, 
+		   new String[] {
+			 "kind", "element",
+			 "name", "transform.smooks",
+			 "namespace", "##targetNamespace",
+			 "affiliation", "urn:switchyard-config:switchyard:1.0#transform"
+		   });		
+		addAnnotation
+		  (getDocumentRoot_TransformXslt(), 
+		   source, 
+		   new String[] {
+			 "kind", "element",
+			 "name", "transform.xslt",
+			 "namespace", "##targetNamespace",
+			 "affiliation", "urn:switchyard-config:switchyard:1.0#transform"
+		   });		
+		addAnnotation
+		  (getDocumentRoot_TransformDozer(), 
+		   source, 
+		   new String[] {
+			 "kind", "element",
+			 "name", "transform.dozer",
+			 "namespace", "##targetNamespace",
+			 "affiliation", "urn:switchyard-config:switchyard:1.0#transform"
+		   });		
+		addAnnotation
+		  (javaTransformTypeEEnum, 
+		   source, 
+		   new String[] {
+			 "name", "javaTransformType"
+		   });					
+		addAnnotation
+		  (javaTransformType1EClass, 
+		   source, 
+		   new String[] {
+			 "name", "JavaTransformType",
+			 "kind", "empty"
+		   });		
+		addAnnotation
+		  (getJavaTransformType1_Class(), 
+		   source, 
+		   new String[] {
+			 "kind", "attribute",
+			 "name", "class"
+		   });		
+		addAnnotation
+		  (getJavaTransformType1_Bean(), 
+		   source, 
+		   new String[] {
+			 "kind", "attribute",
+			 "name", "bean"
+		   });		
+		addAnnotation
+		  (javaTransformTypeObjectEDataType, 
+		   source, 
+		   new String[] {
+			 "name", "javaTransformType:Object",
+			 "baseType", "javaTransformType"
+		   });			
+		addAnnotation
+		  (jaxbTransformTypeEClass, 
+		   source, 
+		   new String[] {
+			 "name", "JAXBTransformType",
+			 "kind", "empty"
+		   });			
+		addAnnotation
+		  (jsonTransformTypeEClass, 
+		   source, 
+		   new String[] {
+			 "name", "JsonTransformType",
+			 "kind", "empty"
+		   });		
+		addAnnotation
+		  (smooksTransformTypeEEnum, 
+		   source, 
+		   new String[] {
+			 "name", "smooksTransformType"
+		   });						
+		addAnnotation
+		  (smooksTransformType1EClass, 
+		   source, 
+		   new String[] {
+			 "name", "SmooksTransformType",
+			 "kind", "empty"
+		   });		
+		addAnnotation
+		  (getSmooksTransformType1_Type(), 
+		   source, 
+		   new String[] {
+			 "name", "type",
+			 "kind", "attribute"
+		   });		
+		addAnnotation
+		  (getSmooksTransformType1_Config(), 
+		   source, 
+		   new String[] {
+			 "name", "config",
+			 "kind", "attribute"
+		   });		
+		addAnnotation
+		  (getSmooksTransformType1_ReportPath(), 
+		   source, 
+		   new String[] {
+			 "name", "reportPath",
+			 "kind", "attribute"
+		   });		
+		addAnnotation
+		  (smooksTransformTypeObjectEDataType, 
+		   source, 
+		   new String[] {
+			 "name", "smooksTransformType:Object",
+			 "baseType", "smooksTransformType"
+		   });			
+		addAnnotation
+		  (xsltTransformTypeEClass, 
+		   source, 
+		   new String[] {
+			 "name", "XsltTransformType",
+			 "kind", "empty"
+		   });			
+		addAnnotation
+		  (dozerTransformTypeEClass, 
+		   source, 
+		   new String[] {
+			 "name", "DozerTransformType",
+			 "kind", "empty"
+		   });		
+		addAnnotation
+		  (getDozerTransformType_Config(), 
+		   source, 
+		   new String[] {
+			 "name", "config",
+			 "kind", "attribute"
+		   });
+	}
 
 } //TransformPackageImpl

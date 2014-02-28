@@ -22,11 +22,11 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  */
 public interface ExtendableType extends EObject {
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @model kind="operation"
-     * @generated
-     */
+	 * @model kind="operation"
+	 * @generated
+	 */
     EStructuralFeature getDocumentFeature();
 
 } // ExtendableType

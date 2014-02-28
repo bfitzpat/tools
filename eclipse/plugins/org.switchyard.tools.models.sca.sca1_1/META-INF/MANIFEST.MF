@@ -11,5 +11,7 @@ Export-Package: org.eclipse.soa.sca.sca1_1.model.sca,
  org.eclipse.soa.sca.sca1_1.model.sca.impl,
  org.eclipse.soa.sca.sca1_1.model.sca.util
 Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.switchyard.tools.models.sca.core;visibility:=reexport
 Bundle-ActivationPolicy: lazy

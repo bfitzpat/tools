@@ -39,7 +39,7 @@ public class InstanceFactoryImpl extends EFactoryImpl implements InstanceFactory
 	 */
 	public static InstanceFactory init() {
 		try {
-			InstanceFactory theInstanceFactory = (InstanceFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.w3.org/ns/wsdl-instance"); 
+			InstanceFactory theInstanceFactory = (InstanceFactory)EPackage.Registry.INSTANCE.getEFactory(InstancePackage.eNS_URI);
 			if (theInstanceFactory != null) {
 				return theInstanceFactory;
 			}
@@ -122,8 +122,7 @@ public class InstanceFactoryImpl extends EFactoryImpl implements InstanceFactory
 	public List<String> createWsdlLocationTypeFromString(EDataType eDataType, String initialValue) {
 		if (initialValue == null) return null;
 		List<String> result = new ArrayList<String>();
-		for (StringTokenizer stringTokenizer = new StringTokenizer(initialValue); stringTokenizer.hasMoreTokens(); ) {
-			String item = stringTokenizer.nextToken();
+		for (String item : split(initialValue)) {
 			result.add((String)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.ANY_URI, item));
 		}
 		return result;

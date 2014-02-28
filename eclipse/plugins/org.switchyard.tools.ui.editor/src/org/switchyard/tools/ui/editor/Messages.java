@@ -157,6 +157,16 @@ public class Messages extends NLS {
     public static String description_tool_wire;
     public static String description_udpBindingDetails;
     public static String description_updateSwitchYardCapabilities;
+    public static String DozerTransformProvider_Browse_Dialog_title;
+    public static String DozerTransformProvider_Dozer_File_Browse_Button;
+    public static String DozerTransformProvider_Dozer_File_Label;
+    public static String DozerTransformProvider_DozerTransformer_DisplayName;
+    public static String DozerTransformProvider_duplicate_file_message;
+    public static String DozerTransformProvider_file_does_not_exist_message;
+    public static String DozerTransformProvider_file_not_on_classpath_message;
+    public static String DozerTransformProvider_invalid_path_message;
+    public static String DozerTransformProvider_New_File_Checkbox;
+    public static String DozerTransformProvider_only_supports_java_types_message;
     public static String error_cannotModifyGeneratedConfiguration;
     public static String error_cannotSynchronize;
     public static String error_compositeReferenceAlreadyExists;
@@ -407,6 +417,7 @@ public class Messages extends NLS {
     public static String label_logType;
     public static String label_mail;
     public static String Label_maxMessagesPerPoll;
+    public static String LabelAdapter_Dozer_Transform_Label;
     public static String label_manifest;
     public static String label_matchingItems;
     public static String label_maximumConcurrentConsumers;

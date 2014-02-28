@@ -38,286 +38,310 @@ import org.switchyard.tools.models.switchyard1_0.transform.util.TransformAdapter
  */
 public class TransformItemProviderAdapterFactory extends TransformAdapterFactory implements ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
-     * This keeps track of the root adapter factory that delegates to this adapter factory.
-     * <!-- begin-user-doc -->
+	 * This keeps track of the root adapter factory that delegates to this adapter factory.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected ComposedAdapterFactory parentAdapterFactory;
 
     /**
-     * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}.
-     * <!-- begin-user-doc -->
+	 * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected IChangeNotifier changeNotifier = new ChangeNotifier();
 
     /**
-     * This keeps track of all the supported types checked by {@link #isFactoryForType isFactoryForType}.
-     * <!-- begin-user-doc -->
+	 * This keeps track of all the supported types checked by {@link #isFactoryForType isFactoryForType}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected Collection<Object> supportedTypes = new ArrayList<Object>();
 
     /**
-     * This constructs an instance.
-     * <!-- begin-user-doc -->
+	 * This constructs an instance.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public TransformItemProviderAdapterFactory() {
-        supportedTypes.add(IEditingDomainItemProvider.class);
-        supportedTypes.add(IStructuredItemContentProvider.class);
-        supportedTypes.add(ITreeItemContentProvider.class);
-        supportedTypes.add(IItemLabelProvider.class);
-        supportedTypes.add(IItemPropertySource.class);
-    }
+		supportedTypes.add(IEditingDomainItemProvider.class);
+		supportedTypes.add(IStructuredItemContentProvider.class);
+		supportedTypes.add(ITreeItemContentProvider.class);
+		supportedTypes.add(IItemLabelProvider.class);
+		supportedTypes.add(IItemPropertySource.class);
+	}
 
     /**
-     * This keeps track of the one adapter used for all {@link org.switchyard.tools.models.switchyard1_0.transform.DocumentRoot} instances.
-     * <!-- begin-user-doc -->
+	 * This keeps track of the one adapter used for all {@link org.switchyard.tools.models.switchyard1_0.transform.DocumentRoot} instances.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected DocumentRootItemProvider documentRootItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.switchyard.tools.models.switchyard1_0.transform.DocumentRoot}.
-     * <!-- begin-user-doc -->
+	 * This creates an adapter for a {@link org.switchyard.tools.models.switchyard1_0.transform.DocumentRoot}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter createDocumentRootAdapter() {
-        if (documentRootItemProvider == null) {
-            documentRootItemProvider = new DocumentRootItemProvider(this);
-        }
+		if (documentRootItemProvider == null) {
+			documentRootItemProvider = new DocumentRootItemProvider(this);
+		}
 
-        return documentRootItemProvider;
-    }
+		return documentRootItemProvider;
+	}
 
     /**
-     * This keeps track of the one adapter used for all {@link org.switchyard.tools.models.switchyard1_0.transform.JavaTransformType1} instances.
-     * <!-- begin-user-doc -->
+	 * This keeps track of the one adapter used for all {@link org.switchyard.tools.models.switchyard1_0.transform.JavaTransformType1} instances.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected JavaTransformType1ItemProvider javaTransformType1ItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.switchyard.tools.models.switchyard1_0.transform.JavaTransformType1}.
-     * <!-- begin-user-doc -->
+	 * This creates an adapter for a {@link org.switchyard.tools.models.switchyard1_0.transform.JavaTransformType1}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter createJavaTransformType1Adapter() {
-        if (javaTransformType1ItemProvider == null) {
-            javaTransformType1ItemProvider = new JavaTransformType1ItemProvider(this);
-        }
+		if (javaTransformType1ItemProvider == null) {
+			javaTransformType1ItemProvider = new JavaTransformType1ItemProvider(this);
+		}
 
-        return javaTransformType1ItemProvider;
-    }
+		return javaTransformType1ItemProvider;
+	}
 
     /**
-     * This keeps track of the one adapter used for all {@link org.switchyard.tools.models.switchyard1_0.transform.JAXBTransformType} instances.
-     * <!-- begin-user-doc -->
+	 * This keeps track of the one adapter used for all {@link org.switchyard.tools.models.switchyard1_0.transform.JAXBTransformType} instances.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected JAXBTransformTypeItemProvider jaxbTransformTypeItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.switchyard.tools.models.switchyard1_0.transform.JAXBTransformType}.
-     * <!-- begin-user-doc -->
+	 * This creates an adapter for a {@link org.switchyard.tools.models.switchyard1_0.transform.JAXBTransformType}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter createJAXBTransformTypeAdapter() {
-        if (jaxbTransformTypeItemProvider == null) {
-            jaxbTransformTypeItemProvider = new JAXBTransformTypeItemProvider(this);
-        }
+		if (jaxbTransformTypeItemProvider == null) {
+			jaxbTransformTypeItemProvider = new JAXBTransformTypeItemProvider(this);
+		}
 
-        return jaxbTransformTypeItemProvider;
-    }
+		return jaxbTransformTypeItemProvider;
+	}
 
     /**
-     * This keeps track of the one adapter used for all {@link org.switchyard.tools.models.switchyard1_0.transform.JsonTransformType} instances.
-     * <!-- begin-user-doc -->
+	 * This keeps track of the one adapter used for all {@link org.switchyard.tools.models.switchyard1_0.transform.JsonTransformType} instances.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected JsonTransformTypeItemProvider jsonTransformTypeItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.switchyard.tools.models.switchyard1_0.transform.JsonTransformType}.
-     * <!-- begin-user-doc -->
+	 * This creates an adapter for a {@link org.switchyard.tools.models.switchyard1_0.transform.JsonTransformType}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter createJsonTransformTypeAdapter() {
-        if (jsonTransformTypeItemProvider == null) {
-            jsonTransformTypeItemProvider = new JsonTransformTypeItemProvider(this);
-        }
+		if (jsonTransformTypeItemProvider == null) {
+			jsonTransformTypeItemProvider = new JsonTransformTypeItemProvider(this);
+		}
 
-        return jsonTransformTypeItemProvider;
-    }
+		return jsonTransformTypeItemProvider;
+	}
 
     /**
-     * This keeps track of the one adapter used for all {@link org.switchyard.tools.models.switchyard1_0.transform.SmooksTransformType1} instances.
-     * <!-- begin-user-doc -->
+	 * This keeps track of the one adapter used for all {@link org.switchyard.tools.models.switchyard1_0.transform.SmooksTransformType1} instances.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected SmooksTransformType1ItemProvider smooksTransformType1ItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.switchyard.tools.models.switchyard1_0.transform.SmooksTransformType1}.
-     * <!-- begin-user-doc -->
+	 * This creates an adapter for a {@link org.switchyard.tools.models.switchyard1_0.transform.SmooksTransformType1}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter createSmooksTransformType1Adapter() {
-        if (smooksTransformType1ItemProvider == null) {
-            smooksTransformType1ItemProvider = new SmooksTransformType1ItemProvider(this);
-        }
+		if (smooksTransformType1ItemProvider == null) {
+			smooksTransformType1ItemProvider = new SmooksTransformType1ItemProvider(this);
+		}
 
-        return smooksTransformType1ItemProvider;
-    }
+		return smooksTransformType1ItemProvider;
+	}
 
     /**
-     * This keeps track of the one adapter used for all {@link org.switchyard.tools.models.switchyard1_0.transform.XsltTransformType} instances.
-     * <!-- begin-user-doc -->
+	 * This keeps track of the one adapter used for all {@link org.switchyard.tools.models.switchyard1_0.transform.XsltTransformType} instances.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected XsltTransformTypeItemProvider xsltTransformTypeItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.switchyard.tools.models.switchyard1_0.transform.XsltTransformType}.
-     * <!-- begin-user-doc -->
+	 * This creates an adapter for a {@link org.switchyard.tools.models.switchyard1_0.transform.XsltTransformType}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter createXsltTransformTypeAdapter() {
-        if (xsltTransformTypeItemProvider == null) {
-            xsltTransformTypeItemProvider = new XsltTransformTypeItemProvider(this);
-        }
+		if (xsltTransformTypeItemProvider == null) {
+			xsltTransformTypeItemProvider = new XsltTransformTypeItemProvider(this);
+		}
 
-        return xsltTransformTypeItemProvider;
-    }
+		return xsltTransformTypeItemProvider;
+	}
 
     /**
-     * This returns the root adapter factory that contains this factory.
-     * <!-- begin-user-doc -->
+	 * This keeps track of the one adapter used for all {@link org.switchyard.tools.models.switchyard1_0.transform.DozerTransformType} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected DozerTransformTypeItemProvider dozerTransformTypeItemProvider;
+
+				/**
+	 * This creates an adapter for a {@link org.switchyard.tools.models.switchyard1_0.transform.DozerTransformType}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createDozerTransformTypeAdapter() {
+		if (dozerTransformTypeItemProvider == null) {
+			dozerTransformTypeItemProvider = new DozerTransformTypeItemProvider(this);
+		}
+
+		return dozerTransformTypeItemProvider;
+	}
+
+				/**
+	 * This returns the root adapter factory that contains this factory.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public ComposeableAdapterFactory getRootAdapterFactory() {
-        return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
-    }
+		return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
+	}
 
     /**
-     * This sets the composed adapter factory that contains this factory.
-     * <!-- begin-user-doc -->
+	 * This sets the composed adapter factory that contains this factory.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setParentAdapterFactory(ComposedAdapterFactory parentAdapterFactory) {
-        this.parentAdapterFactory = parentAdapterFactory;
-    }
+		this.parentAdapterFactory = parentAdapterFactory;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean isFactoryForType(Object type) {
-        return supportedTypes.contains(type) || super.isFactoryForType(type);
-    }
+		return supportedTypes.contains(type) || super.isFactoryForType(type);
+	}
 
     /**
-     * This implementation substitutes the factory itself as the key for the adapter.
-     * <!-- begin-user-doc -->
+	 * This implementation substitutes the factory itself as the key for the adapter.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter adapt(Notifier notifier, Object type) {
-        return super.adapt(notifier, this);
-    }
+		return super.adapt(notifier, this);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object adapt(Object object, Object type) {
-        if (isFactoryForType(type)) {
-            Object adapter = super.adapt(object, type);
-            if (!(type instanceof Class<?>) || (((Class<?>)type).isInstance(adapter))) {
-                return adapter;
-            }
-        }
+		if (isFactoryForType(type)) {
+			Object adapter = super.adapt(object, type);
+			if (!(type instanceof Class<?>) || (((Class<?>)type).isInstance(adapter))) {
+				return adapter;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * This adds a listener.
-     * <!-- begin-user-doc -->
+	 * This adds a listener.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void addListener(INotifyChangedListener notifyChangedListener) {
-        changeNotifier.addListener(notifyChangedListener);
-    }
+		changeNotifier.addListener(notifyChangedListener);
+	}
 
     /**
-     * This removes a listener.
-     * <!-- begin-user-doc -->
+	 * This removes a listener.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void removeListener(INotifyChangedListener notifyChangedListener) {
-        changeNotifier.removeListener(notifyChangedListener);
-    }
+		changeNotifier.removeListener(notifyChangedListener);
+	}
 
     /**
-     * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}.
-     * <!-- begin-user-doc -->
+	 * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void fireNotifyChanged(Notification notification) {
-        changeNotifier.fireNotifyChanged(notification);
+		changeNotifier.fireNotifyChanged(notification);
 
-        if (parentAdapterFactory != null) {
-            parentAdapterFactory.fireNotifyChanged(notification);
-        }
-    }
+		if (parentAdapterFactory != null) {
+			parentAdapterFactory.fireNotifyChanged(notification);
+		}
+	}
 
     /**
-     * This disposes all of the item providers created by this factory. 
-     * <!-- begin-user-doc -->
+	 * This disposes all of the item providers created by this factory. 
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void dispose() {
-        if (documentRootItemProvider != null) documentRootItemProvider.dispose();
-        if (javaTransformType1ItemProvider != null) javaTransformType1ItemProvider.dispose();
-        if (jaxbTransformTypeItemProvider != null) jaxbTransformTypeItemProvider.dispose();
-        if (jsonTransformTypeItemProvider != null) jsonTransformTypeItemProvider.dispose();
-        if (smooksTransformType1ItemProvider != null) smooksTransformType1ItemProvider.dispose();
-        if (xsltTransformTypeItemProvider != null) xsltTransformTypeItemProvider.dispose();
-    }
+		if (documentRootItemProvider != null) documentRootItemProvider.dispose();
+		if (javaTransformType1ItemProvider != null) javaTransformType1ItemProvider.dispose();
+		if (jaxbTransformTypeItemProvider != null) jaxbTransformTypeItemProvider.dispose();
+		if (jsonTransformTypeItemProvider != null) jsonTransformTypeItemProvider.dispose();
+		if (smooksTransformType1ItemProvider != null) smooksTransformType1ItemProvider.dispose();
+		if (xsltTransformTypeItemProvider != null) xsltTransformTypeItemProvider.dispose();
+		if (dozerTransformTypeItemProvider != null) dozerTransformTypeItemProvider.dispose();
+	}
 
 }
