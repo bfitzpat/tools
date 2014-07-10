@@ -53,6 +53,8 @@ public class Messages extends NLS {
     public static String CamelSAPComposite_Server_name_empty_error;
     public static String CamelSAPComposite_Server_name_label;
     public static String CamelSAPComposite_Transacted_checkbox_label;
+    public static String CreateBindingFeature_ReplaceReferenceBinding_description;
+    public static String CreateBindingFeature_ReplaceReferenceBinding_title;
     public static String category_menu_binding;
     public static String category_menu_component;
     public static String category_menu_implementation;

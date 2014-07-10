@@ -14,12 +14,14 @@ import java.util.Collection;
 
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateContext;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.soa.sca.sca1_1.model.sca.Binding;
 import org.eclipse.soa.sca.sca1_1.model.sca.Contract;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.switchyard.tools.ui.editor.BindingTypeExtensionManager;
 import org.switchyard.tools.ui.editor.ImageProvider;
+import org.switchyard.tools.ui.editor.Messages;
 import org.switchyard.tools.ui.editor.components.camel.quartz.CamelQuartzBindingFactory;
 import org.switchyard.tools.ui.editor.diagram.shared.CreateTypeFeature;
 import org.switchyard.tools.ui.editor.diagram.shared.ITypeFactory;
@@ -67,6 +69,7 @@ public class CreateBindingFeature extends CreateTypeFeature<Binding, Contract> {
     @Override
     public boolean canCreate(ICreateContext context) {
         Object bo = getBusinessObjectForPictogramElement(context.getTargetContainer());
+        
         // we don't allow bindings for all Contract types
         if (bo instanceof Reference && getFactory() instanceof CamelQuartzBindingFactory) {
             return false;
@@ -89,6 +92,28 @@ public class CreateBindingFeature extends CreateTypeFeature<Binding, Contract> {
     protected Collection<String> getRequiredCapabilities(Binding newObject) {
         return BindingTypeExtensionManager.instance().getExtensionFor(newObject.getClass())
                 .getRequiredCapabilities(newObject);
+    }
+
+    /* (non-Javadoc)
+     * @see org.switchyard.tools.ui.editor.diagram.shared.CreateTypeFeature#create(org.eclipse.graphiti.features.context.ICreateContext)
+     */
+    @Override
+    public Object[] create(ICreateContext context) {
+        // we only allow one binding per reference, offer to replace it
+        Object bo = getBusinessObjectForPictogramElement(context.getTargetContainer());
+        if (bo instanceof Reference && ((Reference) bo).getBinding() != null
+                && !((Reference) bo).getBinding().isEmpty()) {
+            if (!MessageDialog
+                    .openQuestion(
+                            getShell(),
+                            Messages.CreateBindingFeature_ReplaceReferenceBinding_title,
+                            Messages.CreateBindingFeature_ReplaceReferenceBinding_description)) {
+                return null;
+            } else {
+                ((Reference) bo).getBinding().clear();
+            }
+        }
+        return super.create(context);
     }
 
 }
