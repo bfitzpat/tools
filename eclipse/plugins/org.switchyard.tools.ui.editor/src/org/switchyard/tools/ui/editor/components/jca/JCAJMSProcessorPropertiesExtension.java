@@ -44,6 +44,7 @@ import org.switchyard.tools.models.switchyard1_0.jca.JcaPackage;
 import org.switchyard.tools.models.switchyard1_0.jca.Property;
 import org.switchyard.tools.ui.editor.Messages;
 import org.switchyard.tools.ui.editor.databinding.EMFUpdateValueStrategyNullForEmptyString;
+import org.switchyard.tools.ui.editor.databinding.ObservablesUtil;
 import org.switchyard.tools.ui.editor.databinding.SWTValueUpdater;
 
 /**
@@ -57,7 +58,6 @@ public class JCAJMSProcessorPropertiesExtension implements
      * These properties correspond to setters on the JMSProcessor class, e.g.
      * setConnectionFactoryJNDIName().
      */
-    private static final String CONNECTION_FACTORY_JNDI_NAME_PROP = "connectionFactoryJNDIName"; //$NON-NLS-1$
     private static final String JNDI_PROPERTIES_FILE_PROP = "jndiPropertiesFileName"; //$NON-NLS-1$
 
     private static final String DESTINATION_PROP = "destination"; //$NON-NLS-1$
@@ -71,7 +71,6 @@ public class JCAJMSProcessorPropertiesExtension implements
     @SuppressWarnings("serial")
     private static final Set<String> HIDDEN_PROPERTIES = new HashSet<String>() {
         {
-            add(CONNECTION_FACTORY_JNDI_NAME_PROP);
             add(JNDI_PROPERTIES_FILE_PROP);
             add(DESTINATION_PROP);
             add(USER_NAME_PROP);
@@ -102,7 +101,6 @@ public class JCAJMSProcessorPropertiesExtension implements
         private JCAProcessorPropertyTable _propsList;
         private Text _jndiPropsFileNameText;
         private Text _destinationJndiPropertiesFileNameText;
-        private Text _connectionFactoryJNDINameText;
         private Combo _messageTypeCombo;
         private Text _usernameText;
         private Text _passwordText;
@@ -110,6 +108,7 @@ public class JCAJMSProcessorPropertiesExtension implements
         private Button _transactedCheckbox;
         private Text _destinationText;
         private WritableValue _bindingValue;
+        private Text _jndiNameText;
 
         @Override
         public String getTitle() {
@@ -126,14 +125,14 @@ public class JCAJMSProcessorPropertiesExtension implements
             _panel = getToolkit().createComposite(parent, style);
             _panel.setLayout(new GridLayout(2, false));
             
+            _jndiNameText = createLabelAndText(_panel, "JNDI Name");
+
             Group processorPropsGroup = new Group(_panel, SWT.NONE);
             processorPropsGroup.setText(getTitle());
             processorPropsGroup.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, true, 3, 1));
             processorPropsGroup.setLayout(new GridLayout(2, false));
             getToolkit().adapt(processorPropsGroup);
             
-            _connectionFactoryJNDINameText = createLabelAndText(processorPropsGroup, Messages.JCAJMSEndpointPropertiesExtension_ConnectionFactoryJNDIName_label);
-
             _destinationText = createLabelAndText(processorPropsGroup, "Destination");
 
             _messageTypeCombo = createLabelAndCombo(processorPropsGroup, Messages.JCAJMSEndpointPropertiesExtension_MessageType_label, true);
@@ -150,7 +149,7 @@ public class JCAJMSProcessorPropertiesExtension implements
             _acknowledgeModeCombo.add("Auto-acknowledge"); //$NON-NLS-1$
             _acknowledgeModeCombo.add("Dups-ok-acknowledge"); //$NON-NLS-1$
             
-            _transactedCheckbox = createCheckbox(processorPropsGroup, "Transacted");
+            _transactedCheckbox = createCheckbox(processorPropsGroup, "Transacted", 2);
 
             _jndiPropsFileNameText = createLabelAndText(processorPropsGroup, Messages.JCAJMSEndpointPropertiesExtension_JNDIPropsFileName_Label);
 
@@ -185,7 +184,8 @@ public class JCAJMSProcessorPropertiesExtension implements
 
             final FeaturePath propertiesFeaturePath = FeaturePath.fromList(
                     JcaPackage.Literals.JCA_BINDING__OUTBOUND_INTERACTION,
-                    JcaPackage.Literals.JCA_OUTBOUND_INTERACTION__PROCESSOR, JcaPackage.Literals.PROCESSOR__PROPERTY);
+                    JcaPackage.Literals.JCA_OUTBOUND_INTERACTION__PROCESSOR, 
+                    JcaPackage.Literals.PROCESSOR__PROPERTY);
             final IObservableList propertiesList = (domain == null ? EMFProperties.list(propertiesFeaturePath)
                     : EMFEditProperties.list(domain, propertiesFeaturePath)).observeDetail(_bindingValue);
 
@@ -194,8 +194,14 @@ public class JCAJMSProcessorPropertiesExtension implements
                     ACKNOWLEDGE_MODE_PROP), new EMFUpdateValueStrategyNullForEmptyString(null,
                     UpdateValueStrategy.POLICY_UPDATE), null);
 
-            binding = context.bindValue(SWTObservables.observeText(_connectionFactoryJNDINameText, SWT.Modify),
-                    new JCANamedPropertyObservableValue(realm, propertiesList, CONNECTION_FACTORY_JNDI_NAME_PROP),
+            final FeaturePath jndiNameFeaturePath = FeaturePath.fromList(
+                    JcaPackage.Literals.JCA_BINDING__OUTBOUND_CONNECTION,
+                    JcaPackage.Literals.JCA_OUTBOUND_CONNECTION__CONNECTION,
+                    JcaPackage.Literals.CONNECTION__JNDI_NAME);
+            binding = context.bindValue(
+                    SWTObservables.observeText(_jndiNameText, SWT.Modify),
+                    ObservablesUtil.observeDetailValue(domain, _bindingValue,
+                            jndiNameFeaturePath),
                     new EMFUpdateValueStrategyNullForEmptyString(null, UpdateValueStrategy.POLICY_CONVERT), null);
             ControlDecorationSupport.create(SWTValueUpdater.attach(binding), SWT.TOP | SWT.LEFT, _panel);
 
