@@ -136,9 +136,7 @@ public class SwitchYardFacetInstallActionDelegate implements IDelegate {
         if (honorAllSchemaLocationsBoolean.booleanValue()) {
             IEclipsePreferences node = contexts[0].getNode(XMLCorePlugin.getDefault().getBundle().getSymbolicName());
             node.putBoolean(XMLCorePreferenceNames.HONOUR_ALL_SCHEMA_LOCATIONS, false);
-            if (contexts[0] instanceof ProjectScope) {
-                node.putBoolean(XMLCorePreferenceNames.USE_PROJECT_SETTINGS, true);
-            }
+            node.putBoolean(XMLCorePreferenceNames.USE_PROJECT_SETTINGS, true);
         }
     }
 
