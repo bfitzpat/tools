@@ -50,6 +50,9 @@ public final class SwitchYardDebugUtil {
 
     /** The id for transform breakpoint markers. */
     public static final String SWITCHYARD_CONTEXT_ID = "org.switchyard.tools.ui.debug.context";
+    
+    /** The id for the SwitchYard Context Views. */
+    public static final String SWITCHYARD_CONTEXT_VIEW_ID = "org.switchyard.tools.ui.debug.view.switchYardContext";
 
     /**
      * The type of service breakpoint.

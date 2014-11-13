@@ -45,6 +45,7 @@ public abstract class JavaInterfaceVariable extends DebugElement implements IJav
     private final String _getterExpression;
     private final String _setterMethod;
     private final IJavaObject _underlyingObject;
+    private JavaLogicalStructure _javaLogicalStructure;
     private IValue _value;
 
     /**
@@ -146,8 +147,11 @@ public abstract class JavaInterfaceVariable extends DebugElement implements IJav
         if (_getterExpression == null) {
             return getUnderlyingObject();
         }
-        return (IJavaValue) new JavaLogicalStructure(_underlyingObject.getReferenceTypeName(), true, _getterExpression,
-                null, null).getLogicalStructure(_underlyingObject);
+        if (_javaLogicalStructure == null) {
+        	_javaLogicalStructure = new JavaLogicalStructure(_underlyingObject.getReferenceTypeName(), true, _getterExpression,
+                    null, null);
+        }
+        return (IJavaValue) _javaLogicalStructure.getLogicalStructure(_underlyingObject);
     }
 
     @Override

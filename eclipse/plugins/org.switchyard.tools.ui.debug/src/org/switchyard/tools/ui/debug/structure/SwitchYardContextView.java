@@ -18,6 +18,7 @@ import org.eclipse.jdt.debug.core.IJavaThread;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.SWT;
 import org.switchyard.tools.ui.debug.SwitchYardDebugUtil;
 
 /**
@@ -29,8 +30,20 @@ import org.switchyard.tools.ui.debug.SwitchYardDebugUtil;
 @SuppressWarnings("restriction")
 public class SwitchYardContextView extends VariablesView {
 
+	@Override
+	protected int getViewerStyle() {
+		return SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL | SWT.TITLE
+				| SWT.VIRTUAL | SWT.FULL_SELECTION;
+	}
+
+//	@Override
+//    protected String getPresentationContextSecondaryId() {
+//        return SwitchYardDebugUtil.SWITCHYARD_CONTEXT_ID;
+////		return SwitchYardDebugUtil.SWITCHYARD_CONTEXT_VIEW_ID;
+//    }
+
     @Override
-    protected String getPresentationContextSecondaryId() {
+    protected String getPresentationContextId() {
         return SwitchYardDebugUtil.SWITCHYARD_CONTEXT_ID;
     }
 
@@ -40,19 +53,18 @@ public class SwitchYardContextView extends VariablesView {
      */
     @Override
     protected void contextActivated(ISelection selection) {
-        if (selection instanceof IStructuredSelection) {
+        if (selection != null && selection instanceof IStructuredSelection) {
             final Object source = ((IStructuredSelection) selection).getFirstElement();
             if (source instanceof IAdaptable) {
                 final IJavaStackFrame javaFrame = (IJavaStackFrame) ((IAdaptable) source)
                         .getAdapter(IJavaStackFrame.class);
                 if (javaFrame != null) {
-                    super.contextActivated(new StructuredSelection(new SwitchYardContext((IJavaThread) javaFrame
-                            .getThread())));
+                	final SwitchYardContext context = new SwitchYardContext((IJavaThread) javaFrame.getThread());
+                    super.contextActivated(new StructuredSelection(context));
                     return;
                 }
             }
         }
-        super.becomesHidden();
+    	super.becomesHidden();
     }
-
 }

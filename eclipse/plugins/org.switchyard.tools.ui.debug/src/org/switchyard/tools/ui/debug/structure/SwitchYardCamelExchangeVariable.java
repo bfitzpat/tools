@@ -26,6 +26,8 @@ import org.eclipse.jdt.internal.debug.core.logicalstructures.JavaLogicalStructur
 public class SwitchYardCamelExchangeVariable extends SwitchYardExchangeVariable {
 
     protected static final String TYPE = "org.apache.camel.Exchange";
+    private JavaLogicalStructure _javaLogicalStructure;
+    private static JavaLogicalStructure _staticJavaLogicalStructure;
 
     /**
      * @param source the source value
@@ -33,9 +35,13 @@ public class SwitchYardCamelExchangeVariable extends SwitchYardExchangeVariable 
      * @throws CoreException if something goes wrong
      */
     public static IValue newValue(IJavaObject source) throws CoreException {
-        return SwitchYardExchangeVariable.newValue((IJavaObject) new JavaLogicalStructure(source.getReferenceTypeName(), true,
-                "new org.switchyard.bus.camel.CamelExchange(this)", null, null)
-                .getLogicalStructure(source));
+        if (_staticJavaLogicalStructure == null) {
+        	_staticJavaLogicalStructure = new JavaLogicalStructure(
+        			source.getReferenceTypeName(), true, 
+        			"new org.switchyard.bus.camel.CamelExchange(this)",
+                    null, null);
+        }
+        return (IJavaValue) _staticJavaLogicalStructure.getLogicalStructure(source);
     }
 
     /**
@@ -49,9 +55,13 @@ public class SwitchYardCamelExchangeVariable extends SwitchYardExchangeVariable 
 
     @Override
     protected IJavaValue getRawValue() throws CoreException {
-        return (IJavaValue) new JavaLogicalStructure(getUnderlyingObject().getReferenceTypeName(), true,
-                "new org.switchyard.bus.camel.CamelExchange(this)", null, null)
-                .getLogicalStructure(getUnderlyingObject());
+        if (_javaLogicalStructure == null) {
+        	_javaLogicalStructure = new JavaLogicalStructure(
+        			getUnderlyingObject().getReferenceTypeName(), true, 
+        			"new org.switchyard.bus.camel.CamelExchange(this)",
+                    null, null);
+        }
+        return (IJavaValue) _javaLogicalStructure.getLogicalStructure(getUnderlyingObject());
     }
 
 }

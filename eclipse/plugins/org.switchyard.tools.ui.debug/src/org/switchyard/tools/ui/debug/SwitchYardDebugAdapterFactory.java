@@ -27,7 +27,6 @@ import org.eclipse.debug.ui.BreakpointTypeCategory;
 import org.eclipse.debug.ui.IBreakpointTypeCategory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.jdt.internal.debug.ui.variables.JavaVariableColumnPresentationFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentReference;
@@ -48,8 +47,11 @@ import org.switchyard.tools.ui.debug.structure.SwitchYardModelProxyFactory;
 @SuppressWarnings({"rawtypes", "restriction" })
 public class SwitchYardDebugAdapterFactory implements IAdapterFactory {
 
-    private static final Class[] TYPES = new Class[] {IBreakpointTypeCategory.class, IWorkbenchAdapter.class,
-            IModelProxyFactory.class, ServiceInteractionBreakpoint.class, TransformSequenceBreakpoint.class,
+    private static final Class[] TYPES = new Class[] {IBreakpointTypeCategory.class, 
+    		IWorkbenchAdapter.class,
+            IModelProxyFactory.class, 
+            ServiceInteractionBreakpoint.class, 
+            TransformSequenceBreakpoint.class,
             ValidateHandlerBreakpoint.class };
 
     @Override
@@ -66,7 +68,7 @@ public class SwitchYardDebugAdapterFactory implements IAdapterFactory {
         } else if (adapterType == IModelProxyFactory.class) {
             return new SwitchYardModelProxyFactory();
         } else if (adapterType == IColumnPresentationFactory.class) {
-            return new JavaVariableColumnPresentationFactory();
+            return new SwitchYardDebugVariableAdapterFactory();
         } else if (adapterType == ServiceInteractionBreakpoint.class) {
             return adaptServiceInteractionBreakpoint(adaptableObject);
         } else if (adapterType == TransformSequenceBreakpoint.class) {

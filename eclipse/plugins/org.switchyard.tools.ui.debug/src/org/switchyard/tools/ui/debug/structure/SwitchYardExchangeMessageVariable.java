@@ -54,6 +54,7 @@ public class SwitchYardExchangeMessageVariable extends JavaInterfaceVariable {
     private static final class SwitchYardExchangeValue extends JavaInterfaceValue {
 
         private IVariable[] _variables;
+        private JavaLogicalStructure _javaLogicalStructure;
 
         private SwitchYardExchangeValue(IJavaObject delegate) {
             super(delegate);
@@ -73,9 +74,12 @@ public class SwitchYardExchangeMessageVariable extends JavaInterfaceVariable {
                     variables.add(new SwitchYardCamelExchangeVariable((IJavaObject) getDelegate()) {
                         @Override
                         protected IJavaValue getRawValue() throws CoreException {
-                            return (IJavaValue) new JavaLogicalStructure(getUnderlyingObject().getReferenceTypeName(),
-                                    true, "new org.switchyard.bus.camel.CamelExchange(getExchange())", null, null)
-                                    .getLogicalStructure(getUnderlyingObject());
+                            if (_javaLogicalStructure == null) {
+                            	_javaLogicalStructure = new JavaLogicalStructure(getUnderlyingObject().getReferenceTypeName(), 
+                            			true, "new org.switchyard.bus.camel.CamelExchange(getExchange())",
+                                        null, null);
+                            }
+                            return (IJavaValue) _javaLogicalStructure.getLogicalStructure(getUnderlyingObject());
                         }
                     });
                 }
