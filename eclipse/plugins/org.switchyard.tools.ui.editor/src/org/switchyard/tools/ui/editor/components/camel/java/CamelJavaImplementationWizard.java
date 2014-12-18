@@ -60,6 +60,10 @@ public class CamelJavaImplementationWizard extends LinkedWizardBase implements I
         }
     }
 
+    public Component getComponentObject() {
+        return _component;
+    }
+    
     @Override
     public CamelImplementationType getCreatedObject() {
         return _implementation;

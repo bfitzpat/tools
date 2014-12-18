@@ -59,6 +59,10 @@ public class CamelXMLImplementationWizard extends LinkedWizardBase implements II
         }
     }
 
+    public Component getComponentObject() {
+        return _component;
+    }
+
     @Override
     public Implementation getCreatedObject() {
         return _implementation;
