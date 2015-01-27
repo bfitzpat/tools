@@ -79,6 +79,7 @@ public class BindingSCAComposite extends AbstractSYBindingComposite  {
     private SCABinding _binding = null;
     private Text _nameText;
     private Button _clusteredCheckbox;
+    private Button _preferLocalCheckbox;
     private ComboViewer _loadBalancingCombo;
     private Text _loadBalancingCustomClassText;
     private Button _browseLoadBalancingClassButton;
@@ -160,6 +161,8 @@ public class BindingSCAComposite extends AbstractSYBindingComposite  {
         addGridData(_clusteredCheckbox, 3, GridData.FILL_HORIZONTAL);
         
         if (!_showConsumer) {
+            _preferLocalCheckbox = createCheckbox(clusteringGroup, "Prefer Local");
+            addGridData(_preferLocalCheckbox, 3, GridData.FILL_HORIZONTAL);
             _loadBalancingCombo = createLabelAndComboViewer(clusteringGroup, Messages.label_loadBalancing, true);
             addGridData(_loadBalancingCombo.getCombo(), 2, GridData.FILL_HORIZONTAL);
             _loadBalancingCombo.setContentProvider(ArrayContentProvider.getInstance());
@@ -183,6 +186,7 @@ public class BindingSCAComposite extends AbstractSYBindingComposite  {
                     }
                 }
             });
+            _browseLoadBalancingClassButton.setEnabled(false);
         }
 
         return composite;
@@ -273,10 +277,12 @@ public class BindingSCAComposite extends AbstractSYBindingComposite  {
                 new EMFUpdateValueStrategyNullForEmptyString(null,
                         UpdateValueStrategy.POLICY_CONVERT), null);
         ControlDecorationSupport.create(SWTValueUpdater.attach(binding), SWT.TOP | SWT.LEFT);
-        
+
         if (!_showConsumer) {
             final IObservableValue loadBalanceValue = new WritableValue(realm, null, String.class);
             final IObservableValue loadBalanceCustomValue = new WritableValue(realm, null, String.class);
+            final IObservableValue preferLocalValue =  ObservablesUtil.observeDetailValue(domain, _bindingValue,
+                    SwitchyardPackage.eINSTANCE.getDocumentRoot_PreferLocal());
 
             clusteredValue.addChangeListener(new IChangeListener() {
                 
@@ -284,13 +290,21 @@ public class BindingSCAComposite extends AbstractSYBindingComposite  {
                 public void handleChange(ChangeEvent event) {
                     boolean isClustered = ((Boolean) clusteredValue.getValue()).booleanValue();
                     _loadBalancingCombo.getControl().setEnabled(isClustered);
+                    _preferLocalCheckbox.setEnabled(isClustered);
                     String value = (String) loadBalanceValue.getValue();
                     if (!isClustered && value != null) {
                         loadBalanceValue.setValue(null);
+                        preferLocalValue.setValue(null);
                     }
                 }
             });
     
+            binding = context.bindValue(
+                    SWTObservables.observeSelection(_preferLocalCheckbox), preferLocalValue,
+                    new EMFUpdateValueStrategyNullForEmptyString(null,
+                            UpdateValueStrategy.POLICY_CONVERT), null);
+            ControlDecorationSupport.create(SWTValueUpdater.attach(binding), SWT.TOP | SWT.LEFT);
+
             loadBalanceValue.addChangeListener(new IChangeListener() {
                 
                 @Override
