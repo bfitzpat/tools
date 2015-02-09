@@ -81,8 +81,10 @@ public class SwitchYardProjectConfigurator extends AbstractProjectConfigurator {
                 modified = true;
             }
         }
-        // make sure a JEE facet is installed
-        if (UTILITY_MODULE_FACET != null && "jar".equals(request.getMavenProject().getPackaging()) //$NON-NLS-1$
+        // make sure a JEE facet is installed "jar" and "bundle" deployment types
+        if (UTILITY_MODULE_FACET != null 
+                && ("jar".equals(request.getMavenProject().getPackaging()) //$NON-NLS-1$
+                        || "bundle".equals(request.getMavenProject().getPackaging())) //$NON-NLS-1$
                 && !ifpwc.hasProjectFacet(UTILITY_MODULE_FACET)) {
             // add utility module facet
             ifpwc.addProjectFacet(UTILITY_MODULE_FACET.getDefaultVersion());
