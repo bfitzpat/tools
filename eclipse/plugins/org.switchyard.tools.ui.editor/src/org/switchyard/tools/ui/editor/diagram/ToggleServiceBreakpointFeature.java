@@ -32,6 +32,7 @@ import org.eclipse.graphiti.platform.IDiagramContainer;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentReference;
+import org.eclipse.soa.sca.sca1_1.model.sca.ComponentService;
 import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
 import org.eclipse.soa.sca.sca1_1.model.sca.Contract;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
@@ -198,6 +199,13 @@ public class ToggleServiceBreakpointFeature extends AbstractCustomFeature implem
             return new QName(targetNamespace, componentName == null ? contract.getName() : componentName + "/"
                     + contract.getName());
         } else {
+            if (contract instanceof ComponentService) {
+                ComponentService cs = (ComponentService) contract;
+                String promotedName = SwitchYardDebugUtil.getComponentServicePromotedName(cs);
+                if (promotedName != null) {
+                    return new QName(targetNamespace, promotedName);
+                }
+            }
             return new QName(targetNamespace, contract.getName());
         }
     }

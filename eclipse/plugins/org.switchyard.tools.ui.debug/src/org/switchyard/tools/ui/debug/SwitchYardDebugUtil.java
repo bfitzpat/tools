@@ -13,6 +13,7 @@ package org.switchyard.tools.ui.debug;
 
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -21,8 +22,10 @@ import javax.xml.namespace.QName;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentReference;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentService;
+import org.eclipse.soa.sca.sca1_1.model.sca.Composite;
 import org.eclipse.soa.sca.sca1_1.model.sca.Contract;
 import org.eclipse.soa.sca.sca1_1.model.sca.Reference;
 import org.eclipse.soa.sca.sca1_1.model.sca.Service;
@@ -170,6 +173,29 @@ public final class SwitchYardDebugUtil {
     }
 
     private SwitchYardDebugUtil() {
+    }
+
+    /**
+     * If the component service is promoted, we want the promoted name so the
+     * breakpoint stops in the right place.
+     * 
+     * @param cs Incoming component service to check
+     * @return name of the promoted service
+     */
+    public static String getComponentServicePromotedName(ComponentService cs) {
+        if (cs.eContainer() != null) {
+            Component parentComponent = (Component) cs.eContainer();
+            if (parentComponent.eContainer() != null) {
+                Composite parentComposite = (Composite) parentComponent.eContainer();
+                for (Iterator<Service> iterator = parentComposite.getService().iterator(); iterator.hasNext();) {
+                    Service compositeService = iterator.next();
+                    if (compositeService.getPromote().equals(cs)) {
+                        return compositeService.getName();
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 }
