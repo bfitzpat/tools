@@ -23,6 +23,7 @@ import static org.switchyard.tools.ui.validation.ValidationProblem.CamelXMLNotFo
 import static org.switchyard.tools.ui.validation.ValidationProblem.CamelXMLUnspecified;
 import static org.switchyard.tools.ui.validation.ValidationProblem.MissingReferenceDeclaration;
 import static org.switchyard.tools.ui.validation.ValidationProblem.MissingServiceDeclaration;
+import static org.switchyard.tools.ui.validation.ValidationProblem.CamelXMLIncluesInvalidEscapedProperty;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -127,6 +128,21 @@ public class CamelComponentConstraint extends AbstractModelConstraint {
         if (xmlName == null || xmlName.trim().isEmpty()) {
             return ConstraintStatus.createStatus(ctx, component, null, CamelXMLUnspecified.getSeverity(),
                     CamelXMLUnspecified.ordinal(), CamelXMLUnspecified.getMessage(), component.getName());
+        }
+        
+        /* check to see if the XML path includes an escaped property */
+        boolean isEscaped = EscapedPropertyUtil.isEscapedString(xmlName);
+        if (isEscaped) {
+            /* if it does, all we can do is validate that it is an ok escaped string */
+            boolean isValidEscaped = EscapedPropertyUtil.isValidEscapedString(xmlName);
+            if (!isValidEscaped) {
+                /* if it's not, we return a failure */
+                return ConstraintStatus.createStatus(ctx, component, null, CamelXMLIncluesInvalidEscapedProperty.getSeverity(),
+                        CamelXMLIncluesInvalidEscapedProperty.ordinal(), CamelXMLIncluesInvalidEscapedProperty.getMessage(), component.getName());
+            } else {
+                /* if it is valid, all we can do is say it's valid */
+                return ctx.createSuccessStatus();
+            }
         }
         final List<IStatus> statuses = new ArrayList<IStatus>();
         final ValidationAdapter adapter = (ValidationAdapter) EcoreUtil.getAdapter(camelImpl.eResource().eAdapters(),

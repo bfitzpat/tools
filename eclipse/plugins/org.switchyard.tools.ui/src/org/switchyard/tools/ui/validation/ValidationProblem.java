@@ -177,7 +177,11 @@ public enum ValidationProblem {
             false),
     /** The service interface has a method with multiple parameters. */
     ServiceInterfaceHasMultipleParameters(
-            Messages.ValidationProblem_ServiceInterfaceHasMethodWithMultipleParameters, false);
+            Messages.ValidationProblem_ServiceInterfaceHasMethodWithMultipleParameters, false),
+    /** XML specified includes invalid escaped property */
+    CamelXMLIncluesInvalidEscapedProperty(
+            Messages.ValidationProblem_CamelXMLIncludesInvalidEscapedProperty,
+            IStatus.ERROR, false);
 
     /** Used to identify the problem code attribute in IMarker objects. */
     public static final String PROBLEM_CODE = Messages.ValidationProblem_ValidateProblem;

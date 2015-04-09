@@ -10,6 +10,8 @@
  ************************************************************************************/
 package org.switchyard.tools.ui;
 
+import static org.switchyard.tools.ui.validation.ValidationProblem.CamelXMLIncluesInvalidEscapedProperty;
+
 import java.util.Collections;
 
 import org.eclipse.core.resources.IFile;
@@ -22,6 +24,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.validation.model.ConstraintStatus;
 import org.eclipse.soa.sca.sca1_1.model.sca.Component;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentReference;
 import org.eclipse.soa.sca.sca1_1.model.sca.ComponentService;
@@ -38,6 +41,7 @@ import org.switchyard.tools.models.switchyard1_0.rules.RulesImplementationType;
 import org.switchyard.tools.models.switchyard1_0.transform.JavaTransformType1;
 import org.switchyard.tools.models.switchyard1_0.transform.SmooksTransformType1;
 import org.switchyard.tools.models.switchyard1_0.transform.XsltTransformType;
+import org.switchyard.tools.ui.validation.EscapedPropertyUtil;
 
 /**
  * PlatformResourceAdapterFactory
@@ -108,7 +112,15 @@ public class PlatformResourceAdapterFactory implements IAdapterFactory {
                 if (camelImpl.getJava() != null) {
                     return (IFile) SwitchYardModelUtils.getJavaType(project, camelImpl.getJava().getClass_());
                 } else if (camelImpl.getXml() != null) {
-                    return (IFile) SwitchYardModelUtils.getJavaResource(project, camelImpl.getXml().getPath());
+                    String xmlPath = camelImpl.getXml().getPath();
+                    
+                    /* check to see if the XML path includes an escaped property */
+                    boolean isEscaped = EscapedPropertyUtil.isEscapedString(xmlPath);
+                    if (isEscaped) {
+                        return null;
+                    } else {
+                        return (IFile) SwitchYardModelUtils.getJavaResource(project, xmlPath);
+                    }
                 }
                 return null;
             } else if (impl instanceof ClojureImplementationType) {
