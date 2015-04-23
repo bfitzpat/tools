@@ -356,9 +356,11 @@ public class ProjectConfigurationWizardPage extends WizardPage implements ILayou
 
     private boolean isKarafRuntime() {
         IRuntimeComponent runtime = _settingsGroup.getSelectedTargetRuntime();
-        String label = runtime.getProperty("switchyard.label");
-        if (label.contains("SwitchYard: Karaf Extension")) {
-            return true;
+        if (runtime != null) {
+            String label = runtime.getProperty("switchyard.label");
+            if (label.contains("SwitchYard: Karaf Extension")) {
+                return true;
+            }
         }
         return false;
     }
