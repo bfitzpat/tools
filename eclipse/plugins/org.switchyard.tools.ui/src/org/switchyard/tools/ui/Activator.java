@@ -13,6 +13,8 @@ package org.switchyard.tools.ui;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jboss.tools.usage.event.UsageEventType;
+import org.jboss.tools.usage.event.UsageReporter;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -25,6 +27,9 @@ public class Activator extends AbstractUIPlugin {
 
     // The shared instance
     private static Activator plugin;
+    
+    // startup event for usage tracking
+    private UsageEventType _eventType;
 
     /**
      * The constructor.
@@ -43,6 +48,10 @@ public class Activator extends AbstractUIPlugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
+        
+        // log a usage event upon bundle startup
+        _eventType = new UsageEventType(this, PLUGIN_ID + ";startup"); //$NON-NLS-1$
+        UsageReporter.getInstance().countEvent(_eventType.event());        
     }
 
     /*

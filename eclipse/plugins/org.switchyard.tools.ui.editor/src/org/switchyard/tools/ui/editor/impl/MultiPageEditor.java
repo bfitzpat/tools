@@ -73,11 +73,14 @@ import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.part.MultiPageEditorSite;
 import org.eclipse.ui.part.MultiPageSelectionProvider;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
+import org.jboss.tools.usage.event.UsageEventType;
+import org.jboss.tools.usage.event.UsageReporter;
 import org.switchyard.tools.models.switchyard1_0.switchyard.DomainType;
 import org.switchyard.tools.models.switchyard1_0.switchyard.PropertiesType;
 import org.switchyard.tools.models.switchyard1_0.switchyard.PropertyType;
 import org.switchyard.tools.models.switchyard1_0.switchyard.SwitchYardType;
 import org.switchyard.tools.models.switchyard1_0.switchyard.SwitchyardFactory;
+import org.switchyard.tools.ui.editor.Activator;
 import org.switchyard.tools.ui.editor.Messages;
 import org.switchyard.tools.ui.editor.diagram.shared.DomainPropertyInputDialog;
 import org.switchyard.tools.ui.editor.diagram.shared.DomainPropertyTable;
@@ -902,6 +905,12 @@ public class MultiPageEditor extends MultiPageEditorPart implements IGotoMarker,
         createDesignEditor();
         createDomainPage();
         createSourceViewer();
+
+        // when editor is opened, count the first time as a usage event
+        UsageEventType eventType = new UsageEventType(Activator.getDefault(), 
+                Activator.PLUGIN_ID + ";editor-startup"); //$NON-NLS-1$
+        UsageReporter.getInstance().countEvent(eventType.event());        
+
     }
 
     private void refresh() {
