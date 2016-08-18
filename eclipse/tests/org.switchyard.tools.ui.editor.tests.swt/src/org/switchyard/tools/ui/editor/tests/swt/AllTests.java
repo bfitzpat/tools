@@ -30,8 +30,8 @@ import org.junit.runners.Suite.SuiteClasses;
     DemoSOAPBindingTests.class,
     DemoUseCamelImplTests.class,
     DemoAddSecondComponentTests.class,
-    DemoAddReferenceTests.class,
-    DemoUseBPMNImplTests.class
+    DemoAddReferenceTests.class //,
+//    DemoUseBPMNImplTests.class
 })
 public class AllTests {
 }

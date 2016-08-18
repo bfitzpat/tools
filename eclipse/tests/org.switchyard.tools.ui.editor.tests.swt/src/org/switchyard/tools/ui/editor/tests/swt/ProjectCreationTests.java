@@ -48,7 +48,7 @@ public class ProjectCreationTests extends SWTBotEclipseTestCase {
 
     @Test
     public void testCreateProject() {
-        SWTBotPreferences.TIMEOUT = 90000; // increase because maven takes a while
+        SWTBotPreferences.TIMEOUT = 120000; // increase because maven takes a while
         NewSYProjectBot newProjectBot = new NewSYProjectBot();
         newProjectBot.setProjectName(PROJECT_NAME);
         newProjectBot.setComponentChecked("Bean");

@@ -30,14 +30,22 @@ public class NewSYProjectBot {
     
     public NewSYProjectBot() {
         bot.menu("File").menu("New").menu("Project...").click();
+        bot.sleep(1000);
         shell = bot.shell("New Project");
+        bot.sleep(1000);
         shell.activate();
+        bot.sleep(1000);
         SWTBotTree tree = bot.tree();
         tree.expandNode("SwitchYard");
+        bot.sleep(1000);
         SWTBotTreeItem item = tree.getTreeItem("SwitchYard");
+        bot.sleep(1000);
         SWTBotTreeItem wizard = item.getNode("SwitchYard Project");
+        bot.sleep(1000);
         wizard.select();
+        bot.sleep(1000);
         bot.button("Next >").click();
+        bot.sleep(1000);
     }
     
     public void setProjectName(String projectName) {
