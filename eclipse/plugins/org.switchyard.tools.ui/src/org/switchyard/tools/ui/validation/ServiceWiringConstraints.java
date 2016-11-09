@@ -37,6 +37,7 @@ import org.eclipse.soa.sca.sca1_1.model.sca.Service;
 import org.switchyard.ExchangePattern;
 import org.switchyard.metadata.ServiceInterface;
 import org.switchyard.metadata.ServiceOperation;
+import org.switchyard.tools.models.switchyard1_0.resteasy.RESTBindingType;
 import org.switchyard.tools.models.switchyard1_0.switchyard.StaticOperationSelectorType;
 import org.switchyard.transform.TransformSequence;
 
@@ -146,6 +147,10 @@ public class ServiceWiringConstraints extends AbstractModelConstraint {
                 // explicitly invoked through RemoteInvoker or through an injection in a SCA 
                 // reference binding - FUSETOOLS-1927
                 boolean isSCABinding = binding instanceof SCABinding;
+                
+                // check to see if the binding is a Rest binding. If so, operation selection
+                // is handled differently and the NoBindingOperationSelected error is invalid.
+                boolean isRestBinding = binding instanceof RESTBindingType;
 
                 if (binding.getOperationSelector() != null 
                         && binding.getOperationSelector() instanceof StaticOperationSelectorType) {
@@ -153,14 +158,14 @@ public class ServiceWiringConstraints extends AbstractModelConstraint {
                             (StaticOperationSelectorType) binding.getOperationSelector();
                     
                     // if it already specifies which one, then we're good to go, otherwise...
-                    if (staticOpSelector.getOperationName() == null && hasMoreThanOneOperation) {
+                    if (staticOpSelector.getOperationName() == null && hasMoreThanOneOperation && !isRestBinding) {
                         // the user needs to specify the operation name when there is more than
                         // one operation in a Java interface
                         final ValidationProblem problem = ValidationProblem.NoBindingOperationSelected;
                         return ConstraintStatus.createStatus(ctx, contract, null, problem.getSeverity(), problem.ordinal(),
                                 problem.getMessage(), contract.getName(), binding.getName());
                     }
-                } else if (binding.getOperationSelector() == null && hasMoreThanOneOperation && !isSCABinding) {
+                } else if (binding.getOperationSelector() == null && hasMoreThanOneOperation && !isSCABinding && !isRestBinding) {
                     // if there is no operation selector specified and the interface specifies two or more operations, 
                     // and it's not an SCA binding, we have a problem (FUSETOOLS-1927)
                     final ValidationProblem problem = ValidationProblem.NoBindingOperationSelected;
