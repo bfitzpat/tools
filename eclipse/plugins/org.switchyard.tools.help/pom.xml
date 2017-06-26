@@ -13,7 +13,7 @@
 
   <artifactId>org.switchyard.tools.help</artifactId>
   <packaging>eclipse-plugin</packaging>
-  <name>JBoss SwitchYard Tooling ::  Plugins :: Help</name>
+  <name>SwitchYard: Eclipse Tools Help Plugin</name>
 
    <build>
      <plugins>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>org.switchyard.tools.help</name>
-	<comment>This is a shared POM parent for FuseSource Maven projects. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
+	<comment>This is a help plug-in for SwitchYard Maven projects. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
 	<projects>
 	</projects>
 	<buildSpec>
